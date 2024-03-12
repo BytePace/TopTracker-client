@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/models/user_model.dart';
 
-class AuthState extends ChangeNotifier {
+class AuthService extends ChangeNotifier {
   UserModel _user =
       const UserModel(id: 0, email: "", username: "", access_token: "");
 

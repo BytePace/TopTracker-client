@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
+import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/view/menu_screen.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_services.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -24,13 +23,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthState()),
-        // other providers
+        ChangeNotifierProvider(create: (context) => AuthService()),
       ],
       builder: (context, child) => Scaffold(
-        body: Consumer<AuthState>(
+        body: Consumer<AuthService>(
           builder: (context, authState, _) {
-
             return FutureBuilder(       //ждем пока придет ответ getToken
               future: authState.getToken(),
               builder: (context, snapshot) {
