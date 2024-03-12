@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/src/app.dart';
+import 'package:tt_bytepace/src/app.dart';
+
 
 void main() {
   runApp(const MainApp());

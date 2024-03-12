@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/src/features/login/widget/button.dart';
-import 'package:test_app/src/features/services/auth_services.dart';
+import 'package:tt_bytepace/src/features/login/widget/button.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -57,12 +57,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 10),
 
-                MyButton(
-                    onTap: () {
-                      viewModel.login(
-                          emailController.text, passwordController.text);
-                    },
-                    text: "Log in"),
+                TextButton(
+                  child: Text("log in"),
+                  onPressed: () {
+                    viewModel.login(
+                        emailController.text, passwordController.text);
+                  },
+                ),
                 const SizedBox(height: 20),
 
                 //register now
