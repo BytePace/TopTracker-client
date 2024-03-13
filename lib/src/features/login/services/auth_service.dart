@@ -54,7 +54,6 @@ class AuthService extends ChangeNotifier {
       await prefs.setString("access_token", responseData['access_token']);
 
       notifyListeners();
-      print(response.body);
     } else {
       print(response.statusCode);
       print(response.body);
