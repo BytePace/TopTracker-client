@@ -3,16 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
-import 'package:tt_bytepace/src/features/menu/widget/tile_user.dart';
+import 'package:tt_bytepace/src/features/menu/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/menu/widget/invited_on_project.dart';
+import 'package:tt_bytepace/src/features/menu/widget/user_on_project.dart';
 
 class ProjectInfoScreen extends StatelessWidget {
   final int id;
   final String name;
-  const ProjectInfoScreen({super.key, required this.id, required this.name});
-
-  void delUser(UserServices state, int index, DetailProjectModel data) async {
-    state.delUser(data.id, data.engagements[index].profileId);
-  }
+  final List<UserModel> allUsers;
+  const ProjectInfoScreen(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
@@ -26,42 +29,60 @@ class ProjectInfoScreen extends StatelessWidget {
         return FutureBuilder(
             future: projectService.getDetailProject(id),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return ListView(
-                  children: [
-                    Column(
-                        children: List.generate(
-                          snapshot.data!.engagements.length,
-                            (index) => UserTile(
-                                userModel: snapshot.data!.users[index],
-                                userEngagementsModel:
-                                    snapshot.data!.engagements[index],
-                                onTap: () {
-                                  delUser(state, index, snapshot.data!);
-                                }))),
-                    TextButton(
-                        onPressed: () async {
-                          state.addUser("aleksandrsherbakov.2005@gmail.com", "",
-                              "worker", id);
-                        },
-                        child: Text("add user"))
-                  ],
+              if (snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: ListView(
+                    children: [
+
+                      const Text("Пользватели на проекте",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+
+                      const SizedBox(height: 16),
+
+                      UserOnProject(detailProjectModel: snapshot.data!, state: state),
+
+                      const SizedBox(height: 16),
+
+                      snapshot.data!.invitations.isNotEmpty
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Приглашенные пользователи",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 16),
+                                
+                                InvitedOnProject(detailProjectModel: snapshot.data!,),
+                              ],
+                            )
+                          : Container(),
+
+                      //Column(
+                      //  children: List.generate(
+                      //    allUsers.length,
+                      //    (index) => Container(
+                      //      height: 50,
+                      //      color: Colors.green[100],
+                      //      child: Row(
+                      //        children: [
+                      //          Text(allUsers[index].name),
+                      //        ],
+                      //      ),
+                      //    ),
+                      //  ),
+                      //),
+                      const SizedBox(height: 16),
+                       const Text("Добавить пользователя",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+
+                      AddUserForm(id: id),
+                    ],
+                  ),
                 );
-                // return Column(
-                //   children: [
-                //     ListView.builder(
-                //         itemCount: snapshot.data!.engagements.length,
-                //         itemBuilder: (context, index) {
-                //           return UserTile(
-                //             userModel: snapshot.data!.users[index],
-                //             userEngagementsModel: snapshot.data!.engagements[index],
-                //             onTap: () {
-                //               delUser(state, index, snapshot.data!);
-                //             },
-                //           );
-                //         }),
-                //   ],
-                // );
               } else {
                 return const Center(child: CircularProgressIndicator());
               }

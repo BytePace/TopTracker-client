@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 
 class ProjectTile extends StatelessWidget {
@@ -9,10 +10,20 @@ class ProjectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
+    return Card(
+      elevation: 1,
       child: ListTile(
         title: Text(projectModel.name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("created at: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(projectModel.createDate))}"),
+            Text("admin: ${projectModel.adminName}"),
+          ],
+        ),
+        onTap: onTap,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        trailing: Icon(Icons.keyboard_arrow_right),
       ),
     );
   }

@@ -7,11 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/models/user_model.dart';
 
 class AuthService extends ChangeNotifier {
-  UserModel _user =
-      const UserModel(id: 0, email: "", username: "", access_token: "");
+  LoginModel _user =
+      const LoginModel(id: 0, email: "", username: "", access_token: "");
 
 
-  void setUser(UserModel user) {
+  void setUser(LoginModel user) {
     _user = user;
   }
 
@@ -29,7 +29,7 @@ class AuthService extends ChangeNotifier {
   Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
-    _user = const UserModel(id: 0, email: "", username: "", access_token: "");
+    _user = const LoginModel(id: 0, email: "", username: "", access_token: "");
 
     notifyListeners();
   }
@@ -48,7 +48,7 @@ class AuthService extends ChangeNotifier {
     );
     if (response.statusCode == 201) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      setUser(UserModel.fromJson(responseData));
+      setUser(LoginModel.fromJson(responseData));
       
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("access_token", responseData['access_token']);

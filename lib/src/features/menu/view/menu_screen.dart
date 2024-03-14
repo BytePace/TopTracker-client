@@ -13,8 +13,9 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final ProjectService _projectService = ProjectService();
-  late ProjectsModel _projectsModel = ProjectsModel(projects: []);
-  void _fetchProjects(BuildContext context) async {
+  late ProjectsModel _projectsModel = ProjectsModel(projects: [], allUsers: []);
+
+  Future<void> _fetchProjects() async {
     try {
       final projects = await _projectService.getProjects();
       if (mounted) {
@@ -30,7 +31,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-   _fetchProjects(context);
+    _fetchProjects();
   }
 
   @override
@@ -40,14 +41,19 @@ class _MenuScreenState extends State<MenuScreen> {
         length: 2,
         child: Scaffold(
           bottomNavigationBar: const TabBar(
+            indicatorColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
             tabs: [
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_transit)),
+              Tab(icon: Icon(Icons.cases_rounded)),
+              Tab(icon: Icon(Icons.bar_chart)),
             ],
           ),
           body: TabBarView(
             children: [
-              ProjectScreen(projects: _projectsModel),
+              RefreshIndicator(
+                  onRefresh: _fetchProjects,
+                  child: ProjectScreen(projects: _projectsModel)),
               const UsersScreen(),
             ],
           ),

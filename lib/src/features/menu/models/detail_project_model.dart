@@ -1,6 +1,7 @@
 class DetailProjectModel {
   final int id;
   final String name;
+  final String currentUserRole;
   final List<UserModel> users;
   final List<UserModel> invitations;
   final List<UserEngagementsModel> engagements;
@@ -11,23 +12,25 @@ class DetailProjectModel {
     required this.id,
     required this.name,
     required this.engagements,
+    required this.currentUserRole, 
   });
 
-  factory DetailProjectModel.fromJson(Map<String, dynamic> json) {
+  factory DetailProjectModel.fromJson(Map<String, dynamic> json, Map<String, dynamic> userJson) {
     final List<UserModel> users = [];
-    json["users"].forEach((json) => {users.add(UserModel.fromJson(json))});
+    userJson["workers"].forEach((userJson) => {users.add(UserModel.fromJson(userJson))});
 
     final List<UserEngagementsModel> engagements = [];
-    json["engagements"]
-        .forEach((json) => {engagements.add(UserEngagementsModel.fromJson(json))});
+    userJson["statistics"]
+        .forEach((userJson) => {engagements.add(UserEngagementsModel.fromJson(userJson))});
 
     final List<UserModel> invitations = [];
-    json["invitations"]
-        .forEach((json) => {invitations.add(UserModel.fromJson(json))});
+    userJson["invitations"]
+        .forEach((userJson) => {invitations.add(UserModel.fromJson(userJson))});
 
     return DetailProjectModel(
       id: json['project']['id'].toInt(),
       name: json['project']['name'],
+      currentUserRole: json['project']['current_user']['role'],
       users: users,
       invitations: invitations,
       engagements: engagements,
@@ -38,36 +41,36 @@ class DetailProjectModel {
 class UserModel {
   final int id;
   final String name;
+  final String? icon;
 
   const UserModel({
     required this.id,
     required this.name,
+    required this.icon, 
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'].toInt(),
       name: json['name'],
+      icon: json['avatar_url']
     );
   }
 }
 
 class UserEngagementsModel {
-  final int iserId;
   final int profileId;
   final int workedTotal;
 
   UserEngagementsModel({
-    required this.iserId,
     required this.profileId,
     required this.workedTotal,
   });
 
   factory UserEngagementsModel.fromJson(Map<String, dynamic> json) {
     return UserEngagementsModel(
-      iserId: json["user_id"].toInt(),
       profileId: json['profile_id'].toInt(),
-      workedTotal: json['stats']['worked_total'].toInt(),
+      workedTotal: json['worked_total'].toInt(),
     );
   }
 }
