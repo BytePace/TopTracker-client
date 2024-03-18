@@ -33,7 +33,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     builder: (context) => ProjectInfoScreen(
                       id: widget.projects.projects[index].id,
                       name: widget.projects.projects[index].name,
-                      allUsers: widget.projects.allUsers,
+                      allUsers: widget.projects.usersOnProject,
                     ),
                   ),
                 );

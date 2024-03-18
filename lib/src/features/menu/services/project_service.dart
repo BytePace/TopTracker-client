@@ -15,7 +15,7 @@ class ProjectService {
     if (response.statusCode == 200) {
       return ProjectsModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
-      return ProjectsModel(projects: [], allUsers: []);
+      return ProjectsModel(projects: [], usersOnProject: []);
     }
   }
 
@@ -29,7 +29,6 @@ class ProjectService {
     final userResponse = await http.get(Uri.parse('https://tracker-api.toptal.com/projects/$id/engagements?access_token=$access_token'));
 
     if (response.statusCode == 200 && userResponse.statusCode == 200) {
-      print("object");
       return DetailProjectModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)), jsonDecode(utf8.decode(userResponse.bodyBytes)));
     } else {
       return null;

@@ -17,13 +17,13 @@ class ProjectTile extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("created at: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(projectModel.createDate))}"),
+            Text("created at: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(projectModel.createdAt))}"),
             Text("admin: ${projectModel.adminName}"),
           ],
         ),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        trailing: Icon(Icons.keyboard_arrow_right),
+        trailing: const Icon(Icons.keyboard_arrow_right),
       ),
     );
   }
