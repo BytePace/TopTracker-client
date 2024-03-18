@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
 class UserServices extends ChangeNotifier {
-  Future<void> addUser(String email, String rate, String role, int id) async {
+  Future<void> addUser(String email, String rate, String role, int id,
+      BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
@@ -24,16 +26,15 @@ class UserServices extends ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 201) {
-      //final Map<String, dynamic> responseData = json.decode(response.body);
-
+      showCnackBar(context, "Приглашение отправлено");
       notifyListeners();
     } else {
-      print(response.body);
-      notifyListeners();
+      showCnackBar(context, "Произошла ошибка");
     }
   }
 
-  Future<void> delUser(int projectId, int profileId) async {
+  Future<void> delUser(
+      int projectId, int profileId, BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
@@ -45,12 +46,10 @@ class UserServices extends ChangeNotifier {
       Uri.parse('${Config.baseUrl}/projects/$projectId/workers/$profileId'),
     );
     if (response.statusCode == 200) {
-      //final Map<String, dynamic> responseData = json.decode(response.body);
-
+      showCnackBar(context, "Пользователь удален");
       notifyListeners();
     } else {
-      print(response.statusCode);
-      print(response.body);
+      showCnackBar(context, "Произошла ошибка");
     }
   }
 
@@ -59,7 +58,7 @@ class UserServices extends ChangeNotifier {
     String? access_token = prefs.getString("access_token");
 
     final responseIDs = await http.get(Uri.parse(
-        'https://tracker-api.toptal.com/web/projects?access_token=$access_token'));
+        '${Config.baseUrl}/web/projects?access_token=$access_token'));
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {

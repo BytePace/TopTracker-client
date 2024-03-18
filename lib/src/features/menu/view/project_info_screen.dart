@@ -5,6 +5,7 @@ import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/menu/widget/all_users_list.dart';
 import 'package:tt_bytepace/src/features/menu/widget/invited_on_project.dart';
 import 'package:tt_bytepace/src/features/menu/widget/user_on_project.dart';
 
@@ -65,23 +66,10 @@ class ProjectInfoScreen extends StatelessWidget {
                               fontSize: 16, fontWeight: FontWeight.bold)),
                       AddUserForm(id: id),
                       const SizedBox(height: 16),
-                      
-                      Column(
-                        children: List.generate(
-                          allUsers.length,
-                          (index) => GestureDetector(
-                            onTap: () {
-                              state.addUser(
-                                  allUsers[index].email, "", "worker", id);
-                            },
-                            child: Row(
-                              children: [
-                                Text(allUsers[index].name),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      const Text("Все пользователи",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      AllUsersList(allUsers: allUsers, id: id),
                     ],
                   ),
                 );

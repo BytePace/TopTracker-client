@@ -35,7 +35,8 @@ class UserTile extends StatelessWidget {
                   ];
                 }, onSelected: (value) {
                   if (value == 0) {
-                    viewModel.delUser(detailProjectModel.id, detailProjectModel.users[index].id);
+                    viewModel.delUser(detailProjectModel.id,
+                        detailProjectModel.users[index].id, context);
                   }
                 })
               : PopupMenuButton(

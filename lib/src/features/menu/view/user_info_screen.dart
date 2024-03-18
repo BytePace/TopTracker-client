@@ -41,7 +41,8 @@ class UserInfoScreen extends StatelessWidget {
                       onTap: () {
                         value.delUser(
                             getUserProject(projects, allProfileID)[index2].id,
-                            allProfileID[index].profileID);
+                            allProfileID[index].profileID,
+                            context);
                       },
                       child: Text(
                           getUserProject(projects, allProfileID)[index2].name),

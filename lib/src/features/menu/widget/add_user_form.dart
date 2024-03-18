@@ -59,13 +59,14 @@ class _AddUserFormState extends State<AddUserForm> {
               return null;
             },
           ),
+          
           ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   try {
                     print(_formData);
-                    viewModel.addUser(_formData, "", selectedValue, widget.id);
+                    viewModel.addUser(_formData, "", selectedValue, widget.id, context);
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Что то пошло не так")));
