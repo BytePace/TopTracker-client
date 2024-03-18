@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
   final int index;
-  final UserServices state;
 
   const UserTile({
     super.key,
     required this.detailProjectModel,
     required this.index,
-    required this.state,
   });
-
-  void delUser(UserServices state, int index, DetailProjectModel data) async {
-    state.delUser(data.id, data.engagements[index].profileId);
-  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<UserServices>(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
@@ -38,7 +35,7 @@ class UserTile extends StatelessWidget {
                   ];
                 }, onSelected: (value) {
                   if (value == 0) {
-                    delUser(state, index, detailProjectModel);
+                    viewModel.delUser(detailProjectModel.id, detailProjectModel.users[index].id);
                   }
                 })
               : PopupMenuButton(

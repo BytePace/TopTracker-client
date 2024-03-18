@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/models/user_model.dart';
+import 'package:tt_bytepace/src/features/services/config.dart';
 
 class AuthService extends ChangeNotifier {
   LoginModel _user =
@@ -42,7 +43,7 @@ class AuthService extends ChangeNotifier {
     };
 
     final response = await http.post(
-      Uri.parse('https://tracker-api.toptal.com/sessions'),
+      Uri.parse('${Config.baseUrl}/sessions'),
       body: json.encode(loginData),
       headers: {'Content-Type': 'application/json'},
     );

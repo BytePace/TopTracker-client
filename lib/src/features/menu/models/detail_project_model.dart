@@ -3,7 +3,7 @@ class DetailProjectModel {
   final String name;
   final String currentUserRole;
   final List<UserModel> users;
-  final List<UserModel> invitations;
+  final List<InvitedModel> invitations;
   final List<UserEngagementsModel> engagements;
 
   const DetailProjectModel({
@@ -22,15 +22,14 @@ class DetailProjectModel {
     final List<UserEngagementsModel> engagements = [];
     userJson["statistics"]
         .forEach((userJson) => {engagements.add(UserEngagementsModel.fromJson(userJson))});
-
-    final List<UserModel> invitations = [];
+    final List<InvitedModel> invitations = [];
     userJson["invitations"]
-        .forEach((userJson) => {invitations.add(UserModel.fromJson(userJson))});
+        .forEach((userJson) => {invitations.add(InvitedModel.fromJson(userJson))});
 
     return DetailProjectModel(
       id: json['project']['id'].toInt(),
       name: json['project']['name'],
-      currentUserRole: json['project']['current_user']['role'],
+      currentUserRole: json['project']['current_user']['role'],  
       users: users,
       invitations: invitations,
       engagements: engagements,
@@ -41,19 +40,19 @@ class DetailProjectModel {
 class UserModel {
   final int id;
   final String name;
-  final String? icon;
+  //final String icon;
 
   const UserModel({
     required this.id,
     required this.name,
-    required this.icon, 
+    //required this.icon, 
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'].toInt(),
       name: json['name'],
-      icon: json['avatar_url']
+      //icon: json['avatar_url']
     );
   }
 }
@@ -71,6 +70,24 @@ class UserEngagementsModel {
     return UserEngagementsModel(
       profileId: json['profile_id'].toInt(),
       workedTotal: json['worked_total'].toInt(),
+    );
+  }
+}
+
+
+class InvitedModel {
+
+  final String? name;
+
+  const InvitedModel({
+
+    required this.name,
+
+  });
+
+  factory InvitedModel.fromJson(Map<String, dynamic> json) {
+    return InvitedModel(
+      name: json['name'],
     );
   }
 }

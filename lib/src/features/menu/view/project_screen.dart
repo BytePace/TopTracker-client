@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/menu/widget/tile_project.dart';
 
 class ProjectScreen extends StatefulWidget {
   final ProjectsModel projects;
-  const ProjectScreen({super.key, required this.projects});
+  final List<AllUsers> allUsers;
+  const ProjectScreen({super.key, required this.projects, required this.allUsers});
 
   @override
   State<ProjectScreen> createState() => _ProjectScreenState();
@@ -33,7 +34,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     builder: (context) => ProjectInfoScreen(
                       id: widget.projects.projects[index].id,
                       name: widget.projects.projects[index].name,
-                      allUsers: widget.projects.usersOnProject,
+                      userOnProject: widget.projects.usersOnProject,
+                      allUsers: widget.allUsers,
                     ),
                   ),
                 );

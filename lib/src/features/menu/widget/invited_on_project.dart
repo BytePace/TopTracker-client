@@ -16,7 +16,7 @@ class InvitedOnProject extends StatelessWidget {
             color: Colors.grey[100],
             child: Row(
               children: [
-                Text(detailProjectModel.invitations[index].name),
+                Text(detailProjectModel.invitations[index].name ?? "name"),
               ],
             ),
           ),

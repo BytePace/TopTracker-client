@@ -6,21 +6,21 @@ import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 
 class UserInfoScreen extends StatelessWidget {
   final ProjectsModel projects;
-  final AllUsersList allUsersList;
+  final List<ProfileID> allProfileID;
   final int index;
   const UserInfoScreen(
       {super.key,
-      required this.allUsersList,
+      required this.allProfileID,
       required this.projects,
       required this.index});
 
   List<ProjectModel> getUserProject(
-      ProjectsModel projects, AllUsersList allUsersList) {
+      ProjectsModel projects, List<ProfileID> allUsersList) {
     List<ProjectModel> projectModelList = [];
 
     for (ProjectModel element in projects.projects) {
       for (var a in element.profilesIDs) {
-        if (a == allUsersList.all[index].profileID) {
+        if (a == allUsersList[index].profileID) {
           projectModelList.add(element);
         }
       }
@@ -36,15 +36,15 @@ class UserInfoScreen extends StatelessWidget {
         builder: (BuildContext context, UserServices value, Widget? child) {
           return Column(
             children: List.generate(
-                getUserProject(projects, allUsersList).length,
+                getUserProject(projects, allProfileID).length,
                 (index2) => GestureDetector(
                       onTap: () {
                         value.delUser(
-                            getUserProject(projects, allUsersList)[index2].id,
-                            allUsersList.all[index].profileID);
+                            getUserProject(projects, allProfileID)[index2].id,
+                            allProfileID[index].profileID);
                       },
                       child: Text(
-                          getUserProject(projects, allUsersList)[index2].name),
+                          getUserProject(projects, allProfileID)[index2].name),
                     )),
           );
         },

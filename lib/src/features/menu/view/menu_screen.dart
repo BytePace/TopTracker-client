@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
@@ -17,18 +20,38 @@ class _MenuScreenState extends State<MenuScreen> {
   final ProjectService _projectService = ProjectService();
   final UserServices _userServices = UserServices();
 
-  late ProjectsModel _projectsModel = ProjectsModel(projects: [], usersOnProject: []);
-  late AllUsersList _allUsersList = AllUsersList(all: []);
+  late ProjectsModel _projectsModel =
+      ProjectsModel(projects: [], usersOnProject: []);
+  late List<ProfileID> _allProfileID = [];
+  late List<AllUsers> _allUsers = [];
 
-  Future<void> _fetchProjects() async {
+  Future<void> _fetchData() async {
     try {
-      final users = await _userServices.getAllUsers();
-
+      final allProfileID = await _userServices.getAllProfileID();
       final projects = await _projectService.getProjects();
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String allUsersString = prefs.getString("allUser") ?? "{}";
+
+      List<AllUsers> list = [];
+      json.decode((allUsersString)).forEach((key, value) {
+        list.add(AllUsers.fromJson(value));
+      });
+
+      if (list.length != allProfileID.length) {
+        list = [];
+        await _userServices.getAllUsers();
+        allUsersString = prefs.getString("allUser") ?? "{}";
+        json.decode((allUsersString)).forEach((key, value) {
+          list.add(AllUsers.fromJson(value));
+        });
+      }
+      print(list);
       if (mounted) {
         setState(() {
           _projectsModel = projects;
-          _allUsersList = users;
+          _allProfileID = allProfileID;
+          _allUsers = list;
         });
       }
     } catch (e) {
@@ -39,7 +62,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchProjects();
+    _fetchData();
   }
 
   @override
@@ -60,9 +83,11 @@ class _MenuScreenState extends State<MenuScreen> {
           body: TabBarView(
             children: [
               RefreshIndicator(
-                  onRefresh: _fetchProjects,
-                  child: ProjectScreen(projects: _projectsModel)),
-                         UsersScreen(projects: _projectsModel, allUsersList: _allUsersList),
+                  onRefresh: _fetchData,
+                  child: ProjectScreen(
+                      projects: _projectsModel, allUsers: _allUsers)),
+              UsersScreen(
+                  projects: _projectsModel, allProfileID: _allProfileID),
             ],
           ),
         ),

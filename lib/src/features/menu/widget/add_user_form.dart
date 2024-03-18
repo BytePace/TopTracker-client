@@ -11,7 +11,7 @@ class AddUserForm extends StatefulWidget {
 }
 
 class _AddUserFormState extends State<AddUserForm> {
-  final TextEditingController emailController = TextEditingController();
+  String _formData = '';
   String selectedValue = "worker";
 
   final _formKey = GlobalKey<FormState>();
@@ -40,6 +40,9 @@ class _AddUserFormState extends State<AddUserForm> {
               }
               return null;
             },
+            onSaved: (value) {
+              _formData = value!;
+            },
           ),
           DropdownButtonFormField(
             value: selectedValue,
@@ -59,8 +62,10 @@ class _AddUserFormState extends State<AddUserForm> {
           ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
                   try {
-                    viewModel.addUser("aleksandrsherbakov.2005@gmail.com", "", selectedValue, widget.id);
+                    print(_formData);
+                    viewModel.addUser(_formData, "", selectedValue, widget.id);
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Что то пошло не так")));

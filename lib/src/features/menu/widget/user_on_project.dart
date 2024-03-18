@@ -20,7 +20,6 @@ class UserOnProject extends StatelessWidget {
           (index) => UserTile(
             detailProjectModel: detailProjectModel,
             index: index,
-            state: state,
           ),
         ),
       ),
