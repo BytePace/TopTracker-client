@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/models/user_model.dart';
+import 'package:tt_bytepace/src/features/services/config.dart';
 
-class AuthState extends ChangeNotifier {
-  UserModel _user =
-      const UserModel(id: 0, email: "", username: "", access_token: "");
+class AuthService extends ChangeNotifier {
+  LoginModel _user =
+      const LoginModel(id: 0, email: "", username: "", access_token: "");
 
 
-  void setUser(UserModel user) {
+  void setUser(LoginModel user) {
     _user = user;
   }
 
@@ -29,7 +30,7 @@ class AuthState extends ChangeNotifier {
   Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
-    _user = const UserModel(id: 0, email: "", username: "", access_token: "");
+    _user = const LoginModel(id: 0, email: "", username: "", access_token: "");
 
     notifyListeners();
   }
@@ -42,19 +43,18 @@ class AuthState extends ChangeNotifier {
     };
 
     final response = await http.post(
-      Uri.parse('https://tracker-api.toptal.com/sessions'),
+      Uri.parse('${Config.baseUrl}/sessions'),
       body: json.encode(loginData),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 201) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      setUser(UserModel.fromJson(responseData));
+      setUser(LoginModel.fromJson(responseData));
       
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("access_token", responseData['access_token']);
 
       notifyListeners();
-      print(response.body);
     } else {
       print(response.statusCode);
       print(response.body);

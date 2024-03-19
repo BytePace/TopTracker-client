@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/login/widget/button.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_services.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<AuthState>(context);
+    final viewModel = Provider.of<AuthService>(context);
     emailController.text = "aleksandr.sherbakov@bytepace.com";
     passwordController.text = "aleksandr.sherb";
 
