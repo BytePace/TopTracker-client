@@ -98,7 +98,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
                 child: [
-                  ProjectScreen(projects: _projects, allUsers: _allUsers),
+                  RefreshIndicator(
+                      onRefresh: _fetchData,
+                      child: ProjectScreen(
+                          projects: _projects, allUsers: _allUsers)),
                   UsersScreen(projects: _projects, allProfileID: _allProfileID),
                 ][_currentTub],
               ),
