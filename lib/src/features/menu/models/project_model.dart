@@ -1,21 +1,17 @@
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 
 class ProjectsModel {
   final List<ProjectModel> projects;
-  final List<UserModel> usersOnProject;
 
-  ProjectsModel({required this.projects, required this.usersOnProject,});
+
+  ProjectsModel({required this.projects});
 
   factory ProjectsModel.fromJson(Map<String, dynamic> json) {
     final List<ProjectModel> projects = [];
     json["projects"]
         .forEach((json) => {projects.add(ProjectModel.fromJson(json))});
 
-    final List<UserModel> users = [];
-    json["users"]
-        .forEach((json) => {users.add(UserModel.fromJson(json))});
 
-    return ProjectsModel(projects: projects, usersOnProject: users);
+    return ProjectsModel(projects: projects);
   }
 }
 

@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
-import 'package:tt_bytepace/src/features/menu/widget/add_user_form.dart';
-import 'package:tt_bytepace/src/features/menu/widget/all_users_list.dart';
-import 'package:tt_bytepace/src/features/menu/widget/invited_on_project.dart';
-import 'package:tt_bytepace/src/features/menu/widget/user_on_project.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/all_users_list.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/invited_on_project.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/user_on_project.dart';
 
 class ProjectInfoScreen extends StatelessWidget {
   final int id;
   final String name;
-  final List<UserModel> userOnProject;
-  final List<AllUsers> allUsers;
+  final List<UserModel> allUsers;
   const ProjectInfoScreen(
       {super.key,
       required this.id,
       required this.name,
-      required this.userOnProject,
       required this.allUsers});
 
   @override
@@ -38,37 +35,22 @@ class ProjectInfoScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: ListView(
                     children: [
-                      const Text("Пользватели на проекте",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 16),
                       UserOnProject(
-                          detailProjectModel: snapshot.data!, state: state),
+                          detailProjectModel: snapshot.data!,
+                          allUsers: projectService.getListUsersOnProject(snapshot.data!, allUsers)),
+
                       const SizedBox(height: 16),
-                      snapshot.data!.invitations.isNotEmpty
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("Приглашенные пользователи",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 16),
-                                InvitedOnProject(
-                                  detailProjectModel: snapshot.data!,
-                                ),
-                              ],
-                            )
-                          : Container(),
+
+                      InvitedOnProject(
+                        detailProjectModel: snapshot.data!,
+                      ),
+
                       const SizedBox(height: 16),
-                      const Text("Добавить пользователя",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+
                       AddUserForm(id: id),
+
                       const SizedBox(height: 16),
-                      const Text("Все пользователи",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      
                       AllUsersList(allUsers: allUsers, id: id),
                     ],
                   ),

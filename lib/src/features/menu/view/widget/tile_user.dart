@@ -5,12 +5,14 @@ import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
+  final List<UserModel> allUsers;
   final int index;
 
   const UserTile({
     super.key,
     required this.detailProjectModel,
     required this.index,
+    required this.allUsers
   });
 
   @override
@@ -22,7 +24,7 @@ class UserTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(detailProjectModel.users[index].name),
+          Text(allUsers[index].name),
           Text(
               "Total hours: ${(detailProjectModel.engagements[index].workedTotal / 60 / 60).round()}"),
           detailProjectModel.currentUserRole == "admin"
@@ -36,7 +38,7 @@ class UserTile extends StatelessWidget {
                 }, onSelected: (value) {
                   if (value == 0) {
                     viewModel.delUser(detailProjectModel.id,
-                        detailProjectModel.users[index].id, context);
+                        allUsers[index].profileID, context);
                   }
                 })
               : PopupMenuButton(

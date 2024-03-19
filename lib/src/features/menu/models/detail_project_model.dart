@@ -1,3 +1,4 @@
+
 class DetailProjectModel {
   final int id;
   final String name;
@@ -15,16 +16,16 @@ class DetailProjectModel {
     required this.currentUserRole, 
   });
 
-  factory DetailProjectModel.fromJson(Map<String, dynamic> json, Map<String, dynamic> userJson) {
+  factory DetailProjectModel.fromJson(Map<String, dynamic> json) {
     final List<UserModel> users = [];
-    userJson["workers"].forEach((userJson) => {users.add(UserModel.fromJson(userJson))});
+    json["users"].forEach((json) => {users.add(UserModel.fromJson(json))});
 
     final List<UserEngagementsModel> engagements = [];
-    userJson["statistics"]
-        .forEach((userJson) => {engagements.add(UserEngagementsModel.fromJson(userJson))});
+    json["engagements"]
+        .forEach((json) => {engagements.add(UserEngagementsModel.fromJson(json))});
     final List<InvitedModel> invitations = [];
-    userJson["invitations"]
-        .forEach((userJson) => {invitations.add(InvitedModel.fromJson(userJson))});
+    json["invitations"]
+        .forEach((json) => {invitations.add(InvitedModel.fromJson(json))});
 
     return DetailProjectModel(
       id: json['project']['id'].toInt(),
@@ -33,26 +34,6 @@ class DetailProjectModel {
       users: users,
       invitations: invitations,
       engagements: engagements,
-    );
-  }
-}
-
-class UserModel {
-  final int id;
-  final String name;
-  //final String icon;
-
-  const UserModel({
-    required this.id,
-    required this.name,
-    //required this.icon, 
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'].toInt(),
-      name: json['name'],
-      //icon: json['avatar_url']
     );
   }
 }
@@ -69,18 +50,42 @@ class UserEngagementsModel {
   factory UserEngagementsModel.fromJson(Map<String, dynamic> json) {
     return UserEngagementsModel(
       profileId: json['profile_id'].toInt(),
-      workedTotal: json['worked_total'].toInt(),
+      workedTotal: json['stats']['worked_total'].toInt(),
     );
   }
 }
 
+class UserModel {
+  final int profileID;
+  final String name;
+  final String email;
+
+  UserModel({required this.profileID, required this.name, required this.email});
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      email: json['email'],
+      profileID: json['id'].toInt(),
+      name: json['name'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "email": email,
+      "id": profileID,
+      "name": name,
+    };
+  }
+}
 
 class InvitedModel {
 
   final String? name;
+  final int inviteID;
 
   const InvitedModel({
-
+    required this.inviteID,
     required this.name,
 
   });
@@ -88,6 +93,7 @@ class InvitedModel {
   factory InvitedModel.fromJson(Map<String, dynamic> json) {
     return InvitedModel(
       name: json['name'],
+      inviteID: json['id'].toInt(),
     );
   }
 }

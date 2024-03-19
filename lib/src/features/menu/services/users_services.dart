@@ -4,10 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
 class UserServices extends ChangeNotifier {
+  Future<void> revokeInvite(int invitationID, BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? access_token = prefs.getString("access_token");
+
+    final Map<String, dynamic> userData = {'access_token': access_token};
+
+    final response = await http.delete(
+      body: json.encode(userData),
+      headers: {'Content-Type': 'application/json'},
+      Uri.parse('${Config.baseUrl}/invitations/$invitationID'),
+    );
+    if (response.statusCode == 200) {
+      showCnackBar(context, "Приглашение отменено");
+      notifyListeners();
+    } else {
+      showCnackBar(context, "Произошла ошибка");
+    }
+  }
+
   Future<void> addUser(String email, String rate, String role, int id,
       BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,8 +78,8 @@ class UserServices extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
-    final responseIDs = await http.get(Uri.parse(
-        '${Config.baseUrl}/web/projects?access_token=$access_token'));
+    final responseIDs = await http.get(
+        Uri.parse('${Config.baseUrl}/web/projects?access_token=$access_token'));
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {
@@ -74,14 +95,14 @@ class UserServices extends ChangeNotifier {
     String? access_token = prefs.getString("access_token");
 
     final List<int> listProjectIDs = await getProjectsID();
-    final Map<int, AllUsers> allUsers = {};
+    final Map<int, UserModel> allUsers = {};
     for (int i = 0; i < listProjectIDs.length; i++) {
       final response2 = await http.get(Uri.parse(
-          '${Config.baseUrl}/projects/${listProjectIDs[i]}/engagements?access_token=$access_token'));
+          '${Config.baseUrl}/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=false'));
 
       jsonDecode(utf8.decode(response2.bodyBytes))['workers']
           .forEach((element) {
-        allUsers[element["id"]] = AllUsers.fromJson(element);
+        allUsers[element["id"]] = UserModel.fromJson(element);
       });
     }
     Map<String, dynamic> jsonMap = {};
@@ -96,12 +117,26 @@ class UserServices extends ChangeNotifier {
     String? access_token = prefs.getString("access_token");
 
     final response = await http.get(Uri.parse(
-        '${Config.baseUrl}/reports/filters?access_token=$access_token'));
+        '${Config.baseUrl}/reports/filters?access_token=$access_token&archived=false'));
     final List<ProfileID> idList = [];
     jsonDecode(utf8.decode(response.bodyBytes))["filters"]['workers']
         .forEach((element) {
       idList.add(ProfileID(profileID: element['id'], name: element["label"]));
     });
     return idList;
+  }
+
+  List<ProjectModel> getUserProject(
+    List<ProjectModel> projects, List<ProfileID> allUsersList, int index) {
+    List<ProjectModel> projectModelList = [];
+
+    for (ProjectModel project in projects) {
+      for (var userProfileID in project.profilesIDs) {
+        if (userProfileID == allUsersList[index].profileID) {
+          projectModelList.add(project);
+        }
+      }
+    }
+    return projectModelList;
   }
 }

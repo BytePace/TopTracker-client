@@ -12,26 +12,4 @@ class ProfileID {
   }
 }
 
-class AllUsers {
-  final int profileID;
-  final String name;
-  final String email;
 
-  AllUsers({required this.profileID, required this.name, required this.email});
-
-  factory AllUsers.fromJson(Map<String, dynamic> json) {
-    return AllUsers(
-      email: json['email'],
-      profileID: json['id'].toInt(),
-      name: json['name'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "email": email,
-      "id": profileID,
-      "name": name,
-    };
-  }
-}

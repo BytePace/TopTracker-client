@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
@@ -17,41 +20,45 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  int _currentTub = 0;
   final ProjectService _projectService = ProjectService();
   final UserServices _userServices = UserServices();
 
-  late ProjectsModel _projectsModel =
-      ProjectsModel(projects: [], usersOnProject: []);
+  late List<ProjectModel> _projects = [];
   late List<ProfileID> _allProfileID = [];
-  late List<AllUsers> _allUsers = [];
+  late List<UserModel> _allUsers = [];
+
+  Future<List<UserModel>> _getAllUsers(List<ProfileID> allProfileID) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String allUsersString = prefs.getString("allUser") ?? "{}";
+
+    List<UserModel> list = [];
+    json.decode((allUsersString)).forEach((key, value) {
+      list.add(UserModel.fromJson(value));
+    });
+
+    if (list.length != allProfileID.length) {
+      list = [];
+      await _userServices.getAllUsers();
+      allUsersString = prefs.getString("allUser") ?? "{}";
+      json.decode((allUsersString)).forEach((key, value) {
+        list.add(UserModel.fromJson(value));
+      });
+    }
+    return list;
+  }
 
   Future<void> _fetchData() async {
     try {
       final allProfileID = await _userServices.getAllProfileID();
       final projects = await _projectService.getProjects();
+      final allUsers = await _getAllUsers(allProfileID);
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String allUsersString = prefs.getString("allUser") ?? "{}";
-
-      List<AllUsers> list = [];
-      json.decode((allUsersString)).forEach((key, value) {
-        list.add(AllUsers.fromJson(value));
-      });
-
-      if (list.length != allProfileID.length) {
-        list = [];
-        await _userServices.getAllUsers();
-        allUsersString = prefs.getString("allUser") ?? "{}";
-        json.decode((allUsersString)).forEach((key, value) {
-          list.add(AllUsers.fromJson(value));
-        });
-      }
-      print(list);
       if (mounted) {
         setState(() {
-          _projectsModel = projects;
+          _projects = projects;
           _allProfileID = allProfileID;
-          _allUsers = list;
+          _allUsers = allUsers;
         });
       }
     } catch (e) {
@@ -67,29 +74,52 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<AuthService>(context);
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          bottomNavigationBar: const TabBar(
-            indicatorColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.black,
-            tabs: [
-              Tab(icon: Icon(Icons.cases_rounded)),
-              Tab(icon: Icon(Icons.bar_chart)),
-            ],
-          ),
-          body: TabBarView(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RefreshIndicator(
-                  onRefresh: _fetchData,
-                  child: ProjectScreen(
-                      projects: _projectsModel, allUsers: _allUsers)),
-              UsersScreen(
-                  projects: _projectsModel, allProfileID: _allProfileID),
+              Text(_currentTub == 0 ? "Projects" : "Users"),
+              TextButton(
+                child: const Text("logout"),
+                onPressed: () {
+                  viewModel.logout();
+                },
+              ),
             ],
           ),
+        ),
+        body: _allUsers.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeOut,
+                child: [
+                  ProjectScreen(projects: _projects, allUsers: _allUsers),
+                  UsersScreen(projects: _projects, allProfileID: _allProfileID),
+                ][_currentTub],
+              ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.cases_rounded),
+              label: 'Projects',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Users',
+            )
+          ],
+          currentIndex: _currentTub,
+          selectedItemColor: Colors.amber[800],
+          onTap: (value) {
+            setState(() {
+              _currentTub = value;
+            });
+          },
         ),
       ),
     );
