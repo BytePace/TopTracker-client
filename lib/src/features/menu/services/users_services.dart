@@ -142,4 +142,21 @@ class UserServices extends ChangeNotifier {
     }
     return projectModelList;
   }
+
+  Future<List<UserModel>> checkAllUsers(List<ProfileID> allProfileID) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String allUsersString = prefs.getString("allUser") ?? "{}";
+
+    List<UserModel> list = [];
+    json.decode((allUsersString)).forEach((key, value) {
+      list.add(UserModel.fromJson(value));
+    });
+
+    print("${list.length}   ${allProfileID.length}");
+
+    if (list.length != allProfileID.length) {
+      return await getAllUsers();
+    }
+    return list;
+  }
 }

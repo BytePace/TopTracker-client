@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/add_user_form.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/all_users_list.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/invited_on_project.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/user_on_project.dart';
+
 
 class ArchivedProjectInfoScreen extends StatelessWidget {
   final int id;
