@@ -19,6 +19,7 @@ class AuthService extends ChangeNotifier {
 
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("access_token"));
     return prefs.getString("access_token") ?? "";
   }
 

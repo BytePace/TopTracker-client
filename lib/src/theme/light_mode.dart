@@ -8,6 +8,6 @@ ThemeData lightMode = ThemeData.light().copyWith(
     secondary: Colors.grey.shade400,
   ),
   textTheme: const TextTheme(
-    headlineMedium: TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+    headlineMedium: TextStyle(fontSize: 8),
   ),
 );

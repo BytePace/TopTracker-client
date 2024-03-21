@@ -37,7 +37,12 @@ class _MenuScreenState extends State<MenuScreen> {
       list.add(UserModel.fromJson(value));
     });
 
-    if (list.length != allProfileID.length) {
+    final countUser = prefs.getInt("countUser") ?? 0;
+
+    print("${countUser}   ${allProfileID.length}");
+
+    if (countUser != allProfileID.length) {
+      prefs.setInt("countUser", allProfileID.length);
       list = [];
       await _userServices.getAllUsers();
       allUsersString = prefs.getString("allUser") ?? "{}";
@@ -53,7 +58,6 @@ class _MenuScreenState extends State<MenuScreen> {
       final allProfileID = await _userServices.getAllProfileID();
       final projects = await _projectService.getProjects();
       final allUsers = await _getAllUsers(allProfileID);
-
       if (mounted) {
         setState(() {
           _projects = projects;
@@ -91,7 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
             ],
           ),
         ),
-        body: _allUsers.isEmpty
+        body: _projects.isEmpty
             ? const Center(child: CircularProgressIndicator())
             : AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),

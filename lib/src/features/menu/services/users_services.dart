@@ -98,7 +98,7 @@ class UserServices extends ChangeNotifier {
     final Map<int, UserModel> allUsers = {};
     for (int i = 0; i < listProjectIDs.length; i++) {
       final response2 = await http.get(Uri.parse(
-          '${Config.baseUrl}/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=false'));
+          '${Config.baseUrl}/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=true'));
 
       jsonDecode(utf8.decode(response2.bodyBytes))['workers']
           .forEach((element) {

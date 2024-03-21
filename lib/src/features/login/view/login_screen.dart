@@ -16,8 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AuthService>(context);
-    emailController.text = "aleksandr.sherbakov@bytepace.com";
-    passwordController.text = "aleksandr.sherb";
+    emailController.text = "";
+    passwordController.text = "";
 
     return Scaffold(
       backgroundColor: Colors.grey[300],

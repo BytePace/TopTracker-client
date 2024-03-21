@@ -11,15 +11,14 @@ class UsersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: List.generate(
             allProfileID.length,
-            (index) => GestureDetector(
-              onTap: () {
+            (index) => OutlinedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -30,7 +29,7 @@ class UsersScreen extends StatelessWidget {
                 );
               },
               child: Text(allProfileID[index].name,
-                  style: const TextStyle(fontSize: 14)),
+                  style: const TextStyle(fontSize: 14, color: Colors.black)),
             ),
           ),
         ),

@@ -14,12 +14,11 @@ class UserInfoScreen extends StatelessWidget {
       required this.projects,
       required this.index});
 
-
-
   @override
   Widget build(BuildContext context) {
     final UserServices userServices = UserServices();
-    final userProjectList = userServices.getUserProject(projects, allProfileID, index);
+    final userProjectList =
+        userServices.getUserProject(projects, allProfileID, index);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,25 +29,26 @@ class UserInfoScreen extends StatelessWidget {
         builder: (BuildContext context, UserServices value, Widget? child) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: List.generate(
-                  userProjectList.length,
-                  (index2) => GestureDetector(
-                        onTap: () {
-                          value.delUser(userProjectList[index2].id,
-                              allProfileID[index].profileID, context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: .0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(userProjectList[index2].name),
-                              const Icon(Icons.delete)
-                            ],
-                          ),
-                        ),
-                      )),
+            child: ListView.builder(
+              itemCount: userProjectList.length,
+              itemBuilder: (BuildContext context, int index2) {
+                return GestureDetector(
+                  onTap: () {
+                    value.delUser(userProjectList[index2].id,
+                        allProfileID[index].profileID, context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(userProjectList[index2].name),
+                        const Icon(Icons.delete)
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
