@@ -78,19 +78,20 @@ class UserServices extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
-    final responseIDs = await http.get(
-        Uri.parse('${Config.baseUrl}/web/projects?access_token=$access_token'));
+    final responseIDs = await http.get(Uri.parse(
+        '${Config.baseUrl}/web/projects?access_token=$access_token&archived=true'));
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {
       Map<String, dynamic> map = jsonDecode(utf8.decode(responseIDs.bodyBytes));
-      map['projects'].forEach(
-          (id) => {projectID.add(id['id'])}); //достаю все id всех проектовÏ
+      map['projects'].forEach((project) => {
+            if (project['archived_at'] == null) {projectID.add(project['id'])}
+          }); //достаю все id всех проектов
     }
     return projectID;
   }
 
-  Future<void> getAllUsers() async {
+  Future<List<UserModel>> getAllUsers() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
@@ -110,6 +111,8 @@ class UserServices extends ChangeNotifier {
       jsonMap[key.toString()] = value.toJson();
     });
     prefs.setString("allUser", json.encode(jsonMap));
+
+    return allUsers.values.toList();
   }
 
   Future<List<ProfileID>> getAllProfileID() async {
@@ -117,7 +120,7 @@ class UserServices extends ChangeNotifier {
     String? access_token = prefs.getString("access_token");
 
     final response = await http.get(Uri.parse(
-        '${Config.baseUrl}/reports/filters?access_token=$access_token&archived=false'));
+        '${Config.baseUrl}/reports/filters?access_token=$access_token&archived=true'));
     final List<ProfileID> idList = [];
     jsonDecode(utf8.decode(response.bodyBytes))["filters"]['workers']
         .forEach((element) {
@@ -127,7 +130,7 @@ class UserServices extends ChangeNotifier {
   }
 
   List<ProjectModel> getUserProject(
-    List<ProjectModel> projects, List<ProfileID> allUsersList, int index) {
+      List<ProjectModel> projects, List<ProfileID> allUsersList, int index) {
     List<ProjectModel> projectModelList = [];
 
     for (ProjectModel project in projects) {

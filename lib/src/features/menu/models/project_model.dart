@@ -29,6 +29,7 @@ class ProjectModel {
   final String name;
   final String adminName;
   final String createdAt;
+  final String? archivedAt;
   final List<int> profilesIDs;
   
 
@@ -37,7 +38,8 @@ class ProjectModel {
     required this.name,
     required this.adminName,
     required this.createdAt,
-    required this.profilesIDs
+    required this.profilesIDs,
+    required this.archivedAt
   });
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class ProjectModel {
 
     return ProjectModel(
       id: json['id'].toInt(),
+      archivedAt: json['archived_at'],
       name: json['name'],
       adminName: json['admin_profile']['name'],
       createdAt: json['created_at'],

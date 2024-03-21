@@ -9,6 +9,7 @@ import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
 import 'package:tt_bytepace/src/features/menu/view/project_screen.dart';
 import 'package:tt_bytepace/src/features/menu/view/users_sreen.dart';
 
@@ -37,18 +38,13 @@ class _MenuScreenState extends State<MenuScreen> {
       list.add(UserModel.fromJson(value));
     });
 
-    final countUser = prefs.getInt("countUser") ?? 0;
+    
 
-    print("${countUser}   ${allProfileID.length}");
+    print("${list.length}   ${allProfileID.length}");
 
-    if (countUser != allProfileID.length) {
-      prefs.setInt("countUser", allProfileID.length);
-      list = [];
-      await _userServices.getAllUsers();
-      allUsersString = prefs.getString("allUser") ?? "{}";
-      json.decode((allUsersString)).forEach((key, value) {
-        list.add(UserModel.fromJson(value));
-      });
+    if (list.length != allProfileID.length) {
+    
+      return await _userServices.getAllUsers();
     }
     return list;
   }
@@ -85,7 +81,7 @@ class _MenuScreenState extends State<MenuScreen> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_currentTub == 0 ? "Projects" : "Users"),
+              Text(_currentTub == 0 ? "Projects" : _currentTub == 1 ? "ArchivedProjects" : "Users"),
               TextButton(
                 child: const Text("logout"),
                 onPressed: () {
@@ -102,10 +98,8 @@ class _MenuScreenState extends State<MenuScreen> {
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
                 child: [
-                  RefreshIndicator(
-                      onRefresh: _fetchData,
-                      child: ProjectScreen(
-                          projects: _projects, allUsers: _allUsers)),
+                  RefreshIndicator(onRefresh: _fetchData,child: ProjectScreen(projects: _projects.where((element) => element.archivedAt == null).toList(),allUsers: _allUsers)),
+                  RefreshIndicator(onRefresh: _fetchData,child: ArchivedProjectScreen(projects: _projects.where((element) => element.archivedAt != null).toList(), allProfileID: _allProfileID)),
                   UsersScreen(projects: _projects, allProfileID: _allProfileID),
                 ][_currentTub],
               ),
@@ -114,6 +108,10 @@ class _MenuScreenState extends State<MenuScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.cases_rounded),
               label: 'Projects',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.badge_rounded),
+              label: 'Archived Projects',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),
