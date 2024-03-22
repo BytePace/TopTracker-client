@@ -5,7 +5,6 @@ import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
 
-
 class ArchivedProjectInfoScreen extends StatelessWidget {
   final int id;
   final String name;
@@ -18,51 +17,55 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProjectService projectService = ProjectService();
+    final viewModel = Provider.of<ProjectService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
       ),
-      body: Consumer<UserServices>(
-          builder: (BuildContext context, UserServices state, Widget? child) {
-        return FutureBuilder(
-            future: projectService.getDetailProject(id),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ListView(
-                    children: [
-                      Card(
-                        child: Column(
-                          children: List.generate(
-                              projectService
-                                  .getListUsersProfileIDOnProject(
-                                      snapshot.data!, allUsers)
-                                  .length,
-                              (index) => UserTileArchived(
-                                    detailProjectModel: snapshot.data!,
-                                    index: index,
-                                    allUsers: projectService
-                                        .getListUsersProfileIDOnProject(
-                                            snapshot.data!, allUsers),
-                                  )),
-                        ),
+      body: FutureBuilder(
+          future: viewModel.getDetailProject(id),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ListView(
+                  children: [
+                    Card(
+                      child: Column(
+                        children: List.generate(
+                            viewModel
+                                .getListUsersProfileIDOnProject(
+                                    snapshot.data!, allUsers)
+                                .length,
+                            (index) => UserTileArchived(
+                                  detailProjectModel: snapshot.data!,
+                                  index: index,
+                                  allUsers: viewModel
+                                      .getListUsersProfileIDOnProject(
+                                          snapshot.data!, allUsers),
+                                )),
                       ),
-                      const SizedBox(height: 16),
-                      OutlinedButton(
-                          onPressed: () async {
-                            projectService.restoreProject(context, id);
-                          },
-                          child: const Text("Restore Project"))
-                    ],
-                  ),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            });
-      }),
+                    ),
+                    const SizedBox(height: 16),
+                    OutlinedButton(
+                        onPressed: () async {
+                          viewModel.restoreProject(context, id);
+                        },
+                        child: const Text("Restore Project")),
+                    const SizedBox(height: 16),
+                    OutlinedButton(
+                        onPressed: () async {
+                         viewModel.deleteProject(context, id);
+                        },
+                        child: const Text("Delete Project"))
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 }

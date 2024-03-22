@@ -8,7 +8,7 @@ import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
-class ProjectService {
+class ProjectService extends ChangeNotifier {
   Future<List<ProjectModel>> getProjects() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -41,13 +41,10 @@ class ProjectService {
   }
 
   Future<void> restoreProject(BuildContext context, int projectID) async {
-     
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
-    final Map<String, dynamic> userData = {
-      "access_token": access_token
-    };
+    final Map<String, dynamic> userData = {"access_token": access_token};
 
     final response = await http.put(
       Uri.parse('${Config.baseUrl}/projects/$projectID/dearchive'),
@@ -56,6 +53,28 @@ class ProjectService {
     );
     if (response.statusCode == 200) {
       showCnackBar(context, "Проект разархивирован");
+      notifyListeners();
+    } else {
+      print(response.body);
+      print(projectID);
+      showCnackBar(context, "Произошла ошибка");
+    }
+  }
+
+  Future<void> deleteProject(BuildContext context, int projectID) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? access_token = prefs.getString("access_token");
+
+    final Map<String, dynamic> userData = {"access_token": access_token};
+
+    final response = await http.delete(
+      Uri.parse('${Config.baseUrl}/projects/$projectID'),
+      body: json.encode(userData),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 204) {
+      showCnackBar(context, "Проект удален");
+      notifyListeners();
     } else {
       print(response.body);
       print(projectID);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
-import 'package:tt_bytepace/src/features/menu/bloc/bloc/project_list_bloc.dart';
+import 'package:tt_bytepace/src/features/menu/bloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
@@ -26,11 +26,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    projectListBloc.add(LoadProjectEvent(
-        projectService: _projectService, userServices: _userServices));
-  }
-
-  void _fetchData() async {
     projectListBloc.add(LoadProjectEvent(
         projectService: _projectService, userServices: _userServices));
   }
@@ -63,68 +58,64 @@ class _MenuScreenState extends State<MenuScreen> {
           body: BlocBuilder<ProjectListBloc, ProjectListState>(
               bloc: projectListBloc,
               builder: (context, state) {
-                if (state is ProjectListLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ProjectListLoaded) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeIn,
-                    switchOutCurve: Curves.easeOut,
-                    child: [
-                      RefreshIndicator(
-                          onRefresh: () async {
-                            _fetchData;
-                          },
-                          child: ProjectScreen(
-                              projects: state.projects
-                                  .where(
-                                      (element) => element.archivedAt == null)
-                                  .toList(),
-                              allUsers: state.allUser)),
-                      RefreshIndicator(
-                          onRefresh: () async {
-                            _fetchData;
-                          },
-                          child: ArchivedProjectScreen(
-                              projects: state.projects
-                                  .where(
-                                      (element) => element.archivedAt != null)
-                                  .toList(),
-                              allProfileID: state.allProfileID)),
-                      UsersScreen(
-                          projects: state.projects,
-                          allProfileID: state.allProfileID),
-                    ][_currentTub],
+                if (state is ProjectListLoaded) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      projectListBloc.add(UpdateProjectEvent(
+                          projectService: _projectService,
+                          userServices: _userServices));
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: [
+                        ProjectScreen(
+                            projects: state.projects
+                                .where((element) => element.archivedAt == null)
+                                .toList(),
+                            allUsers: state.allUser),
+                        ArchivedProjectScreen(
+                            projects: state.projects
+                                .where((element) => element.archivedAt != null)
+                                .toList(),
+                            allProfileID: state.allProfileID),
+                        UsersScreen(
+                            projects: state.projects,
+                            allProfileID: state.allProfileID),
+                      ][_currentTub],
+                    ),
                   );
                 } else if (state is ProjectListWithUserLoad) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeIn,
-                    switchOutCurve: Curves.easeOut,
-                    child: [
-                      RefreshIndicator(
-                          onRefresh: () async {_fetchData;},
-                          child: ProjectScreen(
-                              projects: state.projects
-                                  .where(
-                                      (element) => element.archivedAt == null)
-                                  .toList(),
-                              allUsers: state.allUser)),
-                      RefreshIndicator(
-                          onRefresh: () async {_fetchData;},
-                          child: ArchivedProjectScreen(
-                              projects: state.projects
-                                  .where(
-                                      (element) => element.archivedAt != null)
-                                  .toList(),
-                              allProfileID: state.allProfileID)),
-                      UsersScreen(
-                          projects: state.projects,
-                          allProfileID: state.allProfileID),
-                    ][_currentTub],
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      projectListBloc.add(UpdateProjectEvent(
+                          projectService: _projectService,
+                          userServices: _userServices));
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: [
+                        ProjectScreen(
+                            projects: state.projects
+                                .where((element) => element.archivedAt == null)
+                                .toList(),
+                            allUsers: state.allUser),
+                        ArchivedProjectScreen(
+                            projects: state.projects
+                                .where((element) => element.archivedAt != null)
+                                .toList(),
+                            allProfileID: state.allProfileID),
+                        UsersScreen(
+                            projects: state.projects,
+                            allProfileID: state.allProfileID),
+                      ][_currentTub],
+                    ),
                   );
                 } else {
-                  return const Center(child: Text("Ошибка"));
+                  return const Center(child: CircularProgressIndicator());
                 }
               }),
           bottomNavigationBar: BottomNavigationBar(

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tt_bytepace/src/features/login/models/user_model.dart';
+import 'package:tt_bytepace/src/features/login/models/login_model.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
 class AuthService extends ChangeNotifier {
   LoginModel _user =
-      const LoginModel(id: 0, email: "", username: "", access_token: "");
+      const LoginModel(id: 0, email: "",  access_token: "", username: '');
 
 
   void setUser(LoginModel user) {

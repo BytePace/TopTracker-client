@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
+import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/menu_screen.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
@@ -24,6 +25,7 @@ class _AppState extends State<App> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => ProjectService()),
         ChangeNotifierProvider(create: (context) => UserServices()),
       ],
       builder: (context, child) => Scaffold(

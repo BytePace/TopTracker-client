@@ -9,3 +9,9 @@ class LoadProjectEvent extends ProjectListEvent {
 
   LoadProjectEvent({required this.projectService, required this.userServices});
 }
+class UpdateProjectEvent extends ProjectListEvent {
+  final ProjectService projectService;
+  final UserServices userServices;
+
+  UpdateProjectEvent({required this.projectService, required this.userServices});
+}

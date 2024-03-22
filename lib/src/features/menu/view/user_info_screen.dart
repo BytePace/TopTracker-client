@@ -16,10 +16,6 @@ class UserInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserServices userServices = UserServices();
-    final userProjectList =
-        userServices.getUserProject(projects, allProfileID, index);
-
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -27,6 +23,8 @@ class UserInfoScreen extends StatelessWidget {
       )),
       body: Consumer<UserServices>(
         builder: (BuildContext context, UserServices value, Widget? child) {
+          final userProjectList =
+              value.getUserProject(projects, allProfileID, index);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(
@@ -34,8 +32,10 @@ class UserInfoScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index2) {
                 return GestureDetector(
                   onTap: () {
-                    value.delUser(userProjectList[index2].id,
-                        allProfileID[index].profileID, context);
+                    projects[index2].archivedAt == null
+                        ? value.delUser(userProjectList[index2].id,
+                            allProfileID[index].profileID, context)
+                        : () {};
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -43,7 +43,9 @@ class UserInfoScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(userProjectList[index2].name),
-                        const Icon(Icons.delete)
+                        projects[index2].archivedAt == null
+                            ? const Icon(Icons.delete)
+                            : Container()
                       ],
                     ),
                   ),

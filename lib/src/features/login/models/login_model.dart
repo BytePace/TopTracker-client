@@ -17,4 +17,17 @@ class LoginModel {
         email: json['user']['email'],
         access_token: json['access_token']);
   }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoginModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          username == other.username &&
+          email == other.email &&
+          access_token == other.access_token;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ username.hashCode ^ email.hashCode ^ access_token.hashCode;
 }
