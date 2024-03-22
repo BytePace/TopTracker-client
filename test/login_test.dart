@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:test/test.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 void main() {
   late LoginModel loginModel;
+  
   setUp(() {
-    loginModel =
-        const LoginModel(username: '', email: '', id: 1, access_token: '');
+    loginModel = const LoginModel(
+        username: 'name', email: 'email', id: 1, access_token: 'token');
   });
   group("Login test", () {
     test('login_model from json', () {
@@ -55,8 +58,14 @@ void main() {
           true);
     });
 
-    test("auth_service", () {
+    test("auth_service авторизован ли пользователь", () {
+      final AuthService authService = AuthService();
+      authService.setUser(loginModel);
+      final bool = authService.isAuthorized;
 
+      expect(bool, true);
     });
+
+
   });
 }
