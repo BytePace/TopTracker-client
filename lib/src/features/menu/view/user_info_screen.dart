@@ -32,9 +32,9 @@ class UserInfoScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index2) {
                 return GestureDetector(
                   onTap: () {
-                    projects[index2].archivedAt == null
+                    userProjectList[index2].archivedAt == null
                         ? value.delUser(userProjectList[index2].id,
-                            allProfileID[index].profileID, context)
+                            allProfileID[index2].profileID, context)
                         : () {};
                   },
                   child: Padding(
@@ -43,7 +43,7 @@ class UserInfoScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(userProjectList[index2].name),
-                        projects[index2].archivedAt == null
+                        userProjectList[index2].archivedAt == null
                             ? const Icon(Icons.delete)
                             : Container()
                       ],
