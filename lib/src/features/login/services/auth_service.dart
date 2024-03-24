@@ -8,12 +8,12 @@ import 'package:tt_bytepace/src/features/login/models/login_model.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
 class AuthService extends ChangeNotifier {
-  LoginModel _user =
+  LoginModel user =
       const LoginModel(id: 0, email: "",  access_token: "", username: '');
 
 
   void setUser(LoginModel user) {
-    _user = user;
+    this.user = user;
   }
 
 
@@ -25,13 +25,13 @@ class AuthService extends ChangeNotifier {
 
   
   bool get isAuthorized {
-    return _user.access_token.isNotEmpty;
+    return user.access_token.isNotEmpty;
   }
 
   Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
-    _user = const LoginModel(id: 0, email: "", username: "", access_token: "");
+    user = const LoginModel(id: 0, email: "", username: "", access_token: "");
 
     notifyListeners();
   }
@@ -59,7 +59,6 @@ class AuthService extends ChangeNotifier {
     } else {
       print(response.statusCode);
       print(response.body);
-      notifyListeners();
     }
   }
 }

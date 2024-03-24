@@ -1,11 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 void main() {
   late LoginModel loginModel;
-  
+
   setUp(() {
     loginModel = const LoginModel(
         username: 'name', email: 'email', id: 1, access_token: 'token');
@@ -60,12 +63,44 @@ void main() {
 
     test("auth_service авторизован ли пользователь", () {
       final AuthService authService = AuthService();
+      bool isAuthorized = authService.isAuthorized;
+      expect(isAuthorized, false);
       authService.setUser(loginModel);
-      final bool = authService.isAuthorized;
-
-      expect(bool, true);
+      isAuthorized = authService.isAuthorized;
+      expect(isAuthorized, true);
     });
 
+    test("auth_service установить пользователя", () {
+      final AuthService authService = AuthService();
+      authService.setUser(loginModel);
+      expect(authService.user.username, "name");
+    });
 
+    test("auth_service получения токена сохраненного в shared preferences",
+        () async {
+      SharedPreferences.setMockInitialValues({}); //set values here
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      final AuthService authService = AuthService();
+
+      pref.setString("access_token", "token");
+
+      expect(await authService.getToken(), "token");
+    });
+
+    test("auth_service удаление токена с shared preferences",
+        () async {
+      SharedPreferences.setMockInitialValues({}); //set values here
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      final AuthService authService = AuthService();
+
+      pref.setString("access_token", "token");
+      authService.setUser(loginModel);
+
+      await authService.logout();
+
+      expect(authService.user.access_token=="" && pref.getString("access_token")==null, true);
+    });
+
+    
   });
 }
