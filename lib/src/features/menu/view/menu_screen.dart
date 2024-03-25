@@ -55,69 +55,72 @@ class _MenuScreenState extends State<MenuScreen> {
               ],
             ),
           ),
-          body: BlocBuilder<ProjectListBloc, ProjectListState>(
-              bloc: projectListBloc,
-              builder: (context, state) {
-                if (state is ProjectListLoaded) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      projectListBloc.add(UpdateProjectEvent(
-                          projectService: _projectService,
-                          userServices: _userServices));
-                    },
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      switchInCurve: Curves.easeIn,
-                      switchOutCurve: Curves.easeOut,
-                      child: [
-                        ProjectScreen(
-                            projects: state.projects
-                                .where((element) => element.archivedAt == null)
-                                .toList(),
-                            allUsers: state.allUser),
-                        ArchivedProjectScreen(
-                            projects: state.projects
-                                .where((element) => element.archivedAt != null)
-                                .toList(),
-                            allProfileID: state.allProfileID),
-                        UsersScreen(
-                            projects: state.projects,
-                            allProfileID: state.allProfileID),
-                      ][_currentTub],
-                    ),
-                  );
-                } else if (state is ProjectListWithUserLoad) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      projectListBloc.add(UpdateProjectEvent(
-                          projectService: _projectService,
-                          userServices: _userServices));
-                    },
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      switchInCurve: Curves.easeIn,
-                      switchOutCurve: Curves.easeOut,
-                      child: [
-                        ProjectScreen(
-                            projects: state.projects
-                                .where((element) => element.archivedAt == null)
-                                .toList(),
-                            allUsers: state.allUser),
-                        ArchivedProjectScreen(
-                            projects: state.projects
-                                .where((element) => element.archivedAt != null)
-                                .toList(),
-                            allProfileID: state.allProfileID),
-                        UsersScreen(
-                            projects: state.projects,
-                            allProfileID: state.allProfileID),
-                      ][_currentTub],
-                    ),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: BlocBuilder<ProjectListBloc, ProjectListState>(
+                bloc: projectListBloc,
+                builder: (context, state) {
+                  if (state is ProjectListLoaded) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        projectListBloc.add(UpdateProjectEvent(
+                            projectService: _projectService,
+                            userServices: _userServices));
+                      },
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeIn,
+                        switchOutCurve: Curves.easeOut,
+                        child: [
+                          ProjectScreen(
+                              projects: state.projects
+                                  .where((element) => element.archivedAt == null)
+                                  .toList(),
+                              allUsers: state.allUser),
+                          ArchivedProjectScreen(
+                              projects: state.projects
+                                  .where((element) => element.archivedAt != null)
+                                  .toList(),
+                              allProfileID: state.allProfileID),
+                          UsersScreen(
+                              projects: state.projects,
+                              allProfileID: state.allProfileID),
+                        ][_currentTub],
+                      ),
+                    );
+                  } else if (state is ProjectListWithUserLoad) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        projectListBloc.add(UpdateProjectEvent(
+                            projectService: _projectService,
+                            userServices: _userServices));
+                      },
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeIn,
+                        switchOutCurve: Curves.easeOut,
+                        child: [
+                          ProjectScreen(
+                              projects: state.projects
+                                  .where((element) => element.archivedAt == null)
+                                  .toList(),
+                              allUsers: state.allUser),
+                          ArchivedProjectScreen(
+                              projects: state.projects
+                                  .where((element) => element.archivedAt != null)
+                                  .toList(),
+                              allProfileID: state.allProfileID),
+                          UsersScreen(
+                              projects: state.projects,
+                              allProfileID: state.allProfileID),
+                        ][_currentTub],
+                      ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(

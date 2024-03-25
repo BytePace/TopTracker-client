@@ -1,6 +1,4 @@
-import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
@@ -78,7 +76,7 @@ void main() {
 
     test("auth_service получения токена сохраненного в shared preferences",
         () async {
-      SharedPreferences.setMockInitialValues({}); //set values here
+      SharedPreferences.setMockInitialValues({});
       SharedPreferences pref = await SharedPreferences.getInstance();
       final AuthService authService = AuthService();
 
@@ -100,7 +98,17 @@ void main() {
 
       expect(authService.user.access_token=="" && pref.getString("access_token")==null, true);
     });
+    test("auth_service log in",
+        () async {
+      SharedPreferences.setMockInitialValues({}); 
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      final AuthService authService = AuthService();
 
+      await authService.login('aleksandr.sherbakov@bytepace.com', 'aleksandr.sherb');
+      final token = pref.getString("access_token");
+
+      expect(token != null, true);
+    });
     
   });
 }

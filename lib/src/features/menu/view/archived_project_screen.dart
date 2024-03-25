@@ -17,9 +17,12 @@ class ArchivedProjectScreen extends StatefulWidget {
 }
 
 class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
+  late List<ProjectModel> projects;
+
   @override
   void initState() {
     super.initState();
+    projects = widget.projects;
   }
 
   @override
@@ -27,24 +30,41 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
     return Consumer<ProjectService>(
         builder: (BuildContext context, ProjectService state, Widget? child) {
       return Scaffold(
-        body: ListView.builder( 
-          itemCount: widget.projects.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ProjectTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ArchivedProjectInfoScreen(
-                        id: widget.projects[index].id,
-                        name: widget.projects[index].name,
-                        allUsers: widget.allProfileID,
-                      ),
-                    ),
-                  );
+        body: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  projects = widget.projects
+                      .where((element) => element.name
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+                });
+              },
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: projects.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ProjectTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArchivedProjectInfoScreen(
+                              id: projects[index].id,
+                              name: projects[index].name,
+                              allUsers: widget.allProfileID,
+                            ),
+                          ),
+                        );
+                      },
+                      projectModel: projects[index]);
                 },
-                projectModel: widget.projects[index]);
-          },
+              ),
+            ),
+          ],
         ),
       );
     });

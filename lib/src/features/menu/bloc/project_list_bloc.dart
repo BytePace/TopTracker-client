@@ -17,6 +17,7 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
           await event.projectService.getProjects();
       final List<ProfileID> allProfileID =
           await event.userServices.getAllProfileID();
+          
       emit(ProjectListLoaded(
           projects: projects,
           allProfileID: allProfileID,

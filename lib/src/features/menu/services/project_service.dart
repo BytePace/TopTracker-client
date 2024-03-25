@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tt_bytepace/src/features/menu/ServicesProvider/project_provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
-class ProjectService extends ChangeNotifier {
+class ProjectService extends ProjectProvider{
+
+  @override
   Future<List<ProjectModel>> getProjects() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -26,6 +29,7 @@ class ProjectService extends ChangeNotifier {
     }
   }
 
+  @override
   Future<DetailProjectModel?> getDetailProject(int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -40,6 +44,7 @@ class ProjectService extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> restoreProject(BuildContext context, int projectID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -61,6 +66,7 @@ class ProjectService extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> deleteProject(BuildContext context, int projectID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -82,6 +88,7 @@ class ProjectService extends ChangeNotifier {
     }
   }
 
+  @override
   List<UserModel> getListUsersOnProject(
       DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
     final List<UserModel> usersOnProject = [];
@@ -95,6 +102,7 @@ class ProjectService extends ChangeNotifier {
     return usersOnProject;
   }
 
+  @override
   List<ProfileID> getListUsersProfileIDOnProject(
       DetailProjectModel detailProjectModel, List<ProfileID> allUsers) {
     final List<ProfileID> usersOnProject = [];
@@ -107,4 +115,20 @@ class ProjectService extends ChangeNotifier {
     }
     return usersOnProject;
   }
+
+  @override
+  List<UserModel> getAllUsersWhithoutOnProject(
+      DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
+    List<UserModel> list = List.from(allUsers);
+    for (var usr in allUsers) {
+      for (var user in detailProjectModel.engagements) {
+        if (usr.profileID == user.profileId) {
+          list.remove(usr);
+          break;
+        }
+      }
+    }
+    return list;
+  }
+  
 }

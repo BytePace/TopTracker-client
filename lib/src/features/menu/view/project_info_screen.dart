@@ -51,7 +51,7 @@ class ProjectInfoScreen extends StatelessWidget {
 
                       const SizedBox(height: 16),
                       
-                      AllUsersList(allUsers: allUsers, id: id),
+                      AllUsersList(allUsers: projectService.getAllUsersWhithoutOnProject(snapshot.data!, allUsers), id: id),
                     ],
                   ),
                 );
