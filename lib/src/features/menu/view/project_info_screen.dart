@@ -37,7 +37,7 @@ class ProjectInfoScreen extends StatelessWidget {
                     children: [
                       UserOnProject(
                           detailProjectModel: snapshot.data!,
-                          allUsers: projectService.getListUsersOnProject(snapshot.data!, allUsers)),
+                          allUsers: projectService.getListUsersOnProject(snapshot.data!.engagements, allUsers)),
 
                       const SizedBox(height: 16),
 
@@ -51,7 +51,7 @@ class ProjectInfoScreen extends StatelessWidget {
 
                       const SizedBox(height: 16),
                       
-                      AllUsersList(allUsers: projectService.getAllUsersWhithoutOnProject(snapshot.data!, allUsers), id: id),
+                      AllUsersList(allUsers: projectService.getAllUsersWhithoutOnProject(snapshot.data!.engagements, allUsers), id: id),
                     ],
                   ),
                 );

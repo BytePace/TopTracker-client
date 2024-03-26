@@ -1,60 +1,112 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/menu/ServicesProvider/project_provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/services/config.dart';
 
 void main() {
   late MockProjectServices mockProjectServices;
   setUp(() {
     mockProjectServices = MockProjectServices();
   });
-  group("Testing the network call project services", () {});
-  test("get projects method", () async {
-    List<ProjectModel> projects = await mockProjectServices.getProjects();
-    List<ProjectModel> projectsExpect = [
-      const ProjectModel(
-          id: 208305,
-          name: "ИПР",
-          adminName: "Tatiana Tytar",
-          createdAt: "2018-04-06T12:56:24+06:00",
-          profilesIDs: [377593],
-          archivedAt: null)
-    ];
-    expect(projects, projectsExpect);
-  });
-  test("Get detail project method", () async {
-    DetailProjectModel? detailProjectModel =
-        await mockProjectServices.getDetailProject(0);
-    expect(detailProjectModel!.name == "Project Name", true);
-  });
+  group("Testing the network call project services", () {
+    test("get projects method", () async {
+      List<ProjectModel> projects = await mockProjectServices.getProjects();
+      List<ProjectModel> projectsExpect = [
+        const ProjectModel(
+            id: 208305,
+            name: "ИПР",
+            adminName: "Tatiana Tytar",
+            createdAt: "2018-04-06T12:56:24+06:00",
+            profilesIDs: [377593],
+            archivedAt: null)
+      ];
+      expect(projects, projectsExpect);
+    });
+    test("get detail project method", () async {
+      DetailProjectModel? detailProjectModel =
+          await mockProjectServices.getDetailProject(0);
+      expect(detailProjectModel!.name == "Project Name", true);
+    });
 
+    test("get all users without on project method", () {
+      List<UserEngagementsModel> engagements = [
+        UserEngagementsModel(profileId: 1, workedTotal: 2),
+        UserEngagementsModel(profileId: 2, workedTotal: 2)
+      ];
+      List<UserModel> allUsers = [
+        UserModel(profileID: 1, name: "name", email: "email"),
+        UserModel(profileID: 2, name: "name", email: "email"),
+        UserModel(profileID: 3, name: "name", email: "email"),
+        UserModel(profileID: 4, name: "name", email: "email")
+      ];
+      expect(
+          mockProjectServices.getAllUsersWhithoutOnProject(
+              engagements, allUsers),
+          [
+            UserModel(profileID: 3, name: "name", email: "email"),
+            UserModel(profileID: 4, name: "name", email: "email")
+          ]);
+    });
 
+    test("getListUsersOnProject method", () {
+      List<UserEngagementsModel> engagements = [
+        UserEngagementsModel(profileId: 1, workedTotal: 2),
+        UserEngagementsModel(profileId: 2, workedTotal: 2)
+      ];
+      List<UserModel> allUsers = [
+        UserModel(profileID: 1, name: "name", email: "email"),
+        UserModel(profileID: 2, name: "name", email: "email"),
+        UserModel(profileID: 3, name: "name", email: "email"),
+        UserModel(profileID: 4, name: "name", email: "email")
+      ];
+      expect(mockProjectServices.getListUsersOnProject(engagements, allUsers), [
+        UserModel(profileID: 1, name: "name", email: "email"),
+        UserModel(profileID: 2, name: "name", email: "email")
+      ]);
+    });
+
+    test("get all users profile id method", () {
+      List<UserEngagementsModel> engagements = [
+        UserEngagementsModel(profileId: 1, workedTotal: 2),
+        UserEngagementsModel(profileId: 2, workedTotal: 2)
+      ];
+      List<ProfileID> allUsersProfileID = [
+        ProfileID(profileID: 1, name: "name"),
+        ProfileID(profileID: 2, name: "name"),
+        ProfileID(profileID: 3, name: "name"),
+        ProfileID(profileID: 4, name: "name"),
+      ];
+      expect(
+          mockProjectServices.getListUsersProfileIDOnProject(
+              engagements, allUsersProfileID),
+          [
+            ProfileID(profileID: 1, name: "name"),
+            ProfileID(profileID: 2, name: "name")
+          ]);
+    });
+  });
 }
 
 class MockProjectServices extends ProjectProvider {
   @override
-  Future<void> deleteProject(BuildContext context, int projectID) {
-    // TODO: implement deleteProject
-    throw UnimplementedError();
-  }
-
-  @override
   List<UserModel> getAllUsersWhithoutOnProject(
-      DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
-    // TODO: implement getAllUsersWhithoutOnProject
-    throw UnimplementedError();
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers) {
+    List<UserModel> list = List.from(allUsers);
+    for (var usr in allUsers) {
+      for (var user in engagements) {
+        if (usr.profileID == user.profileId) {
+          list.remove(usr);
+          break;
+        }
+      }
+    }
+    return list;
   }
 
   @override
@@ -100,16 +152,31 @@ class MockProjectServices extends ProjectProvider {
 
   @override
   List<UserModel> getListUsersOnProject(
-      DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
-    // TODO: implement getListUsersOnProject
-    throw UnimplementedError();
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers) {
+    final List<UserModel> usersOnProject = [];
+    for (var userEngagement in engagements) {
+      for (var user in allUsers) {
+        if (userEngagement.profileId == user.profileID) {
+          usersOnProject.add(user);
+        }
+      }
+    }
+    return usersOnProject;
   }
 
   @override
   List<ProfileID> getListUsersProfileIDOnProject(
-      DetailProjectModel detailProjectModel, List<ProfileID> allUsers) {
-    // TODO: implement getListUsersProfileIDOnProject
-    throw UnimplementedError();
+      List<UserEngagementsModel> engagements,
+      List<ProfileID> allUsersProfileID) {
+    final List<ProfileID> usersOnProject = [];
+    for (var userEngagement in engagements) {
+      for (var user in allUsersProfileID) {
+        if (userEngagement.profileId == user.profileID) {
+          usersOnProject.add(user);
+        }
+      }
+    }
+    return usersOnProject;
   }
 
   @override
@@ -123,7 +190,6 @@ class MockProjectServices extends ProjectProvider {
             "name": "ИПР",
             "archived_at": null,
             "abilities": ["view_analytics", "add_mte", "use_webtracker"],
-            "currency": "USD",
             "admin_id": 32700,
             "last_activity_time": "2024-03-23T23:32:00.000+06:00",
             "current_user": {
@@ -132,18 +198,12 @@ class MockProjectServices extends ProjectProvider {
               "creator": false
             },
             "profiles_ids": [377593],
-            "pending_invitation_ids": [],
             "is_admin_client": false,
             "created_at": "2018-04-06T12:56:24+06:00",
             "engagement_ids": [1663600],
-            "budget": null,
-            "billable": false,
             "admin_profile": {
               "name": "Tatiana Tytar",
-              "avatar_url": null,
-              "phone": null,
               "email": "tatiana.tytar@bytepace.com",
-              "address": null,
               "id": 30471
             },
           },
@@ -167,21 +227,14 @@ class MockProjectServices extends ProjectProvider {
   }
 
   @override
-  Future<bool> restoreProject(BuildContext context, int projectID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+  Future<void> restoreProject(BuildContext context, int projectID) {
+    // TODO: implement restoreProject
+    throw UnimplementedError();
+  }
 
-    final Map<String, dynamic> userData = {"access_token": access_token};
-
-    final response = await http.put(
-      Uri.parse('${Config.baseUrl}/projects/$projectID/dearchive'),
-      body: json.encode(userData),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+  @override
+  Future<void> deleteProject(BuildContext context, int projectID) {
+    // TODO: implement deleteProject
+    throw UnimplementedError();
   }
 }

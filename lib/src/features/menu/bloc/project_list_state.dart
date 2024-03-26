@@ -24,8 +24,3 @@ class ProjectListLoaded extends ProjectListState {
   const ProjectListLoaded({required super.projects, required super.allProfileID, required super.allUser});
 
 }
-
-class ProjectListWithUserLoad extends ProjectListState {
-  const ProjectListWithUserLoad({required super.projects, required super.allProfileID, required super.allUser});
-
-}

@@ -10,20 +10,23 @@ part 'project_list_event.dart';
 part 'project_list_state.dart';
 
 class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
-  ProjectListBloc() : super(const ProjectListInitial(projects: [], allProfileID: [], allUser: [])) {
+  ProjectListBloc()
+      : super(const ProjectListInitial(
+            projects: [], allProfileID: [], allUser: [])) {
     on<LoadProjectEvent>((event, emit) async {
-      emit(const ProjectListLoading(projects: [], allProfileID: [], allUser: []));
+      emit(const ProjectListLoading(
+          projects: [], allProfileID: [], allUser: []));
       final List<ProjectModel> projects =
           await event.projectService.getProjects();
       final List<ProfileID> allProfileID =
           await event.userServices.getAllProfileID();
-          
+
       emit(ProjectListLoaded(
           projects: projects,
           allProfileID: allProfileID,
           allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
       final allUsers = await event.userServices.checkAllUsers(allProfileID);
-      emit(ProjectListWithUserLoad(
+      emit(ProjectListLoaded(
           allUser: allUsers, projects: projects, allProfileID: allProfileID));
     });
 
@@ -37,7 +40,7 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
           allProfileID: allProfileID,
           allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
       final allUsers = await event.userServices.checkAllUsers(allProfileID);
-      emit(ProjectListWithUserLoad(
+      emit(ProjectListLoaded(
           allUser: allUsers, projects: projects, allProfileID: allProfileID));
     });
   }

@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tt_bytepace/src/features/menu/ServicesProvider/users_provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
-class UserServices extends ChangeNotifier {
+class UserServices extends UserProvider {
+  @override
   Future<void> revokeInvite(int invitationID, BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -29,6 +31,7 @@ class UserServices extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> addUser(String email, String rate, String role, int id,
       BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -54,6 +57,7 @@ class UserServices extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> delUser(
       int projectId, int profileId, BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -74,6 +78,7 @@ class UserServices extends ChangeNotifier {
     }
   }
 
+  @override
   Future<List<int>> getProjectsID() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -91,6 +96,7 @@ class UserServices extends ChangeNotifier {
     return projectID;
   }
 
+  @override
   Future<List<UserModel>> getAllUsers() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -115,6 +121,7 @@ class UserServices extends ChangeNotifier {
     return allUsers.values.toList();
   }
 
+  @override
   Future<List<ProfileID>> getAllProfileID() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
@@ -129,6 +136,7 @@ class UserServices extends ChangeNotifier {
     return idList;
   }
 
+  @override
   List<ProjectModel> getUserProject(
       List<ProjectModel> projects, List<ProfileID> allUsersList, int index) {
     List<ProjectModel> projectModelList = [];
@@ -143,6 +151,7 @@ class UserServices extends ChangeNotifier {
     return projectModelList;
   }
 
+  @override
   Future<List<UserModel>> checkAllUsers(List<ProfileID> allProfileID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String allUsersString = prefs.getString("allUser") ?? "{}";

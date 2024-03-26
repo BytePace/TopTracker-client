@@ -74,40 +74,14 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: [
                           ProjectScreen(
                               projects: state.projects
-                                  .where((element) => element.archivedAt == null)
+                                  .where(
+                                      (element) => element.archivedAt == null)
                                   .toList(),
                               allUsers: state.allUser),
                           ArchivedProjectScreen(
                               projects: state.projects
-                                  .where((element) => element.archivedAt != null)
-                                  .toList(),
-                              allProfileID: state.allProfileID),
-                          UsersScreen(
-                              projects: state.projects,
-                              allProfileID: state.allProfileID),
-                        ][_currentTub],
-                      ),
-                    );
-                  } else if (state is ProjectListWithUserLoad) {
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        projectListBloc.add(UpdateProjectEvent(
-                            projectService: _projectService,
-                            userServices: _userServices));
-                      },
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeIn,
-                        switchOutCurve: Curves.easeOut,
-                        child: [
-                          ProjectScreen(
-                              projects: state.projects
-                                  .where((element) => element.archivedAt == null)
-                                  .toList(),
-                              allUsers: state.allUser),
-                          ArchivedProjectScreen(
-                              projects: state.projects
-                                  .where((element) => element.archivedAt != null)
+                                  .where(
+                                      (element) => element.archivedAt != null)
                                   .toList(),
                               allProfileID: state.allProfileID),
                           UsersScreen(

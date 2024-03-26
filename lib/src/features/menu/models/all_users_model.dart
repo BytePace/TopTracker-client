@@ -10,6 +10,15 @@ class ProfileID {
       profileID: json['id'].toInt(),
     );
   }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ProfileID &&
+        other.profileID == profileID &&
+        other.name == name;
+  }
+
+  @override
+  int get hashCode => profileID.hashCode ^ name.hashCode;
 }
-
-

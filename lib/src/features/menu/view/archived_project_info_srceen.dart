@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
 
 class ArchivedProjectInfoScreen extends StatelessWidget {
@@ -36,14 +35,14 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
                         children: List.generate(
                             viewModel
                                 .getListUsersProfileIDOnProject(
-                                    snapshot.data!, allUsers)
+                                    snapshot.data!.engagements, allUsers)
                                 .length,
                             (index) => UserTileArchived(
                                   detailProjectModel: snapshot.data!,
                                   index: index,
                                   allUsers: viewModel
                                       .getListUsersProfileIDOnProject(
-                                          snapshot.data!, allUsers),
+                                          snapshot.data!.engagements, allUsers),
                                 )),
                       ),
                     ),

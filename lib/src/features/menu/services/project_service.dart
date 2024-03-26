@@ -90,9 +90,9 @@ class ProjectService extends ProjectProvider{
 
   @override
   List<UserModel> getListUsersOnProject(
-      DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers) {
     final List<UserModel> usersOnProject = [];
-    for (var userEngagement in detailProjectModel.engagements) {
+    for (var userEngagement in engagements) {
       for (var user in allUsers) {
         if (userEngagement.profileId == user.profileID) {
           usersOnProject.add(user);
@@ -104,10 +104,10 @@ class ProjectService extends ProjectProvider{
 
   @override
   List<ProfileID> getListUsersProfileIDOnProject(
-      DetailProjectModel detailProjectModel, List<ProfileID> allUsers) {
+      List<UserEngagementsModel> engagements, List<ProfileID> allUsersProfileID) {
     final List<ProfileID> usersOnProject = [];
-    for (var userEngagement in detailProjectModel.engagements) {
-      for (var user in allUsers) {
+    for (var userEngagement in engagements) {
+      for (var user in allUsersProfileID) {
         if (userEngagement.profileId == user.profileID) {
           usersOnProject.add(user);
         }
@@ -118,10 +118,10 @@ class ProjectService extends ProjectProvider{
 
   @override
   List<UserModel> getAllUsersWhithoutOnProject(
-      DetailProjectModel detailProjectModel, List<UserModel> allUsers) {
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers) {
     List<UserModel> list = List.from(allUsers);
     for (var usr in allUsers) {
-      for (var user in detailProjectModel.engagements) {
+      for (var user in engagements) {
         if (usr.profileID == user.profileId) {
           list.remove(usr);
           break;
