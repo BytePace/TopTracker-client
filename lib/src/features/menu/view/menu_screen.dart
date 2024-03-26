@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
-import 'package:tt_bytepace/src/features/menu/bloc/project_list_bloc.dart';
+import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
@@ -18,20 +19,18 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   int _currentTub = 0;
-  final ProjectService _projectService = ProjectService();
-  final UserServices _userServices = UserServices();
 
-  final ProjectListBloc projectListBloc = ProjectListBloc();
+  final ProjectListBloc projectListBloc = GetIt.I<ProjectListBloc>();
 
   @override
   void initState() {
     super.initState();
-    projectListBloc.add(LoadProjectEvent(
-        projectService: _projectService, userServices: _userServices));
+    projectListBloc.add(LoadProjectEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    print("main");
     final viewModel = Provider.of<AuthService>(context);
     return MaterialApp(
       home: BlocProvider(
@@ -41,11 +40,13 @@ class _MenuScreenState extends State<MenuScreen> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(_currentTub == 0
-                    ? "Projects"
-                    : _currentTub == 1
-                        ? "ArchivedProjects"
-                        : "Users"),
+                Text(
+                    key: const Key("appbar"),
+                    _currentTub == 0
+                        ? "Projects"
+                        : _currentTub == 1
+                            ? "ArchivedProjects"
+                            : "Users"),
                 TextButton(
                   child: const Text("logout"),
                   onPressed: () {
@@ -63,9 +64,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   if (state is ProjectListLoaded) {
                     return RefreshIndicator(
                       onRefresh: () async {
-                        projectListBloc.add(UpdateProjectEvent(
-                            projectService: _projectService,
-                            userServices: _userServices));
+                        projectListBloc.add(UpdateProjectEvent());
                       },
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 300),

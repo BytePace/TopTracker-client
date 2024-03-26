@@ -28,7 +28,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProjectService>(
-        builder: (BuildContext context, ProjectService state, Widget? child) {
+        builder: (BuildContext context, ProjectService value, Widget? child) {
       return Scaffold(
         body: Column(
           children: [

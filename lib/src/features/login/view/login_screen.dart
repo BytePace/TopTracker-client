@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("login");
     final viewModel = Provider.of<AuthService>(context);
     emailController.text = "";
     passwordController.text = "";

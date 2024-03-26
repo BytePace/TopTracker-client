@@ -10,38 +10,35 @@ part 'project_list_event.dart';
 part 'project_list_state.dart';
 
 class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
-  ProjectListBloc()
+  ProjectListBloc({required this.projectService, required this.userServices})
       : super(const ProjectListInitial(
             projects: [], allProfileID: [], allUser: [])) {
     on<LoadProjectEvent>((event, emit) async {
       emit(const ProjectListLoading(
           projects: [], allProfileID: [], allUser: []));
-      final List<ProjectModel> projects =
-          await event.projectService.getProjects();
-      final List<ProfileID> allProfileID =
-          await event.userServices.getAllProfileID();
-
+      final List<ProjectModel> projects = await projectService.getProjects();
+      final List<ProfileID> allProfileID = await userServices.getAllProfileID();
       emit(ProjectListLoaded(
           projects: projects,
           allProfileID: allProfileID,
           allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
-      final allUsers = await event.userServices.checkAllUsers(allProfileID);
+      final allUsers = await userServices.checkAllUsers(allProfileID);
       emit(ProjectListLoaded(
           allUser: allUsers, projects: projects, allProfileID: allProfileID));
     });
 
     on<UpdateProjectEvent>((event, emit) async {
-      final List<ProjectModel> projects =
-          await event.projectService.getProjects();
-      final List<ProfileID> allProfileID =
-          await event.userServices.getAllProfileID();
+      final List<ProjectModel> projects = await projectService.getProjects();
+      final List<ProfileID> allProfileID = await userServices.getAllProfileID();
       emit(ProjectListLoaded(
           projects: projects,
           allProfileID: allProfileID,
           allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
-      final allUsers = await event.userServices.checkAllUsers(allProfileID);
+      final allUsers = await userServices.checkAllUsers(allProfileID);
       emit(ProjectListLoaded(
           allUser: allUsers, projects: projects, allProfileID: allProfileID));
     });
   }
+  final ProjectService projectService;
+  final UserServices userServices;
 }
