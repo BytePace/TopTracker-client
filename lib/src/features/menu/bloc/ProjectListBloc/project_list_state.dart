@@ -1,26 +1,30 @@
 part of 'project_list_bloc.dart';
 
 @immutable
-abstract class ProjectListState {
+abstract class ProjectListState {}
+
+final class ProjectListInitial extends ProjectListState {}
+
+class ProjectListLoading extends ProjectListState {}
+
+class ProjectListLoaded extends ProjectListState {
   final List<ProjectModel> projects;
   final List<ProfileID> allProfileID;
   final List<UserModel> allUser;
 
-  const ProjectListState(
+  ProjectListLoaded(
       {required this.projects,
       required this.allProfileID,
       required this.allUser});
 }
 
-final class ProjectListInitial extends ProjectListState {
-  const ProjectListInitial({required super.projects, required super.allProfileID, required super.allUser});
-}
+class ProjectListUpdate extends ProjectListState {
+  final List<ProjectModel> projects;
+  final List<ProfileID> allProfileID;
+  final List<UserModel> allUser;
 
-class ProjectListLoading extends ProjectListState {
-  const ProjectListLoading({required super.projects, required super.allProfileID, required super.allUser});
-}
-
-class ProjectListLoaded extends ProjectListState {
-  const ProjectListLoaded({required super.projects, required super.allProfileID, required super.allUser});
-
+  ProjectListUpdate(
+      {required this.projects,
+      required this.allProfileID,
+      required this.allUser});
 }

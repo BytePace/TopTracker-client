@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 
 class UserTileArchived extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
   final List<ProfileID> allUsers;
   final int index;
 
-  const UserTileArchived({
-    super.key,
-    required this.detailProjectModel,
-    required this.index,
-    required this.allUsers
-  });
+  const UserTileArchived(
+      {super.key,
+      required this.detailProjectModel,
+      required this.index,
+      required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<UserServices>(context);
-
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
@@ -33,14 +28,11 @@ class UserTileArchived extends StatelessWidget {
                   return [
                     const PopupMenuItem<int>(
                       value: 0,
-                      child: Text("Delete user"),
+                      child: Text(""),
                     ),
                   ];
                 }, onSelected: (value) {
-                  if (value == 0) {
-                    viewModel.delUser(detailProjectModel.id,
-                        allUsers[index].profileID, context);
-                  }
+                  if (value == 0) {}
                 })
               : PopupMenuButton(
                   itemBuilder: (BuildContext context) {

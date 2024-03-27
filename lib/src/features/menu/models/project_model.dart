@@ -71,4 +71,10 @@ class ProjectModel {
         archivedAt.hashCode ^
         profilesIDs.hashCode;
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "$name, $archivedAt";
+  }
 }

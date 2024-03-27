@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
 
 class ArchivedProjectInfoScreen extends StatelessWidget {
@@ -20,7 +19,6 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ProjectService>(context);
-    final userServices = Provider.of<UserServices>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,14 +51,15 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     OutlinedButton(
                         onPressed: () async {
-                          viewModel.restoreProject(context, id);
+                          await viewModel.restoreProject(context, id);
                           GetIt.I<ProjectListBloc>().add(UpdateProjectEvent());
                         },
                         child: const Text("Restore Project")),
                     const SizedBox(height: 16),
                     OutlinedButton(
                         onPressed: () async {
-                          viewModel.deleteProject(context, id);
+                          await viewModel.deleteProject(context, id);
+                          GetIt.I<ProjectListBloc>().add(UpdateProjectEvent());
                         },
                         child: const Text("Delete Project"))
                   ],

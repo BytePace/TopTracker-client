@@ -11,10 +11,13 @@ void main() {
   initGetIt();
   runApp(const MainApp());
 }
-void initGetIt(){
+
+void initGetIt() {
   GetIt.I.registerSingleton<ProjectService>(ProjectService());
   GetIt.I.registerSingleton<UserServices>(UserServices());
-  GetIt.I.registerSingleton<ProjectListBloc>(ProjectListBloc(projectService: GetIt.I<ProjectService>(), userServices: GetIt.I<UserServices>()));
+  GetIt.I.registerSingleton<ProjectListBloc>(ProjectListBloc(
+      projectService: GetIt.I<ProjectService>(),
+      userServices: GetIt.I<UserServices>()));
 }
 
 class MainApp extends StatelessWidget {

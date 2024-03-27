@@ -9,8 +9,7 @@ import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
 import 'package:tt_bytepace/src/features/services/config.dart';
 
-class ProjectService extends ProjectProvider{
-
+class ProjectService extends ProjectProvider {
   @override
   Future<List<ProjectModel>> getProjects() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,8 +56,9 @@ class ProjectService extends ProjectProvider{
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
-      showCnackBar(context, "Проект разархивирован");
       Navigator.pop(context);
+      showCnackBar(context, "Проект разархивирован");
+
       notifyListeners();
     } else {
       print(response.body);
@@ -80,8 +80,9 @@ class ProjectService extends ProjectProvider{
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 204) {
-      showCnackBar(context, "Проект удален");
       Navigator.pop(context);
+      showCnackBar(context, "Проект удален");
+
       notifyListeners();
     } else {
       print(response.body);
@@ -106,7 +107,8 @@ class ProjectService extends ProjectProvider{
 
   @override
   List<ProfileID> getListUsersProfileIDOnProject(
-      List<UserEngagementsModel> engagements, List<ProfileID> allUsersProfileID) {
+      List<UserEngagementsModel> engagements,
+      List<ProfileID> allUsersProfileID) {
     final List<ProfileID> usersOnProject = [];
     for (var userEngagement in engagements) {
       for (var user in allUsersProfileID) {
@@ -132,5 +134,4 @@ class ProjectService extends ProjectProvider{
     }
     return list;
   }
-  
 }

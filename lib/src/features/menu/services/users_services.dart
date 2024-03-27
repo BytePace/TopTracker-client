@@ -53,6 +53,7 @@ class UserServices extends UserProvider {
       showCnackBar(context, "Приглашение отправлено");
       notifyListeners();
     } else {
+      print(response.body);
       showCnackBar(context, "Произошла ошибка");
     }
   }
