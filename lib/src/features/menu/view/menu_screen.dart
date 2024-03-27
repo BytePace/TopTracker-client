@@ -1,11 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
+import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
 import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
 import 'package:tt_bytepace/src/features/menu/view/project_screen.dart';
 import 'package:tt_bytepace/src/features/menu/view/users_sreen.dart';
 
@@ -17,78 +18,104 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final ProjectService _projectService = ProjectService();
-  final UserServices _userServices = UserServices();
+  int _currentTub = 0;
 
-  late ProjectsModel _projectsModel =
-      ProjectsModel(projects: [], usersOnProject: []);
-  late List<ProfileID> _allProfileID = [];
-  late List<AllUsers> _allUsers = [];
-
-  Future<void> _fetchData() async {
-    try {
-      final allProfileID = await _userServices.getAllProfileID();
-      final projects = await _projectService.getProjects();
-
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String allUsersString = prefs.getString("allUser") ?? "{}";
-
-      List<AllUsers> list = [];
-      json.decode((allUsersString)).forEach((key, value) {
-        list.add(AllUsers.fromJson(value));
-      });
-
-      if (list.length != allProfileID.length) {
-        list = [];
-        await _userServices.getAllUsers();
-        allUsersString = prefs.getString("allUser") ?? "{}";
-        json.decode((allUsersString)).forEach((key, value) {
-          list.add(AllUsers.fromJson(value));
-        });
-      }
-      print(list);
-      if (mounted) {
-        setState(() {
-          _projectsModel = projects;
-          _allProfileID = allProfileID;
-          _allUsers = list;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  final ProjectListBloc projectListBloc = GetIt.I<ProjectListBloc>();
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    projectListBloc.add(LoadProjectEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    print("main");
+    final viewModel = Provider.of<AuthService>(context);
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
+      home: BlocProvider(
+        create: (context) => projectListBloc,
         child: Scaffold(
-          bottomNavigationBar: const TabBar(
-            indicatorColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.black,
-            tabs: [
-              Tab(icon: Icon(Icons.cases_rounded)),
-              Tab(icon: Icon(Icons.bar_chart)),
-            ],
+          appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                    key: const Key("appbar"),
+                    _currentTub == 0
+                        ? "Projects"
+                        : _currentTub == 1
+                            ? "ArchivedProjects"
+                            : "Users"),
+                TextButton(
+                  child: const Text("logout"),
+                  onPressed: () {
+                    viewModel.logout();
+                  },
+                ),
+              ],
+            ),
           ),
-          body: TabBarView(
-            children: [
-              RefreshIndicator(
-                  onRefresh: _fetchData,
-                  child: ProjectScreen(
-                      projects: _projectsModel, allUsers: _allUsers)),
-              UsersScreen(
-                  projects: _projectsModel, allProfileID: _allProfileID),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: BlocBuilder<ProjectListBloc, ProjectListState>(
+                bloc: projectListBloc,
+                builder: (context, state) {
+                  if (state is ProjectListLoaded) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        projectListBloc.add(UpdateProjectEvent());
+                      },
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeIn,
+                        switchOutCurve: Curves.easeOut,
+                        child: [
+                          ProjectScreen(
+                              projects: state.projects
+                                  .where(
+                                      (element) => element.archivedAt == null)
+                                  .toList(),
+                              allUsers: state.allUser),
+                          ArchivedProjectScreen(
+                              projects: state.projects
+                                  .where(
+                                      (element) => element.archivedAt != null)
+                                  .toList(),
+                              allProfileID: state.allProfileID),
+                          UsersScreen(
+                              projects: state.projects,
+                              allProfileID: state.allProfileID),
+                        ][_currentTub],
+                      ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.cases_rounded),
+                label: 'Projects',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.badge_rounded),
+                label: 'Archived Projects',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart),
+                label: 'Users',
+              )
             ],
+            currentIndex: _currentTub,
+            selectedItemColor: Colors.amber[800],
+            onTap: (value) {
+              setState(() {
+                _currentTub = value;
+              });
+            },
           ),
         ),
       ),

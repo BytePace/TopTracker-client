@@ -15,9 +15,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("login");
     final viewModel = Provider.of<AuthService>(context);
-    emailController.text = "aleksandr.sherbakov@bytepace.com";
-    passwordController.text = "aleksandr.sherb";
+    emailController.text = "";
+    passwordController.text = "";
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -47,12 +48,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 50),
 
                 //emailTextField
-                TextField(controller: emailController),
+                TextField(
+                  controller: emailController,
+                  key: const Key('emailTextField'),
+                ),
 
                 const SizedBox(height: 10),
 
                 //PasswordTextField
-                TextField(controller: passwordController),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  key: const Key('passwordTextField'),
+                ),
 
                 const SizedBox(height: 10),
 

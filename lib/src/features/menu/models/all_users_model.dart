@@ -10,28 +10,15 @@ class ProfileID {
       profileID: json['id'].toInt(),
     );
   }
-}
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-class AllUsers {
-  final int profileID;
-  final String name;
-  final String email;
-
-  AllUsers({required this.profileID, required this.name, required this.email});
-
-  factory AllUsers.fromJson(Map<String, dynamic> json) {
-    return AllUsers(
-      email: json['email'],
-      profileID: json['id'].toInt(),
-      name: json['name'],
-    );
+    return other is ProfileID &&
+        other.profileID == profileID &&
+        other.name == name;
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "email": email,
-      "id": profileID,
-      "name": name,
-    };
-  }
+  @override
+  int get hashCode => profileID.hashCode ^ name.hashCode;
 }

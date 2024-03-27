@@ -1,14 +1,14 @@
-class LoginModel {
+class UserModel {
   final int id;
   final String name;
 
-  const LoginModel({
+  const UserModel({
     required this.id,
     required this.name
   });
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) {
-    return LoginModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       id: json['project']['id'].toInt(),
       name: json['project']['name']
     );
