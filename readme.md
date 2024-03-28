@@ -7,9 +7,10 @@
                     -data_sources
                 -models
                     -dto
-                -utils
                 -view
                     -widget
+        -utils
+        -network
         -localization
         -theme
     main.dart
