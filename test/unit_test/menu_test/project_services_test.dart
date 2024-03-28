@@ -18,7 +18,7 @@ void main() {
     test("get projects method", () async {
       List<ProjectModel> projects = await mockProjectServices.getProjects();
       List<ProjectModel> projectsExpect = [
-        const ProjectModel(
+        ProjectModel(
             id: 208305,
             name: "ИПР",
             adminName: "Tatiana Tytar",

@@ -28,6 +28,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
       body: Column(
         children: [
           TextField(
+            decoration: const InputDecoration(
+              hintText: 'Введите название проекта',
+            ),
             onChanged: (value) {
               setState(() {
                 projects = widget.projects

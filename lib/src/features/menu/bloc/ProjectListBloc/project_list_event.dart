@@ -5,7 +5,14 @@ sealed class ProjectListEvent {}
 
 class LoadProjectEvent extends ProjectListEvent {}
 
+class RestoreProjectEvent extends ProjectListEvent {
+  final int id;
 
-class UpdateProjectEvent extends ProjectListEvent {
+  RestoreProjectEvent({required this.id});
+}
 
+class DeleteProjectEvent extends ProjectListEvent {
+    final int id;
+
+  DeleteProjectEvent({required this.id});
 }

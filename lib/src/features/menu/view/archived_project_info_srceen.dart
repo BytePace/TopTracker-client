@@ -52,14 +52,14 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
                     OutlinedButton(
                         onPressed: () async {
                           await viewModel.restoreProject(context, id);
-                          GetIt.I<ProjectListBloc>().add(UpdateProjectEvent());
+                          GetIt.I<ProjectListBloc>().add(RestoreProjectEvent(id: id));
                         },
                         child: const Text("Restore Project")),
                     const SizedBox(height: 16),
                     OutlinedButton(
                         onPressed: () async {
                           await viewModel.deleteProject(context, id);
-                          GetIt.I<ProjectListBloc>().add(UpdateProjectEvent());
+                          GetIt.I<ProjectListBloc>().add(DeleteProjectEvent(id: id));
                         },
                         child: const Text("Delete Project"))
                   ],

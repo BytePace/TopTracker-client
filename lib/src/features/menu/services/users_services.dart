@@ -162,8 +162,6 @@ class UserServices extends UserProvider {
       list.add(UserModel.fromJson(value));
     });
 
-    print("${list.length}   ${allProfileID.length}");
-
     if (list.length != allProfileID.length) {
       return await getAllUsers();
     }

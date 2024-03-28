@@ -16,7 +16,9 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
       : super(ProjectListInitial()) {
     on<LoadProjectEvent>(_onLoadProject);
 
-    on<UpdateProjectEvent>(_onUpdateProject);
+    on<RestoreProjectEvent>(_onRestoreProject);
+
+    on<DeleteProjectEvent>(_onDeleteProject);
   }
 
   _onLoadProject(LoadProjectEvent event, Emitter<ProjectListState> emit) async {
@@ -32,9 +34,21 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
         allUser: allUser, projects: projects, allProfileID: allProfileID));
   }
 
-  _onUpdateProject(
-      UpdateProjectEvent event, Emitter<ProjectListState> emit) async {
-    projects = await GetIt.I<ProjectService>().getProjects();
+  _onRestoreProject(
+      RestoreProjectEvent event, Emitter<ProjectListState> emit) async {
+    for (int i = 0; i < projects.length; i++) {
+      if (projects[i].id == event.id) {
+        projects[i].archivedAt = null;
+        break;
+      }
+    }
+    emit(ProjectListLoaded(
+        allUser: allUser, projects: projects, allProfileID: allProfileID));
+  }
+
+  _onDeleteProject(
+      DeleteProjectEvent event, Emitter<ProjectListState> emit) async {
+    projects.removeWhere((element) => element.id == event.id);
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
   }

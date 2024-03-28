@@ -33,14 +33,14 @@ void main() {
 
   test("get user projects method", () async {
     List<ProjectModel> projects = [
-      const ProjectModel(
+      ProjectModel(
           id: 1,
           name: "name",
           adminName: "adminName",
           createdAt: "createdAt",
           profilesIDs: [1, 2],
           archivedAt: null),
-      const ProjectModel(
+      ProjectModel(
           id: 2,
           name: "name",
           adminName: "adminName",
@@ -53,7 +53,7 @@ void main() {
       ProfileID(profileID: 2, name: "name")
     ];
     expect(mockUserServices.getUserProject(projects, allUsersList, 0), [
-      const ProjectModel(
+      ProjectModel(
           id: 1,
           name: "name",
           adminName: "adminName",
