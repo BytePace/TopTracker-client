@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/users/services/users_services.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
   final List<UserModel> allUsers;
   final int index;
 
-  const UserTile({
-    super.key,
-    required this.detailProjectModel,
-    required this.index,
-    required this.allUsers
-  });
+  const UserTile(
+      {super.key,
+      required this.detailProjectModel,
+      required this.index,
+      required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,23 @@ class UserTile extends StatelessWidget {
                   ];
                 }, onSelected: (value) {
                   if (value == 0) {
-                    viewModel.delUser(detailProjectModel.id,
-                        allUsers[index].profileID, context);
+                    showDialog<void>(
+                        context: context,
+                        builder: (ctx) => MyAlertDialog(
+                              ctx: context,
+                              title: "Delete user",
+                              content: "Are you sure want to delete this user?",
+                              isYes: TextButton(
+                                  onPressed: () async {
+                                    Navigator.of(ctx).pop();
+                                    await viewModel.delUser(detailProjectModel.id,
+                                        allUsers[index].profileID, context);
+                                  },
+                                  child: const Text(
+                                    "Delete",
+                                    style: TextStyle(color: Colors.black),
+                                  )),
+                            ));
                   }
                 })
               : PopupMenuButton(

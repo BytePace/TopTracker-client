@@ -4,7 +4,7 @@ import 'package:tt_bytepace/src/app.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 import 'package:tt_bytepace/src/theme/light_mode.dart';
 
 void main() {

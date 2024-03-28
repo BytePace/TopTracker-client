@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 
 class UserInfoScreen extends StatelessWidget {
   final List<ProjectModel> projects;
@@ -32,9 +33,28 @@ class UserInfoScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index2) {
                 return GestureDetector(
                   onTap: () {
-                    userProjectList[index2].archivedAt == null
-                        ? value.delUser(userProjectList[index2].id,
-                            allProfileID[index2].profileID, context)
+                    userProjectList[index2].archivedAt == null &&
+                            userProjectList[index2].currentUser == "admin"
+                        ? showDialog<void>(
+                            context: context,
+                            builder: (ctx) => MyAlertDialog(
+                                  ctx: context,
+                                  title: "Delete user",
+                                  content:
+                                      "Are you sure want to delete this user from project?",
+                                  isYes: TextButton(
+                                      onPressed: () async {
+                                        Navigator.of(ctx).pop();
+                                        value.delUser(
+                                            userProjectList[index2].id,
+                                            allProfileID[index].profileID,
+                                            context);
+                                      },
+                                      child: const Text(
+                                        "Delete",
+                                        style: TextStyle(color: Colors.black),
+                                      )),
+                                ))
                         : () {};
                   },
                   child: Padding(
@@ -43,7 +63,8 @@ class UserInfoScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(userProjectList[index2].name),
-                        userProjectList[index2].archivedAt == null
+                        userProjectList[index2].archivedAt == null &&
+                                userProjectList[index2].currentUser == "admin"
                             ? const Icon(Icons.delete)
                             : Container()
                       ],

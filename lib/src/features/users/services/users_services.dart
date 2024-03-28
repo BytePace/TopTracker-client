@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tt_bytepace/src/features/menu/services_provider/users_provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/services/services_provider/users_provider.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
@@ -63,7 +63,6 @@ class UserServices extends UserProvider {
       int projectId, int profileId, BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
-
     final Map<String, dynamic> userData = {'access_token': access_token};
 
     final response = await http.delete(
@@ -75,6 +74,7 @@ class UserServices extends UserProvider {
       showCnackBar(context, "Пользователь удален");
       notifyListeners();
     } else {
+      print(response.body);
       showCnackBar(context, "Произошла ошибка");
     }
   }

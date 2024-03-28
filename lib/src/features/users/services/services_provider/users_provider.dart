@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 abstract class UserProvider extends ChangeNotifier {

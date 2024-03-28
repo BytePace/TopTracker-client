@@ -7,7 +7,8 @@ import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_
 
 import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
 import 'package:tt_bytepace/src/features/menu/view/project_screen.dart';
-import 'package:tt_bytepace/src/features/menu/view/users_sreen.dart';
+import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
+import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -46,13 +47,26 @@ class _MenuScreenState extends State<MenuScreen> {
                   _currentTub == 0
                       ? "Projects"
                       : _currentTub == 1
-                          ? "ArchivedProjects"
+                          ? "Archived Projects"
                           : "Users"),
               TextButton(
                 child: const Text("logout"),
-                onPressed: () {
-                  viewModel.logout();
-                },
+                onPressed: () => showDialog<void>(
+                    context: context,
+                    builder: (ctx) => MyAlertDialog(
+                          ctx: context,
+                          title: "Log Out",
+                          content: "Are you sure want to log out?",
+                          isYes: TextButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                                viewModel.logout();
+                              },
+                              child: const Text(
+                                "Log Out",
+                                style: TextStyle(color: Colors.black),
+                              )),
+                        )),
               ),
             ],
           ),
@@ -69,15 +83,13 @@ class _MenuScreenState extends State<MenuScreen> {
                       ProjectScreen(
                           key: UniqueKey(),
                           projects: state.projects
-                              .where(
-                                  (element) => element.archivedAt == null)
+                              .where((element) => element.archivedAt == null)
                               .toList(),
                           allUsers: state.allUser),
                       ArchivedProjectScreen(
                           key: UniqueKey(),
                           projects: state.projects
-                              .where(
-                                  (element) => element.archivedAt != null)
+                              .where((element) => element.archivedAt != null)
                               .toList(),
                           allProfileID: state.allProfileID),
                       UsersScreen(
@@ -88,7 +100,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   } else {
                     return const Column(
                       children: [
-                        TextField(),
+                        TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Введите название проекта',
+                          ),
+                        ),
                         SizedBox(height: 220),
                         Center(child: CircularProgressIndicator()),
                       ],

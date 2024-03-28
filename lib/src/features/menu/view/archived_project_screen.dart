@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/view/archived_project_info_srceen.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_project.dart';
@@ -55,6 +55,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                             id: projects[index].id,
                             name: projects[index].name,
                             allUsers: widget.allProfileID,
+                            project: projects[index],
                           ),
                         ),
                       );

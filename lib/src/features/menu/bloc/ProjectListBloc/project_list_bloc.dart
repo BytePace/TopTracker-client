@@ -2,11 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 
 part 'project_list_event.dart';
 part 'project_list_state.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/view/user_info_screen.dart';
+import 'package:tt_bytepace/src/features/users/view/user_info_screen.dart';
 
 class UsersScreen extends StatelessWidget {
   final List<ProjectModel> projects;

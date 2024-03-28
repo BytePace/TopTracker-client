@@ -26,6 +26,7 @@ class ProjectModel {
   final String createdAt;
   String? archivedAt;
   final List<int> profilesIDs;
+  final String currentUser;
 
   ProjectModel(
       {required this.id,
@@ -33,11 +34,9 @@ class ProjectModel {
       required this.adminName,
       required this.createdAt,
       required this.profilesIDs,
-      required this.archivedAt});
+      required this.archivedAt,
+      required this.currentUser});
 
-
-
-  
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     final List<int> profilesIDs = [];
     json["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
@@ -48,6 +47,7 @@ class ProjectModel {
         name: json['name'],
         adminName: json['admin_profile']['name'],
         createdAt: json['created_at'],
+        currentUser: json['current_user']['role'],
         profilesIDs: profilesIDs);
   }
   @override

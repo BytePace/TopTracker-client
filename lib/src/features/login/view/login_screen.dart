@@ -15,7 +15,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("login");
     final viewModel = Provider.of<AuthService>(context);
     emailController.text = "";
     passwordController.text = "";
@@ -41,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //welcome message
                 const Text(
-                  "text",
+                  "TopTracker",
                   style: TextStyle(fontSize: 16),
                 ),
 
@@ -65,31 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
 
                 TextButton(
-                  child: Text("log in"),
+                  child: const Text("log in"),
                   onPressed: () {
                     viewModel.login(
                         emailController.text, passwordController.text);
                   },
                 ),
-                const SizedBox(height: 20),
-
-                //register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Not a member?"),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Text(
-                        "Register Now",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                )
               ],
             ),
           ),

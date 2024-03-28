@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/users_services.dart';
+import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 
 class InvitedOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
