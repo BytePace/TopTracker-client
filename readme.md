@@ -2,7 +2,7 @@
     -src
         -features
             -menu
-                -[bloc](https://bloclibrary.dev/)
+                -bloc
                 -data
                     -data_sources
                 -models
@@ -13,6 +13,4 @@
         -localization
         -theme
     main.dart
-
-
 
