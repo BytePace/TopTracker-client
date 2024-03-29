@@ -19,6 +19,7 @@ void main() {
       List<ProjectModel> projects = await mockProjectServices.getProjects();
       List<ProjectModel> projectsExpect = [
         ProjectModel(
+          currentUser: "admin",
             id: 208305,
             name: "ИПР",
             adminName: "Tatiana Tytar",

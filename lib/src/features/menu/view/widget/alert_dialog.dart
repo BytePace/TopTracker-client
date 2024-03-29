@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 class MyAlertDialog extends StatelessWidget {
   final BuildContext ctx;

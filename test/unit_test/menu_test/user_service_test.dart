@@ -34,6 +34,7 @@ void main() {
   test("get user projects method", () async {
     List<ProjectModel> projects = [
       ProjectModel(
+          currentUser: "admin",
           id: 1,
           name: "name",
           adminName: "adminName",
@@ -41,6 +42,7 @@ void main() {
           profilesIDs: [1, 2],
           archivedAt: null),
       ProjectModel(
+          currentUser: "admin",
           id: 2,
           name: "name",
           adminName: "adminName",
@@ -54,6 +56,7 @@ void main() {
     ];
     expect(mockUserServices.getUserProject(projects, allUsersList, 0), [
       ProjectModel(
+          currentUser: "admin",
           id: 1,
           name: "name",
           adminName: "adminName",
@@ -85,10 +88,10 @@ void main() {
         await mockUserServices.checkAllUsers(allUsersProfileID2);
     expect(allUsers.length == 2,
         allUsersProfileID2.length == 2); //когда пользователей с запроса равно
-                                          //количеству пользователей которых мы сохранили
+    //количеству пользователей которых мы сохранили
     expect(allUsers.length == 2,
         allUsersProfileID1.length == 1); //когда не равно сработает условие
-                                          //и загрузит всех пользователей заново
+    //и загрузит всех пользователей заново
   });
 }
 

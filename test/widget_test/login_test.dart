@@ -9,7 +9,7 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/app.dart';
 
-import 'package:tt_bytepace/src/features/login/models/login_model.dart';
+import 'package:tt_bytepace/src/features/login/models/dto/login_dto.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
 
@@ -40,7 +40,7 @@ void main() {
 
 class MockAuthService extends AuthService {
   @override
-  void setUser(LoginModel user) {
+  void setUser(LoginDto user) {
     this.user = user;
   }
 
@@ -79,7 +79,7 @@ class MockAuthService extends AuthService {
     final response = await mockHTTPClient.get(Uri.base);
     if (response.statusCode == 201) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      setUser(LoginModel.fromJson(responseData));
+      setUser(LoginDto.fromJson(responseData));
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("access_token", responseData['access_token']);

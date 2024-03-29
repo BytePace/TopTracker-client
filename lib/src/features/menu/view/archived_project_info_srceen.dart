@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
 
@@ -22,7 +22,7 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<ProjectService>(context);
+    final viewModel = Provider.of<NetworkProjectDataSource>(context);
 
     return Scaffold(
       appBar: AppBar(

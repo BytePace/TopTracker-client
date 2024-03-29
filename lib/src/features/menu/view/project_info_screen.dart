@@ -1,7 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/add_user_form.dart';
 import 'package:tt_bytepace/src/features/menu/view/widget/all_users_list.dart';
@@ -20,7 +21,8 @@ class ProjectInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProjectService projectService = ProjectService();
+    final NetworkProjectDataSource projectService =
+        NetworkProjectDataSource(dio: Dio());
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
@@ -37,21 +39,19 @@ class ProjectInfoScreen extends StatelessWidget {
                     children: [
                       UserOnProject(
                           detailProjectModel: snapshot.data!,
-                          allUsers: projectService.getListUsersOnProject(snapshot.data!.engagements, allUsers)),
-
+                          allUsers: projectService.getListUsersOnProject(
+                              snapshot.data!.engagements, allUsers)),
                       const SizedBox(height: 16),
-
                       InvitedOnProject(
                         detailProjectModel: snapshot.data!,
                       ),
-
                       const SizedBox(height: 16),
-
                       AddUserForm(id: id),
-
                       const SizedBox(height: 16),
-                      
-                      AllUsersList(allUsers: projectService.getAllUsersWhithoutOnProject(snapshot.data!.engagements, allUsers), id: id),
+                      AllUsersList(
+                          allUsers: projectService.getAllUsersWhithoutOnProject(
+                              snapshot.data!.engagements, allUsers),
+                          id: id),
                     ],
                   ),
                 );

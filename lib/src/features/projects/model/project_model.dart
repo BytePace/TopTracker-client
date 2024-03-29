@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
 
 class ProjectModel {
   final int id;
@@ -18,18 +19,16 @@ class ProjectModel {
       required this.archivedAt,
       required this.currentUser});
 
-  factory ProjectModel.fromJson(Map<String, dynamic> json) {
-    final List<int> profilesIDs = [];
-    json["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
-
+  factory ProjectModel.fromDto(ProjectDto dto) {
     return ProjectModel(
-        id: json['id'].toInt(),
-        archivedAt: json['archived_at'],
-        name: json['name'],
-        adminName: json['admin_profile']['name'],
-        createdAt: json['created_at'],
-        currentUser: json['current_user']['role'],
-        profilesIDs: profilesIDs);
+      id: dto.id,
+      archivedAt: dto.archivedAt,
+      name: dto.name,
+      adminName: dto.adminName,
+      createdAt: dto.createdAt,
+      currentUser: dto.currentUser,
+      profilesIDs: dto.profilesIDs,
+    );
   }
   @override
   bool operator ==(Object other) {

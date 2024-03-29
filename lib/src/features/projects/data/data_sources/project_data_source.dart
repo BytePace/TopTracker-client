@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,16 +8,39 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
-import 'package:tt_bytepace/src/features/services/config.dart';
 
-class ProjectService extends ProjectProvider {
+abstract class IProjectDataSource {
+  Future<List<ProjectModel>> getProjects();
+
+  Future<DetailProjectModel?> getDetailProject(int id);
+
+  Future<void> restoreProject(BuildContext context, int projectID);
+
+  Future<void> deleteProject(BuildContext context, int projectID);
+
+  List<UserModel> getListUsersOnProject(
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers);
+
+  List<ProfileID> getListUsersProfileIDOnProject(
+      List<UserEngagementsModel> engagements,
+      List<ProfileID> allUsersProfileID);
+
+  List<UserModel> getAllUsersWhithoutOnProject(
+      List<UserEngagementsModel> engagements, List<UserModel> allUsers);
+}
+
+class NetworkProjectDataSource implements IProjectDataSource {
+  final Dio _dio;
+
+  const NetworkProjectDataSource({required Dio dio}) : _dio = dio;
+
   @override
   Future<List<ProjectModel>> getProjects() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
-    final response = await http.get(Uri.parse(
-        '${Config.baseUrl}/web/projects?access_token=$access_token&archived=true'));
+    final response = await http.get(
+        Uri.parse('/web/projects?access_token=$access_token&archived=true'));
 
     if (response.statusCode == 200) {
       final List<ProjectModel> projects = [];
@@ -33,7 +57,7 @@ class ProjectService extends ProjectProvider {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
     final response = await http.get(Uri.parse(
-        '${Config.baseUrl}/web/projects/$id?access_token=$access_token&archived=true'));
+        '/web/projects/$id?access_token=$access_token&archived=true'));
     if (response.statusCode == 200) {
       return DetailProjectModel.fromJson(
           jsonDecode(utf8.decode(response.bodyBytes)));
@@ -51,15 +75,13 @@ class ProjectService extends ProjectProvider {
     final Map<String, dynamic> userData = {"access_token": access_token};
 
     final response = await http.put(
-      Uri.parse('${Config.baseUrl}/projects/$projectID/dearchive'),
+      Uri.parse('/projects/$projectID/dearchive'),
       body: json.encode(userData),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
       Navigator.pop(context);
       showCnackBar(context, "Проект разархивирован");
-
-      notifyListeners();
     } else {
       print(response.body);
       print(projectID);
@@ -75,15 +97,13 @@ class ProjectService extends ProjectProvider {
     final Map<String, dynamic> userData = {"access_token": access_token};
 
     final response = await http.delete(
-      Uri.parse('${Config.baseUrl}/projects/$projectID'),
+      Uri.parse('/projects/$projectID'),
       body: json.encode(userData),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 204) {
       Navigator.pop(context);
       showCnackBar(context, "Проект удален");
-
-      notifyListeners();
     } else {
       print(response.body);
       print(projectID);

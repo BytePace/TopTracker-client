@@ -8,7 +8,6 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
-import 'package:tt_bytepace/src/features/services/config.dart';
 
 class UserServices extends UserProvider {
   @override
@@ -21,7 +20,7 @@ class UserServices extends UserProvider {
     final response = await http.delete(
       body: json.encode(userData),
       headers: {'Content-Type': 'application/json'},
-      Uri.parse('${Config.baseUrl}/invitations/$invitationID'),
+      Uri.parse('/invitations/$invitationID'),
     );
     if (response.statusCode == 200) {
       showCnackBar(context, "Приглашение отменено");
@@ -45,7 +44,7 @@ class UserServices extends UserProvider {
     };
 
     final response = await http.post(
-      Uri.parse('${Config.baseUrl}/projects/$id/invitations'),
+      Uri.parse('/projects/$id/invitations'),
       body: json.encode(userData),
       headers: {'Content-Type': 'application/json'},
     );
@@ -68,7 +67,7 @@ class UserServices extends UserProvider {
     final response = await http.delete(
       body: json.encode(userData),
       headers: {'Content-Type': 'application/json'},
-      Uri.parse('${Config.baseUrl}/projects/$projectId/workers/$profileId'),
+      Uri.parse('/projects/$projectId/workers/$profileId'),
     );
     if (response.statusCode == 200) {
       showCnackBar(context, "Пользователь удален");
@@ -85,7 +84,7 @@ class UserServices extends UserProvider {
     String? access_token = prefs.getString("access_token");
 
     final responseIDs = await http.get(Uri.parse(
-        '${Config.baseUrl}/web/projects?access_token=$access_token&archived=true'));
+        '/web/projects?access_token=$access_token&archived=true'));
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {
@@ -106,7 +105,7 @@ class UserServices extends UserProvider {
     final Map<int, UserModel> allUsers = {};
     for (int i = 0; i < listProjectIDs.length; i++) {
       final response2 = await http.get(Uri.parse(
-          '${Config.baseUrl}/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=true'));
+          '/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=true'));
 
       jsonDecode(utf8.decode(response2.bodyBytes))['workers']
           .forEach((element) {
@@ -128,7 +127,7 @@ class UserServices extends UserProvider {
     String? access_token = prefs.getString("access_token");
 
     final response = await http.get(Uri.parse(
-        '${Config.baseUrl}/reports/filters?access_token=$access_token&archived=true'));
+        '/reports/filters?access_token=$access_token&archived=true'));
     final List<ProfileID> idList = [];
     jsonDecode(utf8.decode(response.bodyBytes))["filters"]['workers']
         .forEach((element) {

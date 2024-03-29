@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
+import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
 
 import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
@@ -35,7 +34,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<AuthService>(context);
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -59,8 +58,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           content: "Are you sure want to log out?",
                           isYes: TextButton(
                               onPressed: () {
-                                Navigator.of(ctx).pop();
-                                viewModel.logout();
+                                authBloc.add(LogOutEvent(context: ctx));
                               },
                               child: const Text(
                                 "Log Out",

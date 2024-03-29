@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/services/project_service.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/users/services/users_services.dart';
 
 part 'project_list_event.dart';
@@ -23,7 +23,7 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
 
   _onLoadProject(LoadProjectEvent event, Emitter<ProjectListState> emit) async {
     projects.isEmpty ? emit(ProjectListLoading()) : '';
-    projects = await GetIt.I<ProjectService>().getProjects();
+    projects = await GetIt.I<NetworkProjectDataSource>().getProjects();
     allProfileID = await GetIt.I<UserServices>().getAllProfileID();
     emit(ProjectListLoaded(
         projects: projects,
@@ -53,7 +53,7 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
         allUser: allUser, projects: projects, allProfileID: allProfileID));
   }
 
-  final ProjectService projectService;
+  final NetworkProjectDataSource projectService;
   final UserServices userServices;
   List<ProjectModel> projects = [];
   List<ProfileID> allProfileID = [];

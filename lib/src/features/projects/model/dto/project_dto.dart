@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class ProjectModel {
+class ProjectDto {
   final int id;
   final String name;
   final String adminName;
@@ -9,7 +9,7 @@ class ProjectModel {
   final List<int> profilesIDs;
   final String currentUser;
 
-  ProjectModel(
+  ProjectDto(
       {required this.id,
       required this.name,
       required this.adminName,
@@ -18,11 +18,11 @@ class ProjectModel {
       required this.archivedAt,
       required this.currentUser});
 
-  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+  factory ProjectDto.fromJson(Map<String, dynamic> json) {
     final List<int> profilesIDs = [];
     json["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
 
-    return ProjectModel(
+    return ProjectDto(
         id: json['id'].toInt(),
         archivedAt: json['archived_at'],
         name: json['name'],
@@ -35,7 +35,7 @@ class ProjectModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ProjectModel &&
+    return other is ProjectDto &&
         other.id == id &&
         other.name == name &&
         other.adminName == adminName &&

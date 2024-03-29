@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<AuthService>(context);
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     emailController.text = "";
     passwordController.text = "";
 
@@ -28,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 50),
-
                 //logo
                 Icon(
                   Icons.message,
@@ -66,8 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   child: const Text("log in"),
                   onPressed: () {
-                    viewModel.login(
-                        emailController.text, passwordController.text);
+                    authBloc.add(LogInEvent(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context));
                   },
                 ),
               ],
