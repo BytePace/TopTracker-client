@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 
@@ -13,7 +13,7 @@ void main() {
       };
 
       // Выполнение парсинга
-      final result = ProfileID.fromJson(json);
+      final result = ProfileIdDto.fromJson(json);
 
       // Проверка результата
       expect(result.profileID, equals(123));
@@ -28,7 +28,7 @@ void main() {
       };
 
       // Проверка, что при парсинге выбрасывается ошибка
-      expect(() => ProfileID.fromJson(json), throwsNoSuchMethodError);
+      expect(() => ProfileIdDto.fromJson(json), throwsNoSuchMethodError);
     });
   });
 

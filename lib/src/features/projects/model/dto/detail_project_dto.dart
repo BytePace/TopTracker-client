@@ -1,14 +1,12 @@
-
-
-class DetailProjectModel {
+class DetailProjectDto {
   final int id;
   final String name;
   final String currentUserRole;
-  final List<UserModel> users;
-  final List<InvitedModel> invitations;
-  final List<UserEngagementsModel> engagements;
+  final List<UserInfoDto> users;
+  final List<InvitedDto> invitations;
+  final List<UserEngagementsDto> engagements;
 
-  const DetailProjectModel({
+  const DetailProjectDto({
     required this.users,
     required this.invitations,
     required this.id,
@@ -17,18 +15,18 @@ class DetailProjectModel {
     required this.currentUserRole,
   });
 
-  factory DetailProjectModel.fromJson(Map<String, dynamic> json) {
-    final List<UserModel> users = [];
-    json["users"].forEach((json) => {users.add(UserModel.fromJson(json))});
+  factory DetailProjectDto.fromJson(Map<String, dynamic> json) {
+    final List<UserInfoDto> users = [];
+    json["users"].forEach((json) => {users.add(UserInfoDto.fromJson(json))});
 
-    final List<UserEngagementsModel> engagements = [];
+    final List<UserEngagementsDto> engagements = [];
     json["engagements"].forEach(
-        (json) => {engagements.add(UserEngagementsModel.fromJson(json))});
-    final List<InvitedModel> invitations = [];
+        (json) => {engagements.add(UserEngagementsDto.fromJson(json))});
+    final List<InvitedDto> invitations = [];
     json["invitations"]
-        .forEach((json) => {invitations.add(InvitedModel.fromJson(json))});
+        .forEach((json) => {invitations.add(InvitedDto.fromJson(json))});
 
-    return DetailProjectModel(
+    return DetailProjectDto(
       id: json['project']['id'].toInt(),
       name: json['project']['name'],
       currentUserRole: json['project']['current_user']['role'],
@@ -39,17 +37,17 @@ class DetailProjectModel {
   }
 }
 
-class UserEngagementsModel {
+class UserEngagementsDto {
   final int profileId;
   final int workedTotal;
 
-  UserEngagementsModel({
+  UserEngagementsDto({
     required this.profileId,
     required this.workedTotal,
   });
 
-  factory UserEngagementsModel.fromJson(Map<String, dynamic> json) {
-    return UserEngagementsModel(
+  factory UserEngagementsDto.fromJson(Map<String, dynamic> json) {
+    return UserEngagementsDto(
       profileId: json['profile_id'].toInt(),
       workedTotal: json['stats']['worked_total'].toInt(),
     );
@@ -58,7 +56,7 @@ class UserEngagementsModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserEngagementsModel &&
+    return other is UserEngagementsDto &&
         other.profileId == profileId &&
         other.workedTotal == workedTotal;
   }
@@ -74,17 +72,15 @@ class UserEngagementsModel {
   }
 }
 
-
-
-class UserModel {
+class UserInfoDto {
   final int profileID;
   final String name;
   final String email;
 
-  UserModel({required this.profileID, required this.name, required this.email});
+  UserInfoDto({required this.profileID, required this.name, required this.email});
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
+  factory UserInfoDto.fromJson(Map<String, dynamic> json) {
+    return UserInfoDto(
       email: json['email'],
       profileID: json['id'].toInt(),
       name: json['name'],
@@ -103,7 +99,7 @@ class UserModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserModel &&
+    return other is UserInfoDto &&
         other.profileID == profileID &&
         other.name == name &&
         other.email == email;
@@ -120,17 +116,17 @@ class UserModel {
   }
 }
 
-class InvitedModel {
+class InvitedDto {
   final String? name;
   final int inviteID;
 
-  const InvitedModel({
+  const InvitedDto({
     required this.inviteID,
     required this.name,
   });
 
-  factory InvitedModel.fromJson(Map<String, dynamic> json) {
-    return InvitedModel(
+  factory InvitedDto.fromJson(Map<String, dynamic> json) {
+    return InvitedDto(
       name: json['name'],
       inviteID: json['id'].toInt(),
     );

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/users/services/users_services.dart';
+import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+
 
 class UserInfoScreen extends StatelessWidget {
   final List<ProjectModel> projects;
-  final List<ProfileID> allProfileID;
+  final List<ProfileIdModel> allProfileID;
   final int index;
   const UserInfoScreen(
       {super.key,
@@ -22,8 +22,8 @@ class UserInfoScreen extends StatelessWidget {
           title: Text(
         allProfileID[index].name,
       )),
-      body: Consumer<UserServices>(
-        builder: (BuildContext context, UserServices value, Widget? child) {
+      body: Consumer(
+        builder: (BuildContext context, _, Widget? child) {
           final userProjectList =
               value.getUserProject(projects, allProfileID, index);
           return Padding(

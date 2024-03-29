@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/view/project_info_screen.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/tile_project.dart';
+import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
 
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;

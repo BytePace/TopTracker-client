@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 
 class UserTileArchived extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
-  final List<ProfileID> allUsers;
+  final List<ProfileIdDto> allUsers;
   final int index;
 
   const UserTileArchived(

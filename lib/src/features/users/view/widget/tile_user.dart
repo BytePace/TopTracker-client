@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/users/services/users_services.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
+import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;

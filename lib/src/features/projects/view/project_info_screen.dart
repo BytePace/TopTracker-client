@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/users/services/users_services.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/add_user_form.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/all_users_list.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/invited_on_project.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/user_on_project.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/all_users_list.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/invited_on_project.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.dart';
 
 class ProjectInfoScreen extends StatelessWidget {
   final int id;

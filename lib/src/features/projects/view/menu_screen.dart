@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
-import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
-
-import 'package:tt_bytepace/src/features/menu/view/archived_project_screen.dart';
-import 'package:tt_bytepace/src/features/menu/view/project_screen.dart';
+import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_screen.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/view/project_screen.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/app_bar.dart';
 import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -19,7 +17,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   int _currentTub = 0;
 
-  final ProjectListBloc projectListBloc = GetIt.I<ProjectListBloc>();
+  final ProjectBloc projectListBloc = GetIt.I<ProjectBloc>();
 
   @override
   void initState() {
@@ -34,46 +32,16 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                  key: const Key("appbar"),
-                  _currentTub == 0
-                      ? "Projects"
-                      : _currentTub == 1
-                          ? "Archived Projects"
-                          : "Users"),
-              TextButton(
-                child: const Text("logout"),
-                onPressed: () => showDialog<void>(
-                    context: context,
-                    builder: (ctx) => MyAlertDialog(
-                          ctx: context,
-                          title: "Log Out",
-                          content: "Are you sure want to log out?",
-                          isYes: TextButton(
-                              onPressed: () {
-                                authBloc.add(LogOutEvent(context: ctx));
-                              },
-                              child: const Text(
-                                "Log Out",
-                                style: TextStyle(color: Colors.black),
-                              )),
-                        )),
-              ),
-            ],
-          ),
+          title: const MyAppBar(),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
             onRefresh: fetchUpdate,
-            child: BlocBuilder<ProjectListBloc, ProjectListState>(
+            child: BlocBuilder<ProjectBloc, ProjectState>(
                 bloc: projectListBloc,
                 builder: (context, state) {
                   if (state is ProjectListLoaded) {

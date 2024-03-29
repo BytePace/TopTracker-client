@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
+
 import 'package:tt_bytepace/src/features/users/view/user_info_screen.dart';
 
 class UsersScreen extends StatelessWidget {
   final List<ProjectModel> projects;
-  final List<ProfileID> allProfileID;
+  final List<ProfileIdModel> allProfileID;
   const UsersScreen(
       {super.key, required this.projects, required this.allProfileID});
 

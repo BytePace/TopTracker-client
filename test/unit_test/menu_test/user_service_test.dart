@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:tt_bytepace/src/features/users/services/services_provider/users_provider.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 
@@ -50,9 +50,9 @@ void main() {
           profilesIDs: [3],
           archivedAt: null)
     ];
-    List<ProfileID> allUsersList = [
-      ProfileID(profileID: 1, name: "name"),
-      ProfileID(profileID: 2, name: "name")
+    List<ProfileIdDto> allUsersList = [
+      ProfileIdDto(profileID: 1, name: "name"),
+      ProfileIdDto(profileID: 2, name: "name")
     ];
     expect(mockUserServices.getUserProject(projects, allUsersList, 0), [
       ProjectModel(
@@ -67,22 +67,22 @@ void main() {
   });
 
   test("get all profile ID method", () async {
-    List<ProfileID> allUsersProfileID =
+    List<ProfileIdDto> allUsersProfileID =
         await mockUserServices.getAllProfileID();
-    List<ProfileID> allUsersProfileIDExpect = [
-      ProfileID(profileID: 1, name: "name"),
-      ProfileID(profileID: 2, name: "name")
+    List<ProfileIdDto> allUsersProfileIDExpect = [
+      ProfileIdDto(profileID: 1, name: "name"),
+      ProfileIdDto(profileID: 2, name: "name")
     ];
     expect(allUsersProfileID, allUsersProfileIDExpect);
   });
 
   test("get all profile ID method", () async {
-    List<ProfileID> allUsersProfileID2 = [
-      ProfileID(profileID: 1, name: "name"),
-      ProfileID(profileID: 2, name: "name")
+    List<ProfileIdDto> allUsersProfileID2 = [
+      ProfileIdDto(profileID: 1, name: "name"),
+      ProfileIdDto(profileID: 2, name: "name")
     ];
-    List<ProfileID> allUsersProfileID1 = [
-      ProfileID(profileID: 1, name: "name")
+    List<ProfileIdDto> allUsersProfileID1 = [
+      ProfileIdDto(profileID: 1, name: "name")
     ];
     List<UserModel> allUsers =
         await mockUserServices.checkAllUsers(allUsersProfileID2);
@@ -97,7 +97,7 @@ void main() {
 
 class MockUserServices extends UserProvider {
   @override
-  Future<List<UserModel>> checkAllUsers(List<ProfileID> allProfileID) async {
+  Future<List<UserModel>> checkAllUsers(List<ProfileIdDto> allProfileID) async {
     final List<UserModel> list = [
       UserModel(profileID: 1, name: "name", email: "email"),
       UserModel(profileID: 2, name: "name", email: "email")
@@ -112,7 +112,7 @@ class MockUserServices extends UserProvider {
   }
 
   @override
-  Future<List<ProfileID>> getAllProfileID() async {
+  Future<List<ProfileIdDto>> getAllProfileID() async {
     final mockHTTPClient = MockClient((request) async {
       // Create sample response of the HTTP call
       final response = {
@@ -129,10 +129,10 @@ class MockUserServices extends UserProvider {
       });
     });
     final response = await mockHTTPClient.get(Uri.base);
-    final List<ProfileID> idList = [];
+    final List<ProfileIdDto> idList = [];
     jsonDecode(utf8.decode(response.bodyBytes))["filters"]['workers']
         .forEach((element) {
-      idList.add(ProfileID(profileID: element['id'], name: element["label"]));
+      idList.add(ProfileIdDto(profileID: element['id'], name: element["label"]));
     });
     return idList;
   }
@@ -214,7 +214,7 @@ class MockUserServices extends UserProvider {
 
   @override
   List<ProjectModel> getUserProject(
-      List<ProjectModel> projects, List<ProfileID> allUsersList, int index) {
+      List<ProjectModel> projects, List<ProfileIdDto> allUsersList, int index) {
     List<ProjectModel> projectModelList = [];
 
     for (ProjectModel project in projects) {

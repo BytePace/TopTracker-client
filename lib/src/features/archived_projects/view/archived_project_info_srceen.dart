@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/bloc/ProjectListBloc/project_list_bloc.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/alert_dialog.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/tile_user_archived.dart';
+import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
+import 'package:tt_bytepace/src/features/archived_projects/view/widget/tile_user_archived.dart';
 
 class ArchivedProjectInfoScreen extends StatelessWidget {
   final int id;
   final String name;
   final ProjectModel project;
-  final List<ProfileID> allUsers;
+  final List<ProfileIdModel> allUsers;
   const ArchivedProjectInfoScreen(
       {super.key,
       required this.id,
@@ -39,8 +39,7 @@ class ArchivedProjectInfoScreen extends StatelessWidget {
                     Card(
                       child: Column(
                         children: List.generate(
-                            viewModel
-                                .getListUsersProfileIDOnProject(
+                            getListUsersProfileIDOnProject(
                                     snapshot.data!.engagements, allUsers)
                                 .length,
                             (index) => UserTileArchived(

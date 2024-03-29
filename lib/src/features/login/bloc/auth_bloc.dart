@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
-import 'package:tt_bytepace/src/features/menu/utils/methods.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

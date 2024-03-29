@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+
+abstract interface class IProjectRepository {
+  Future<List<ProjectModel>> getProjects();
+
+  Future<DetailProjectModel> getDetailProject(int id);
+
+  Future<void> restoreProject(BuildContext context, int projectID);
+
+  Future<void> deleteProject(BuildContext context, int projectID);
+}
+
+class ProjectRepository implements IProjectRepository {
+  final IProjectDataSource _networkProjectDataSource;
+
+  ProjectRepository({required IProjectDataSource networkProjectDataSource})
+      : _networkProjectDataSource = networkProjectDataSource;
+
+  @override
+  Future<List<ProjectModel>> getProjects() async {
+    var dtos = <ProjectDto>[];
+    try {
+      dtos = await _networkProjectDataSource.getProjects();
+    } on Exception {
+      print("сделать обработку все проекты");
+    }
+    return dtos.map((e) => ProjectModel.fromDto(e)).toList();
+  }
+
+  @override
+  Future<DetailProjectModel> getDetailProject(int id) async {
+    var dto = const DetailProjectDto(
+      users: [],
+      invitations: [],
+      id: 0,
+      name: '',
+      engagements: [],
+      currentUserRole: '',
+    );
+    try {
+      dto = await _networkProjectDataSource.getDetailProject(id);
+    } on Exception {
+      print("сделать обработку все проекты");
+    }
+    return DetailProjectModel.fromDto(dto);
+  }
+
+  @override
+  Future<void> restoreProject(BuildContext context, int projectID) async {
+    try {
+      await _networkProjectDataSource.restoreProject(projectID);
+      Navigator.pop(context);
+      showCnackBar(context, "Проект разархивирован");
+    } catch (e) {
+      showCnackBar(context, "Произошла ошибка");
+      print("Ошибка разархивирования проекта");
+    }
+  }
+
+  @override
+  Future<void> deleteProject(BuildContext context, int projectID) async {
+    try {
+      await _networkProjectDataSource.restoreProject(projectID);
+      Navigator.pop(context);
+      showCnackBar(context, "Проект удален");
+    } catch (e) {
+      print("Произошла ошибка при удалении");
+      showCnackBar(context, "Произошла ошибка");
+    }
+  }
+}

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_info_srceen.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
-import 'package:tt_bytepace/src/features/menu/view/archived_project_info_srceen.dart';
-import 'package:tt_bytepace/src/features/menu/view/widget/tile_project.dart';
 
 class ArchivedProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
-  final List<ProfileID> allProfileID;
+  final List<ProfileIdModel> allProfileID;
   const ArchivedProjectScreen(
       {super.key, required this.projects, required this.allProfileID});
 
