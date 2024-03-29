@@ -3,6 +3,7 @@
         -features
             -menu
                 -bloc
+                -utils
                 -data
                     -data_sources
                 -models
@@ -10,7 +11,6 @@
                 -view
                     -widget
         -utils
-        -network
         -localization
         -theme
     main.dart
