@@ -28,7 +28,7 @@ class ProjectRepository implements IProjectRepository {
     try {
       dtos = await _networkProjectDataSource.getProjects();
     } on Exception {
-      print("сделать обработку все проекты");
+      //print("сделать обработку все проекты");
     }
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
@@ -55,8 +55,9 @@ class ProjectRepository implements IProjectRepository {
   Future<void> restoreProject(BuildContext context, int projectID) async {
     try {
       await _networkProjectDataSource.restoreProject(projectID);
-      Navigator.pop(context);
+
       showCnackBar(context, "Проект разархивирован");
+      Navigator.of(context).pop();
     } catch (e) {
       showCnackBar(context, "Произошла ошибка");
       print("Ошибка разархивирования проекта");
@@ -66,9 +67,10 @@ class ProjectRepository implements IProjectRepository {
   @override
   Future<void> deleteProject(BuildContext context, int projectID) async {
     try {
-      await _networkProjectDataSource.restoreProject(projectID);
-      Navigator.pop(context);
+      await _networkProjectDataSource.deleteProject(projectID);
+
       showCnackBar(context, "Проект удален");
+      Navigator.of(context).pop();
     } catch (e) {
       print("Произошла ошибка при удалении");
       showCnackBar(context, "Произошла ошибка");

@@ -1,8 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
+
+import '../../users/data/user_repository.dart';
 
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -49,15 +59,31 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 return ProjectTile(
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProjectInfoScreen(
-                            id: projects[index].id,
-                            name: projects[index].name,
-                            allUsers: widget.allUsers,
-                          ),
-                        ),
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => DetailProjectBloc(
+                                projectRepository: ProjectRepository(
+                                  networkProjectDataSource:
+                                      NetworkProjectDataSource(
+                                          dio: Dio(BaseOptions(
+                                              baseUrl:
+                                                  "https://tracker-api.toptal.com"))),
+                                ),
+                                userRepository: UserRepository(
+                                  networkUserDataSource: NetworkUserDataSource(
+                                      dio: Dio(BaseOptions(
+                                          baseUrl:
+                                              "https://tracker-api.toptal.com"))),
+                                ),
+                              ),
+                              child: ProjectInfoScreen(
+                                id: projects[index].id,
+                                name: projects[index].name,
+                                allUsers: widget.allUsers,
+                              ),
+                            ),
+                          ));
                     },
                     projectModel: projects[index]);
               },

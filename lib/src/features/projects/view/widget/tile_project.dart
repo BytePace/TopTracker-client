@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 class ProjectTile extends StatelessWidget {
   final Function() onTap;

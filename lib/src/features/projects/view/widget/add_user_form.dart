@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/users/services/users_services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 
 class AddUserForm extends StatefulWidget {
   final int id;
@@ -11,8 +12,8 @@ class AddUserForm extends StatefulWidget {
 }
 
 class _AddUserFormState extends State<AddUserForm> {
-  String _formData = '';
-  String selectedValue = "worker";
+  String _email = '';
+  String _role = "worker";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -26,8 +27,6 @@ class _AddUserFormState extends State<AddUserForm> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<UserServices>(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,14 +47,14 @@ class _AddUserFormState extends State<AddUserForm> {
                       return null;
                     },
                     onSaved: (value) {
-                      _formData = value!;
+                      _email = value!;
                     },
                   ),
                   DropdownButtonFormField(
-                    value: selectedValue,
+                    value: _role,
                     onChanged: (String? newValue) {
                       setState(() {
-                        selectedValue = newValue!;
+                        _role = newValue!;
                       });
                     },
                     items: dropdownItems,
@@ -74,8 +73,12 @@ class _AddUserFormState extends State<AddUserForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     try {
-                      viewModel.addUser(
-                          _formData, "", selectedValue, widget.id, context);
+                      BlocProvider.of<DetailProjectBloc>(context).add(AddUSerEvent(
+                          email: _email,
+                          role: _role,
+                          rate: "",
+                          projectID: widget.id,
+                          context: context));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Что то пошло не так")));

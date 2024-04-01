@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
-
 
 abstract class IProjectDataSource {
   Future<List<ProjectDto>> getProjects();
@@ -29,15 +30,19 @@ class NetworkProjectDataSource implements IProjectDataSource {
           .get('/web/projects?access_token=$access_token&archived=true');
       if (response.statusCode == 200) {
         final List<ProjectDto> projects = [];
-        response.data["projects"]
+
+        json
+            .decode(response.data)["projects"]
             .forEach((json) => {projects.add(ProjectDto.fromJson(json))});
+
         return projects;
       } else {
+        print(response.data);
         print("Ошибка загрузки проектов");
         throw Exception();
       }
     } catch (e) {
-      print("Ошибка загрузки проектов");
+      print("Ошибка загрузки проектов $e");
       throw Exception();
     }
   }
@@ -94,6 +99,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
     try {
       final response =
           await _dio.delete('/projects/$projectID', data: projectData);
+
       if (response.statusCode == 204) {
       } else {
         throw Exception();

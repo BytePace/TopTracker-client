@@ -46,10 +46,12 @@ class UserRepository implements IUserRepository {
       List<ProfileIdModel> allProfileID) async {
     var dtos = <UserInfoDto>[];
     final List<ProfileIdModel> allProfileID = await getAllProfileID();
+    print("1");
     try {
       dtos = await _networkUserDataSource.checkAllUsers(allProfileID);
+      print("2");
     } catch (e) {
-      print("Ошибка получения checkAllUsers");
+      print("Ошибка получения checkAllUsers $e");
     }
     return dtos.map((e) => UserModel.fromDto(e)).toList();
   }
@@ -70,9 +72,10 @@ class UserRepository implements IUserRepository {
   Future<List<ProfileIdModel>> getAllProfileID() async {
     var dtos = <ProfileIdDto>[];
     try {
+      
       dtos = await _networkUserDataSource.getAllProfileID();
     } catch (e) {
-      print("Ошибка получения allprofileid");
+      print("Ошибка получения allprofileid $e");
     }
     return dtos.map((e) => ProfileIdModel.fromDto(e)).toList();
   }
@@ -105,7 +108,7 @@ class UserRepository implements IUserRepository {
       await _networkUserDataSource.revokeInvite(invitationID);
       showCnackBar(context, "Приглашение отменено");
     } catch (e) {
-      print("произошла отмены приглашения ошибка");
+      print("произошла отмены приглашения ошибка $e");
       showCnackBar(context, "Произошла ошибка");
     }
   }

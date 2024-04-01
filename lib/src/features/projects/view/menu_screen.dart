@@ -1,10 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_screen.dart';
-import 'package:tt_bytepace/src/features/projects/bloc/project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/view/project_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/app_bar.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
+import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
 
 class MenuScreen extends StatefulWidget {

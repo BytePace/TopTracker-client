@@ -1,19 +1,16 @@
-part of 'project_bloc.dart';
+part of 'detail_project_bloc.dart';
 
 @immutable
-sealed class ProjectState {}
+sealed class DetailProjectState {}
 
-final class ProjectInitial extends ProjectState {}
+final class ProjectInitial extends DetailProjectState {}
 
-class ProjectListLoading extends ProjectState {}
+class DetailProjectListLoading extends DetailProjectState {}
 
-class ProjectListLoaded extends ProjectState {
-  final List<ProjectModel> projects;
-  final List<ProfileIdModel> allProfileID;
-  final List<UserModel> allUser;
+class DetailProjectListLoaded extends DetailProjectState {
+  final DetailProjectModel detailProjectModel;
 
-  ProjectListLoaded(
-      {required this.projects,
-      required this.allProfileID,
-      required this.allUser});
+  DetailProjectListLoaded({required this.detailProjectModel});
+
+ 
 }

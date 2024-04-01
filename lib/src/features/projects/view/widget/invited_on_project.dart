@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/users/services/users_services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 
 class InvitedOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -9,9 +10,9 @@ class InvitedOnProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<UserServices>(context);
     return detailProjectModel.invitations.isNotEmpty
         ? Column(
+          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Приглашенные пользователи",
@@ -24,9 +25,11 @@ class InvitedOnProject extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.green[100]),
                     onPressed: () {
-                      viewModel.revokeInvite(
-                          detailProjectModel.invitations[index].inviteID,
-                          context);
+                      BlocProvider.of<DetailProjectBloc>(context).add(RevokeInviteEvent(
+                          invitationsID:
+                              detailProjectModel.invitations[index].inviteID,
+                          projectID: detailProjectModel.id,
+                          context: context));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

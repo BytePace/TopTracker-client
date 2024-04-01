@@ -1,63 +1,68 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 
-part 'project_event.dart';
-part 'project_state.dart';
+part 'detail_project_event.dart';
+part 'detail_project_state.dart';
 
-class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
+class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
   final IProjectRepository _projectRepository;
   final IUserRepository _userRepository;
 
-  List<ProjectModel> projects = [];
-  List<ProfileIdModel> allProfileID = [];
-  List<UserModel> allUser = [];
-  ProjectBloc(
+  DetailProjectModel detailProjectModel = const DetailProjectModel(
+      users: [],
+      invitations: [],
+      id: 0,
+      name: "",
+      engagements: [],
+      currentUserRole: "");
+  DetailProjectBloc(
       {required IProjectRepository projectRepository,
       required IUserRepository userRepository})
       : _projectRepository = projectRepository,
         _userRepository = userRepository,
         super(ProjectInitial()) {
-    on<LoadProjectEvent>(_onLoadProject);
-
-    on<RestoreProjectEvent>(_onRestoreProject);
-
-    on<DeleteProjectEvent>(_onDeleteProject);
+    on<LoadDetailProjectEvent>(_onLoadProject);
+    on<DeleteUserEvent>(_deleteUser);
+    on<AddUSerEvent>(_addUser);
+    on<RevokeInviteEvent>(_revokeInvite);
   }
 
-  _onLoadProject(LoadProjectEvent event, Emitter<ProjectState> emit) async {
-    projects.isEmpty ? emit(ProjectListLoading()) : '';
-    projects = await _projectRepository.getProjects();
-    allProfileID = await _userRepository.getAllProfileID();
-    emit(ProjectListLoaded(
-        projects: projects,
-        allProfileID: allProfileID,
-        allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
-    allUser = await _userRepository.checkAllUsers(allProfileID);
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
+  _onLoadProject(
+      LoadDetailProjectEvent event, Emitter<DetailProjectState> emit) async {
+    emit(DetailProjectListLoading());
+    detailProjectModel =
+        await _projectRepository.getDetailProject(event.projectID);
+    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
   }
 
-  _onRestoreProject(
-      RestoreProjectEvent event, Emitter<ProjectState> emit) async {
-    for (int i = 0; i < projects.length; i++) {
-      if (projects[i].id == event.id) {
-        projects[i].archivedAt = null;
-        break;
-      }
-    }
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
+  _deleteUser(DeleteUserEvent event, Emitter<DetailProjectState> emit) async {
+    await _userRepository.delUser(
+        event.projectID, event.profileID, event.context);
+
+    detailProjectModel =
+        await _projectRepository.getDetailProject(event.projectID);
+    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
   }
 
-  _onDeleteProject(DeleteProjectEvent event, Emitter<ProjectState> emit) async {
-    projects.removeWhere((element) => element.id == event.id);
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
+  _addUser(AddUSerEvent event, Emitter<DetailProjectState> emit) async {
+    await _userRepository.addUser(
+        event.email, event.rate, event.role, event.projectID, event.context);
+
+    detailProjectModel =
+        await _projectRepository.getDetailProject(event.projectID);
+    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+  }
+
+  _revokeInvite(
+      RevokeInviteEvent event, Emitter<DetailProjectState> emit) async {
+    await _userRepository.revokeInvite(event.invitationsID, event.context);
+
+    detailProjectModel =
+        await _projectRepository.getDetailProject(event.projectID);
+    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
   }
 }

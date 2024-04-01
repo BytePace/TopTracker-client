@@ -1,18 +1,47 @@
-part of 'project_bloc.dart';
+part of 'detail_project_bloc.dart';
 
 @immutable
-sealed class ProjectEvent {}
+sealed class DetailProjectEvent {}
 
-class LoadProjectEvent extends ProjectEvent {}
+class LoadDetailProjectEvent extends DetailProjectEvent {
+  final int projectID;
 
-class RestoreProjectEvent extends ProjectEvent {
-  final int id;
-
-  RestoreProjectEvent({required this.id});
+  LoadDetailProjectEvent({required this.projectID});
 }
 
-class DeleteProjectEvent extends ProjectEvent {
-  final int id;
+class DeleteUserEvent extends DetailProjectEvent {
+  final int projectID;
+  final int profileID;
+  final BuildContext context;
 
-  DeleteProjectEvent({required this.id});
+  DeleteUserEvent(
+      {required this.projectID,
+      required this.profileID,
+      required this.context});
+}
+
+class AddUSerEvent extends DetailProjectEvent {
+  final String email;
+  final String role;
+  final String rate;
+  final int projectID;
+  final BuildContext context;
+
+  AddUSerEvent(
+      {required this.email,
+      required this.role,
+      required this.rate,
+      required this.projectID,
+      required this.context});
+}
+
+class RevokeInviteEvent extends DetailProjectEvent {
+  final int projectID;
+  final int invitationsID;
+  final BuildContext context;
+
+  RevokeInviteEvent(
+      {required this.projectID,
+      required this.invitationsID,
+      required this.context});
 }

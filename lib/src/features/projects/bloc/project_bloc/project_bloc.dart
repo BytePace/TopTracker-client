@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -53,11 +54,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     }
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
+    _projectRepository.restoreProject(event.context, event.id);
   }
 
   _onDeleteProject(DeleteProjectEvent event, Emitter<ProjectState> emit) async {
     projects.removeWhere((element) => element.id == event.id);
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
+    _projectRepository.deleteProject(event.context, event.id);
   }
 }

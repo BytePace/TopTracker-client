@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/users/view/widget/tile_user.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/tile_user.dart';
 
 class UserOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;

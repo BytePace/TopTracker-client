@@ -33,7 +33,7 @@ class NetworkUserDataSource implements IUserDataSource {
     String? access_token = prefs.getString("access_token");
 
     final Map<String, dynamic> userData = {'access_token': access_token};
-
+    print(invitationID);
     final response = await _dio.delete(
       data: userData,
       '/invitations/$invitationID',
@@ -90,7 +90,7 @@ class NetworkUserDataSource implements IUserDataSource {
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {
-      responseIDs.data['projects'].forEach((project) => {
+      json.decode(responseIDs.data)['projects'].forEach((project) => {
             if (project['archived_at'] == null) {projectID.add(project['id'])}
           }); //достаю все id всех проектов
     } else {
@@ -109,7 +109,6 @@ class NetworkUserDataSource implements IUserDataSource {
     for (int i = 0; i < listProjectIDs.length; i++) {
       final response2 = await _dio.get(
           '/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=true');
-
       response2.data['workers'].forEach((element) {
         allUsers[element["id"]] = UserInfoDto.fromJson(element);
       });
@@ -131,8 +130,7 @@ class NetworkUserDataSource implements IUserDataSource {
     final response = await _dio
         .get('/reports/filters?access_token=$access_token&archived=true');
     final List<ProfileIdDto> idList = [];
-    jsonDecode(utf8.decode(response.data))["filters"]['workers']
-        .forEach((element) {
+    response.data["filters"]['workers'].forEach((element) {
       idList
           .add(ProfileIdDto(profileID: element['id'], name: element["label"]));
     });
@@ -143,13 +141,12 @@ class NetworkUserDataSource implements IUserDataSource {
   Future<List<UserInfoDto>> checkAllUsers(
       List<ProfileIdModel> allProfileID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String allUsersString = prefs.getString("allUser") ?? "{}";
+    final allUsersString = prefs.getString("allUser") ?? "{}";
 
     List<UserInfoDto> list = [];
-    json.decode((allUsersString)).forEach((key, value) {
+    json.decode(allUsersString).forEach((key, value) {
       list.add(UserInfoDto.fromJson(value));
     });
-
     if (list.length != allProfileID.length) {
       return await getAllUsers();
     }

@@ -5,7 +5,9 @@ import 'package:tt_bytepace/src/app.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/data/data_sources/auth_data_sources.dart';
-import 'package:tt_bytepace/src/features/projects/bloc/project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
+
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
@@ -30,6 +32,15 @@ void initGetIt() async {
       ),
     ),
   );
+
+  GetIt.I.registerSingleton<DetailProjectBloc>(DetailProjectBloc(
+    projectRepository: ProjectRepository(
+      networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+    ),
+    userRepository: UserRepository(
+      networkUserDataSource: NetworkUserDataSource(dio: dio),
+    ),
+  ));
 
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/users/services/users_services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 
 class AllUsersList extends StatelessWidget {
   final List<UserModel> allUsers;
@@ -10,8 +11,6 @@ class AllUsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<UserServices>(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,8 +23,12 @@ class AllUsersList extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               child: OutlinedButton(
                 onPressed: () {
-                  viewModel.addUser(
-                      allUsers[index].email, "", "worker", id, context);
+                  BlocProvider.of<DetailProjectBloc>(context).add(AddUSerEvent(
+                      email: allUsers[index].email,
+                      role: "worker",
+                      rate: "",
+                      projectID: id,
+                      context: context));
                 },
                 child: ListTile(
                   dense: true,
