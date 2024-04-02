@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 
 class UserTileArchived extends StatelessWidget {
-  final List<ProfileIdModel> allUsers;
+  final List<UserModel> allUsers;
   final int index;
 
   const UserTileArchived(
-      {super.key,
-      required this.index,
-      required this.allUsers});
+      {super.key, required this.index, required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +15,15 @@ class UserTileArchived extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(allUsers[index].name),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                Text(allUsers[index].name,
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          ),
         ],
       ),
     );

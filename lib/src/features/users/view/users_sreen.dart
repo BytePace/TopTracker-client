@@ -35,7 +35,7 @@ class UsersScreen extends StatelessWidget {
                   );
                 },
                 child: Text(allProfileID[index].name,
-                    style: const TextStyle(fontSize: 14, color: Colors.black)),
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
             ),
           ),

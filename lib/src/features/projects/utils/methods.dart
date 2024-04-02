@@ -1,5 +1,4 @@
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
-import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 
 List<UserModel> getListUsersOnProject(
@@ -12,19 +11,25 @@ List<UserModel> getListUsersOnProject(
       }
     }
   }
+  print(usersOnProject.length);
+  print(engagements.length);
+  print(allUsers.length);
   return usersOnProject;
 }
 
-List<ProfileIdModel> getListUsersProfileIDOnProject(
-    List<int> engagements, List<ProfileIdModel> allUsersProfileID) {
-  final List<ProfileIdModel> usersOnProject = [];
-  for (var profileID in engagements) {
-    for (var user in allUsersProfileID) {
-      if (profileID == user.profileID) {
+List<UserModel> getListProfileIDUsersOnProject(
+    List<int> engagements, List<UserModel> allUsers) {
+  final List<UserModel> usersOnProject = [];
+  for (var userEngagement in engagements) {
+    for (var user in allUsers) {
+      if (userEngagement == user.profileID) {
         usersOnProject.add(user);
       }
     }
   }
+  print(usersOnProject.length);
+  print(engagements.length);
+  print(allUsers.length);
   return usersOnProject;
 }
 

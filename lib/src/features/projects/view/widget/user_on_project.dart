@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_user.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class UserOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -13,7 +14,8 @@ class UserOnProject extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Пользователи на проекте", style: Theme.of(context).textTheme.headlineMedium),
+        Text(CustomText.userOnProjectText,
+            style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
         Card(
           child: Column(

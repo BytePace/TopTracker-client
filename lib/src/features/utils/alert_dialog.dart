@@ -14,24 +14,23 @@ class MyAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       title: Text(
         title,
-        style: const TextStyle(color: Colors.black),
+        style: Theme.of(context).textTheme.labelMedium,
       ),
       content: Text(
         content,
-        style: const TextStyle(color: Colors.black),
+        style: Theme.of(context).textTheme.labelMedium,
       ),
       actions: <Widget>[
         TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text(
+            child: Text(
               "Cancel",
-              style: TextStyle(color: Colors.black),
+              style: Theme.of(context).textTheme.labelMedium,
             )),
         isYes
       ],

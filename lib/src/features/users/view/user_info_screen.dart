@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/utils/methods.dart';
@@ -38,7 +37,10 @@ class UserInfoScreen extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       userProjectList[index2].archivedAt == null &&
-                              userProjectList[index2].currentUser == "admin"
+                                  userProjectList[index2].currentUser ==
+                                      "admin" ||
+                              userProjectList[index2].currentUser ==
+                                  "supervisor"
                           ? showDialog<void>(
                               context: context,
                               builder: (ctx) => MyAlertDialog(
@@ -57,11 +59,10 @@ class UserInfoScreen extends StatelessWidget {
                                                   profileID: allProfileID[index]
                                                       .profileID,
                                                   context: context));
-                                        
                                         },
-                                        child: const Text(
+                                        child: Text(
                                           "Delete",
-                                          style: TextStyle(color: Colors.black),
+                                          style: Theme.of(context).textTheme.labelMedium,
                                         )),
                                   ))
                           : () {};

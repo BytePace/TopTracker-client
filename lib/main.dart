@@ -12,7 +12,7 @@ import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
-import 'package:tt_bytepace/src/theme/light_mode.dart';
+import 'package:tt_bytepace/src/resources/theme.dart';
 
 void main() {
   initGetIt();
@@ -51,11 +51,20 @@ void initGetIt() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: lightMode, home: const App());
+    return MaterialApp(
+        theme: CustomTheme.lightTheme,
+        darkTheme: CustomTheme.darkTheme,
+   
+        home: const App());
   }
 }

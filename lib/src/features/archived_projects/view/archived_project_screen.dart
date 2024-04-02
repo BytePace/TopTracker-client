@@ -1,15 +1,23 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_info_srceen.dart';
+import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
+import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
+import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class ArchivedProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
-  final List<ProfileIdModel> allProfileID;
+  final List<UserModel> allUser;
   const ArchivedProjectScreen(
-      {super.key, required this.projects, required this.allProfileID});
+      {super.key, required this.projects, required this.allUser});
 
   @override
   State<ArchivedProjectScreen> createState() => _ArchivedProjectScreenState();
@@ -17,6 +25,7 @@ class ArchivedProjectScreen extends StatefulWidget {
 
 class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
   late List<ProjectModel> projects;
+  bool isAsc = true;
 
   @override
   void initState() {
@@ -29,19 +38,37 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
     return Scaffold(
       body: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(
-              hintText: 'Введите название проекта',
-            ),
-            onChanged: (value) {
-              setState(() {
-                projects = widget.projects
-                    .where((element) => element.name
-                        .toLowerCase()
-                        .contains(value.toLowerCase()))
-                    .toList();
-              });
-            },
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: CustomText.hintSearchProjectText,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      projects = widget.projects
+                          .where((element) => element.name
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
+                          .toList();
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isAsc
+                          ? projects.sort((a, b) => a.name.compareTo(b.name))
+                          : projects.sort((a, b) => b.name.compareTo(a.name));
+                      isAsc = !isAsc;
+                    });
+                  },
+                  icon: isAsc
+                      ? const Icon(Icons.arrow_downward)
+                      : const Icon(Icons.arrow_upward))
+            ],
           ),
           Expanded(
             child: ListView.builder(
@@ -52,11 +79,27 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ArchivedProjectInfoScreen(
-                            id: projects[index].id,
-                            name: projects[index].name,
-                            allUsers: widget.allProfileID,
-                            project: projects[index],
+                          builder: (context) => BlocProvider<DetailProjectBloc>(
+                            create: (context) => DetailProjectBloc(
+                              projectRepository: ProjectRepository(
+                                networkProjectDataSource: NetworkProjectDataSource(
+                                    dio: Dio(BaseOptions(
+                                        baseUrl:
+                                            "https://tracker-api.toptal.com"))),
+                              ),
+                              userRepository: UserRepository(
+                                networkUserDataSource: NetworkUserDataSource(
+                                    dio: Dio(BaseOptions(
+                                        baseUrl:
+                                            "https://tracker-api.toptal.com"))),
+                              ),
+                            ),
+                            child: ArchivedProjectInfoScreen(
+                              id: projects[index].id,
+                              name: projects[index].name,
+                              allUsers: widget.allUser,
+                              project: projects[index],
+                            ),
                           ),
                         ),
                       );

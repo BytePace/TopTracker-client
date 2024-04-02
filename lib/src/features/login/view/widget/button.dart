@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/resources/colors.dart';
 
 class MyButton extends StatelessWidget {
   final void Function()? onTap;
@@ -18,7 +19,7 @@ class MyButton extends StatelessWidget {
           child: Text(
             text,
             style: const TextStyle(
-                color: Colors.white,
+                color: CustomColors.whiteColor,
                 fontWeight: FontWeight.bold, 
                 fontSize: 16),
           ),

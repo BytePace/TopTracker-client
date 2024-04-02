@@ -46,10 +46,8 @@ class UserRepository implements IUserRepository {
       List<ProfileIdModel> allProfileID) async {
     var dtos = <UserInfoDto>[];
     final List<ProfileIdModel> allProfileID = await getAllProfileID();
-    print("1");
     try {
       dtos = await _networkUserDataSource.checkAllUsers(allProfileID);
-      print("2");
     } catch (e) {
       print("Ошибка получения checkAllUsers $e");
     }

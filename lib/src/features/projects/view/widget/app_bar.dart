@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
-class MyAppBar extends StatefulWidget {
-  const MyAppBar({super.key});
+class MyAppBar extends StatelessWidget {
+  final int currentTub;
+  const MyAppBar({super.key, required this.currentTub});
 
-  @override
-  State<MyAppBar> createState() => _MyAppBarState();
-}
-
-class _MyAppBarState extends State<MyAppBar> {
-  int currentTub = 0;
   @override
   Widget build(BuildContext context) {
     final authBloc = BlocProvider.of<AuthBloc>(context);
@@ -26,7 +22,7 @@ class _MyAppBarState extends State<MyAppBar> {
                     ? "Archived Projects"
                     : "Users"),
         TextButton(
-          child: const Text("logout"),
+          child: const Text(CustomText.logoutText),
           onPressed: () => showDialog<void>(
             context: context,
             builder: (ctx) => MyAlertDialog(
@@ -37,9 +33,9 @@ class _MyAppBarState extends State<MyAppBar> {
                 onPressed: () {
                   authBloc.add(LogOutEvent(context: ctx));
                 },
-                child: const Text(
+                child: Text(
                   "Log Out",
-                  style: TextStyle(color: Colors.black),
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 
 class AddUserForm extends StatefulWidget {
@@ -85,7 +84,7 @@ class _AddUserFormState extends State<AddUserForm> {
                     }
                   }
                 },
-                child: Text("Submit"))
+                child: const Text("Submit"))
           ],
         ),
       ],

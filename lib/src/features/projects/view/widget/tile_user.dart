@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
@@ -24,15 +22,16 @@ class UserTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(allUsers[index].name),
+          Text(allUsers[index].name,
+              style: Theme.of(context).textTheme.bodyMedium),
           Text(
               "Total hours: ${(detailProjectModel.engagements[index].workedTotal / 60 / 60).round()}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [
-                    const PopupMenuItem<int>(
+                    PopupMenuItem<int>(
                       value: 0,
-                      child: Text("Delete user"),
+                      child: Text("Delete user", style: Theme.of(context).textTheme.bodyMedium,),
                     ),
                   ];
                 }, onSelected: (value) {
@@ -53,9 +52,9 @@ class UserTile extends StatelessWidget {
                                                 allUsers[index].profileID,
                                             context: context));
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     "Delete",
-                                    style: TextStyle(color: Colors.black),
+                                    style: Theme.of(context).textTheme.labelMedium,
                                   )),
                             ));
                   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
+import 'package:tt_bytepace/src/resources/colors.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.text = "";
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: CustomColors.greyColor[300],
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -39,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //welcome message
                 const Text(
-                  "TopTracker",
+                  CustomText.welcomeMessageText,
                   style: TextStyle(fontSize: 16),
                 ),
 
@@ -63,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
 
                 TextButton(
-                  child: const Text("log in"),
+                  child: const Text(CustomText.loginButtonText),
                   onPressed: () {
                     authBloc.add(LogInEvent(
                         email: emailController.text,

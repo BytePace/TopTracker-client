@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
@@ -11,6 +11,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 import '../../users/data/user_repository.dart';
 
@@ -25,6 +26,7 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class _ProjectScreenState extends State<ProjectScreen> {
+  bool isAsc = true;
   late List<ProjectModel> projects;
   @override
   void initState() {
@@ -37,19 +39,37 @@ class _ProjectScreenState extends State<ProjectScreen> {
     return Scaffold(
       body: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(
-              hintText: 'Введите название проекта',
-            ),
-            onChanged: (value) {
-              setState(() {
-                projects = widget.projects
-                    .where((element) => element.name
-                        .toLowerCase()
-                        .contains(value.toLowerCase()))
-                    .toList();
-              });
-            },
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: CustomText.hintSearchProjectText,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      projects = widget.projects
+                          .where((element) => element.name
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
+                          .toList();
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isAsc
+                          ? projects.sort((a, b) => a.name.compareTo(b.name))
+                          : projects.sort((a, b) => b.name.compareTo(a.name));
+                      isAsc = !isAsc;
+                    });
+                  },
+                  icon: isAsc
+                      ? const Icon(Icons.arrow_downward)
+                      : const Icon(Icons.arrow_upward))
+            ],
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -61,7 +81,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BlocProvider(
+                            builder: (context) => BlocProvider<DetailProjectBloc>(
                               create: (context) => DetailProjectBloc(
                                 projectRepository: ProjectRepository(
                                   networkProjectDataSource:

@@ -1,17 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_screen.dart';
-import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
-import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
-import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/view/project_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/app_bar.dart';
-import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
-import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
+import 'package:tt_bytepace/src/resources/colors.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -38,76 +34,74 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const MyAppBar(),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RefreshIndicator(
-            onRefresh: fetchUpdate,
-            child: BlocBuilder<ProjectBloc, ProjectState>(
-                bloc: projectListBloc,
-                builder: (context, state) {
-                  if (state is ProjectListLoaded) {
-                    return [
-                      ProjectScreen(
-                          key: UniqueKey(),
-                          projects: state.projects
-                              .where((element) => element.archivedAt == null)
-                              .toList(),
-                          allUsers: state.allUser),
-                      ArchivedProjectScreen(
-                          key: UniqueKey(),
-                          projects: state.projects
-                              .where((element) => element.archivedAt != null)
-                              .toList(),
-                          allProfileID: state.allProfileID),
-                      UsersScreen(
-                          key: UniqueKey(),
-                          projects: state.projects,
-                          allProfileID: state.allProfileID),
-                    ][_currentTub];
-                  } else {
-                    return const Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Введите название проекта',
-                          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: MyAppBar(currentTub: _currentTub),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: RefreshIndicator(
+          onRefresh: fetchUpdate,
+          child: BlocBuilder<ProjectBloc, ProjectState>(
+              bloc: projectListBloc,
+              builder: (context, state) {
+                if (state is ProjectListLoaded) {
+                  return [
+                    ProjectScreen(
+                        key: UniqueKey(),
+                        projects: state.projects
+                            .where((element) => element.archivedAt == null)
+                            .toList(),
+                        allUsers: state.allUser),
+                    ArchivedProjectScreen(
+                        key: UniqueKey(),
+                        projects: state.projects
+                            .where((element) => element.archivedAt != null)
+                            .toList(),
+                        allUser: state.allUser),
+                    UsersScreen(
+                        key: UniqueKey(),
+                        projects: state.projects,
+                        allProfileID: state.allProfileID),
+                  ][_currentTub];
+                } else {
+                  return const Column(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: CustomText.hintSearchProjectText,
                         ),
-                        SizedBox(height: 220),
-                        Center(child: CircularProgressIndicator()),
-                      ],
-                    );
-                  }
-                }),
+                      ),
+                      SizedBox(height: 220),
+                      Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                }
+              }),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.cases_rounded),
+            label: 'Projects',
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.cases_rounded),
-              label: 'Projects',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.badge_rounded),
-              label: 'Archived Projects',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Users',
-            )
-          ],
-          currentIndex: _currentTub,
-          selectedItemColor: Colors.amber[800],
-          onTap: (value) {
-            setState(() {
-              _currentTub = value;
-            });
-          },
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.badge_rounded),
+            label: 'Archived Projects',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Users',
+          )
+        ],
+        currentIndex: _currentTub,
+        selectedItemColor: CustomColors.bottomActiveIconColor,
+        onTap: (value) {
+          setState(() {
+            _currentTub = value;
+          });
+        },
       ),
     );
   }
