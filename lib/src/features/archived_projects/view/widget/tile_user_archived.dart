@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 
 class UserTileArchived extends StatelessWidget {
-  final List<UserModel> allUsers;
+  final List<UserInfoModel> allUsers;
   final int index;
 
   const UserTileArchived(
@@ -16,13 +16,15 @@ class UserTileArchived extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                Text(allUsers[index].name,
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            ),
+            padding: const EdgeInsets.all(8.0),
+            child: Text(allUsers[index].name,
+                style: Theme.of(context).textTheme.bodyMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                "Total hours: ${(allUsers[index].workedTotal / 60 / 60).round()}",
+                style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
       ),

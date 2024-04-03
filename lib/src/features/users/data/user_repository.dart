@@ -36,7 +36,7 @@ class UserRepository implements IUserRepository {
       await _networkUserDataSource.addUser(email, rate, role, id);
       showCnackBar(context, "Пользователь добавлен");
     } catch (e) {
-      print("ошибка добавления пользователя");
+      //print("ошибка добавления пользователя");
       showCnackBar(context, "Произошла ошибка $e");
     }
   }

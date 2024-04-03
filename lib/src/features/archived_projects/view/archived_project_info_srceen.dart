@@ -87,6 +87,8 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         bloc: BlocProvider.of<DetailProjectBloc>(context),
         builder: (context, state) {
           if (state is DetailProjectListLoaded) {
+            final allUsers = getListUsersOnProject(
+                state.detailProjectModel.engagements, widget.allUsers);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: ListView(
@@ -100,9 +102,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                               .length,
                           (index) => UserTileArchived(
                                 index: index,
-                                allUsers: getListUsersOnProject(
-                                    state.detailProjectModel.engagements,
-                                    widget.allUsers),
+                                allUsers: allUsers,
                               )),
                     ),
                   ),

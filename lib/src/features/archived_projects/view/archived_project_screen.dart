@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_info_srceen.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
@@ -82,6 +85,8 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                           builder: (context) => BlocProvider<DetailProjectBloc>(
                             create: (context) => DetailProjectBloc(
                               projectRepository: ProjectRepository(
+                                //dbProjectDataSource: DbProjectDataSource(
+                                    //database: GetIt.I<Database>()),
                                 networkProjectDataSource: NetworkProjectDataSource(
                                     dio: Dio(BaseOptions(
                                         baseUrl:

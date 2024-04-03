@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
-  final List<UserModel> allUsers;
+  final List<UserInfoModel> allUsers;
   final int index;
 
   const UserTile(
@@ -25,7 +26,7 @@ class UserTile extends StatelessWidget {
           Text(allUsers[index].name,
               style: Theme.of(context).textTheme.bodyMedium),
           Text(
-              "Total hours: ${(detailProjectModel.engagements[index].workedTotal / 60 / 60).round()}"),
+              "Total hours: ${(allUsers[index].workedTotal / 60 / 60).round()}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [

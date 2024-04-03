@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
@@ -18,9 +19,13 @@ abstract interface class IProjectRepository {
 
 class ProjectRepository implements IProjectRepository {
   final IProjectDataSource _networkProjectDataSource;
+  //final ISavableProjectDataSource _dbProjectDataSource;
 
-  ProjectRepository({required IProjectDataSource networkProjectDataSource})
+  ProjectRepository(
+      {required IProjectDataSource networkProjectDataSource,
+      })
       : _networkProjectDataSource = networkProjectDataSource;
+        //_dbProjectDataSource = dbProjectDataSource;required ISavableProjectDataSource dbProjectDataSource
 
   @override
   Future<List<ProjectModel>> getProjects() async {

@@ -31,6 +31,32 @@ class ProjectDto {
         currentUser: json['current_user']['role'],
         profilesIDs: profilesIDs);
   }
+
+  factory ProjectDto.fromMap(Map<String, dynamic> map) {
+    final List<int> profilesIDs = [];
+    map["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
+
+    return ProjectDto(
+        id: map['id'].toInt(),
+        archivedAt: map['archived_at'],
+        name: map['name'],
+        adminName: map['admin_name'],
+        createdAt: map['created_at'],
+        currentUser: map['current_user_role'],
+        profilesIDs: profilesIDs);
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'adminName': adminName,
+      'createdAt': createdAt,
+      'archivedAt': archivedAt,
+      'profilesIDs': profilesIDs,
+      'currentUser': currentUser,
+    };
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

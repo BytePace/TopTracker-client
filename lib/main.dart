@@ -9,19 +9,24 @@ import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detai
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
+import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/theme.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main() async {
   initGetIt();
   runApp(const MainApp());
 }
 
+
+
 void initGetIt() async {
   final dio = Dio(BaseOptions(baseUrl: "https://tracker-api.toptal.com"));
-
   GetIt.I.registerSingleton(
     ProjectBloc(
       projectRepository: ProjectRepository(
@@ -64,7 +69,6 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTheme,
-   
         home: const App());
   }
 }

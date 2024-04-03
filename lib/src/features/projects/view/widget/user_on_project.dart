@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
+import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_user.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class UserOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
-  final List<UserModel> allUsers;
+  final List<UserInfoModel> allUsers;
   const UserOnProject(
       {super.key, required this.detailProjectModel, required this.allUsers});
 

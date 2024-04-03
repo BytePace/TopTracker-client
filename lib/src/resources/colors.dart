@@ -5,6 +5,6 @@ class CustomColors {
   static const greyColor = Colors.grey;
   static const whiteColor = Colors.white;
 
-  static const bottomActiveIconColor = Colors.orange;
+  static const bottomActiveIconColor = Colors.purple;
   static final invitedUserColor = Colors.green[100];
 }

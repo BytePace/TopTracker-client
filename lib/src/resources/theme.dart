@@ -6,11 +6,9 @@ class CustomTheme with ChangeNotifier {
     return ThemeData(
         useMaterial3: true,
         textTheme: const TextTheme(labelMedium: TextStyle(fontSize: 16)),
-        primaryColor: CustomColors.bottomActiveIconColor,
+        primaryColor: CustomColors.whiteColor,
         scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: CustomColors.bottomActiveIconColor,
-            brightness: Brightness.light),
+        colorScheme: const ColorScheme.light(),
         buttonTheme: ButtonThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
@@ -27,8 +25,7 @@ class CustomTheme with ChangeNotifier {
             labelMedium: TextStyle(fontSize: 16),
             bodySmall: TextStyle(color: Colors.black)),
         colorScheme: ColorScheme.fromSeed(
-            seedColor: CustomColors.bottomActiveIconColor,
-            brightness: Brightness.dark),
+            seedColor: CustomColors.blackColor, brightness: Brightness.dark),
         buttonTheme: ButtonThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
