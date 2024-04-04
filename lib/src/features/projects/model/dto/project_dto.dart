@@ -32,17 +32,14 @@ class ProjectDto {
         profilesIDs: profilesIDs);
   }
 
-  factory ProjectDto.fromMap(Map<String, dynamic> map) {
-    final List<int> profilesIDs = [];
-    map["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
-
+  factory ProjectDto.fromMap(Map<String, dynamic> map, List<int> profilesIDs) {
     return ProjectDto(
-        id: map['id'].toInt(),
-        archivedAt: map['archived_at'],
+        id: map['id'],
+        archivedAt: map['archivedAt'],
         name: map['name'],
-        adminName: map['admin_name'],
-        createdAt: map['created_at'],
-        currentUser: map['current_user_role'],
+        adminName: map['adminName'],
+        createdAt: map['createdAt'],
+        currentUser: map['currentUser'],
         profilesIDs: profilesIDs);
   }
   Map<String, dynamic> toMap() {
@@ -82,6 +79,6 @@ class ProjectDto {
 
   @override
   String toString() {
-    return "$name, $archivedAt";
+    return "$name + $archivedAt";
   }
 }

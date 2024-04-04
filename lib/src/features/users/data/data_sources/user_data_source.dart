@@ -10,7 +10,7 @@ abstract interface class IUserDataSource {
 
   Future<void> addUser(String email, String rate, String role, int id);
 
-  Future<void> delUser(int projectId, int profileId);
+  Future<void> deleteUser(int projectId, int profileId);
 
   Future<List<int>> getProjectsID();
 
@@ -44,7 +44,8 @@ class NetworkUserDataSource implements IUserDataSource {
   }
 
   @override
-  Future<void> addUser(String email, String rate, String role, int id) async {
+  Future<InvitedDto> addUser(
+      String email, String rate, String role, int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
@@ -58,13 +59,14 @@ class NetworkUserDataSource implements IUserDataSource {
     final response =
         await _dio.post('/projects/$id/invitations', data: userData);
     if (response.statusCode == 201) {
+      return InvitedDto.fromJson(response.data['invitations']);
     } else {
       throw Exception();
     }
   }
 
   @override
-  Future<void> delUser(int projectId, int profileId) async {
+  Future<void> deleteUser(int projectId, int profileId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
     final Map<String, dynamic> userData = {'access_token': access_token};

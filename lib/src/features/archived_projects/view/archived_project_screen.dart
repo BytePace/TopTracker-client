@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:tt_bytepace/src/database/database.dart';
 
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_info_srceen.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
@@ -31,7 +32,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
   bool isAsc = true;
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     projects = widget.projects;
   }
@@ -85,8 +86,8 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                           builder: (context) => BlocProvider<DetailProjectBloc>(
                             create: (context) => DetailProjectBloc(
                               projectRepository: ProjectRepository(
-                                //dbProjectDataSource: DbProjectDataSource(
-                                    //database: GetIt.I<Database>()),
+                                dbProjectDataSource: DbProjectDataSource(
+                                    database: DBProvider.db.database),
                                 networkProjectDataSource: NetworkProjectDataSource(
                                     dio: Dio(BaseOptions(
                                         baseUrl:

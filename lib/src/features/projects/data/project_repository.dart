@@ -19,19 +19,19 @@ abstract interface class IProjectRepository {
 
 class ProjectRepository implements IProjectRepository {
   final IProjectDataSource _networkProjectDataSource;
-  //final ISavableProjectDataSource _dbProjectDataSource;
+  final ISavableProjectDataSource _dbProjectDataSource;
 
   ProjectRepository(
       {required IProjectDataSource networkProjectDataSource,
-      })
-      : _networkProjectDataSource = networkProjectDataSource;
-        //_dbProjectDataSource = dbProjectDataSource;required ISavableProjectDataSource dbProjectDataSource
+      required ISavableProjectDataSource dbProjectDataSource})
+      : _networkProjectDataSource = networkProjectDataSource,
+        _dbProjectDataSource = dbProjectDataSource;
 
   @override
   Future<List<ProjectModel>> getProjects() async {
     var dtos = <ProjectDto>[];
     try {
-      dtos = await _networkProjectDataSource.getProjects();
+      dtos = await _dbProjectDataSource.getProjects();
     } on Exception {
       //print("сделать обработку все проекты");
     }
@@ -40,6 +40,7 @@ class ProjectRepository implements IProjectRepository {
 
   @override
   Future<DetailProjectModel> getDetailProject(int id) async {
+    await _dbProjectDataSource.deleteProject(id);
     var dto = const DetailProjectDto(
       users: [],
       invitations: [],
@@ -49,9 +50,9 @@ class ProjectRepository implements IProjectRepository {
       currentUserRole: '',
     );
     try {
-      dto = await _networkProjectDataSource.getDetailProject(id);
-    } on Exception {
-      print("сделать обработку все проекты");
+      dto = await _dbProjectDataSource.getDetailProject(id);
+    } catch (e){
+      print("сделать обработку все проекты $e");
     }
     return DetailProjectModel.fromDto(dto);
   }
@@ -59,7 +60,7 @@ class ProjectRepository implements IProjectRepository {
   @override
   Future<void> restoreProject(BuildContext context, int projectID) async {
     try {
-      await _networkProjectDataSource.restoreProject(projectID);
+      await _dbProjectDataSource.restoreProject(projectID);
 
       showCnackBar(context, "Проект разархивирован");
       Navigator.of(context).pop();

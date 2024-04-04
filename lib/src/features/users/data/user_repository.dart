@@ -58,7 +58,7 @@ class UserRepository implements IUserRepository {
   Future<void> delUser(
       int projectId, int profileId, BuildContext context) async {
     try {
-      await _networkUserDataSource.delUser(projectId, profileId);
+      await _networkUserDataSource.deleteUser(projectId, profileId);
       showCnackBar(context, "Пользователь удален");
     } catch (e) {
       print("ошибка удаления пользователя");

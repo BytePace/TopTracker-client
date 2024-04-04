@@ -35,6 +35,21 @@ class DetailProjectDto {
       engagements: engagements,
     );
   }
+
+  factory DetailProjectDto.fromMap(
+      Map<String, dynamic> map,
+      List<UserInfoDto> users,
+      List<InvitedDto> invitations,
+      List<UserEngagementsDto> engagements) {
+    return DetailProjectDto(
+      id: map['datail_project_id'].toInt(),
+      name: map['name'],
+      currentUserRole: map['currentUserRole'],
+      users: users,
+      invitations: invitations,
+      engagements: engagements,
+    );
+  }
 }
 
 class UserEngagementsDto {
@@ -50,6 +65,13 @@ class UserEngagementsDto {
     return UserEngagementsDto(
       profileId: json['profile_id'].toInt(),
       workedTotal: json['stats']['worked_total'].toInt(),
+    );
+  }
+
+  factory UserEngagementsDto.fromMap(Map<String, dynamic> map) {
+    return UserEngagementsDto(
+      profileId: map['user_engagaments_id'].toInt(),
+      workedTotal: map['workedTotal'].toInt(),
     );
   }
   @override
@@ -77,13 +99,21 @@ class UserInfoDto {
   final String name;
   final String email;
 
-  UserInfoDto({required this.profileID, required this.name, required this.email});
+  UserInfoDto(
+      {required this.profileID, required this.name, required this.email});
 
   factory UserInfoDto.fromJson(Map<String, dynamic> json) {
     return UserInfoDto(
       email: json['email'],
       profileID: json['id'].toInt(),
       name: json['name'],
+    );
+  }
+    factory UserInfoDto.fromMap(Map<String, dynamic> map) {
+    return UserInfoDto(
+      email: map['email'],
+      profileID: map['profile_id'].toInt(),
+      name: map['name'],
     );
   }
 
@@ -129,6 +159,12 @@ class InvitedDto {
     return InvitedDto(
       name: json['name'],
       inviteID: json['id'].toInt(),
+    );
+  }
+  factory InvitedDto.fromMap(Map<String, dynamic> map) {
+    return InvitedDto(
+      name: map['name'],
+      inviteID: map['invite_id'],
     );
   }
 }

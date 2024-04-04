@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/app.dart';
+import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/data/data_sources/auth_data_sources.dart';
@@ -15,22 +16,20 @@ import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_sourc
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/theme.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  initGetIt();
   runApp(const MainApp());
+  initGetIt();
 }
 
-
-
-void initGetIt() async {
+void initGetIt() {
   final dio = Dio(BaseOptions(baseUrl: "https://tracker-api.toptal.com"));
-  GetIt.I.registerSingleton(
+  final Future<Database> database = DBProvider.db.database;
+  GetIt.I.registerSingleton<ProjectBloc>(
     ProjectBloc(
       projectRepository: ProjectRepository(
         networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+        dbProjectDataSource: DbProjectDataSource(database: database),
       ),
       userRepository: UserRepository(
         networkUserDataSource: NetworkUserDataSource(dio: dio),
@@ -40,6 +39,7 @@ void initGetIt() async {
 
   GetIt.I.registerSingleton<DetailProjectBloc>(DetailProjectBloc(
     projectRepository: ProjectRepository(
+      dbProjectDataSource: DbProjectDataSource(database: database),
       networkProjectDataSource: NetworkProjectDataSource(dio: dio),
     ),
     userRepository: UserRepository(

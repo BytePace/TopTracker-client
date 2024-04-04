@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqlite_api.dart';
+import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
@@ -32,7 +30,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   bool isAsc = true;
   late List<ProjectModel> projects;
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     projects = widget.projects;
   }
@@ -88,13 +86,13 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                 BlocProvider<DetailProjectBloc>(
                               create: (context) => DetailProjectBloc(
                                 projectRepository: ProjectRepository(
+                                  dbProjectDataSource: DbProjectDataSource(
+                                      database: DBProvider.db.database),
                                   networkProjectDataSource:
                                       NetworkProjectDataSource(
                                           dio: Dio(BaseOptions(
                                               baseUrl:
                                                   "https://tracker-api.toptal.com"))),
-                                  //dbProjectDataSource: DbProjectDataSource(
-                                     // database: GetIt.I<Database>()),
                                 ),
                                 userRepository: UserRepository(
                                   networkUserDataSource: NetworkUserDataSource(

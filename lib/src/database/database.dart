@@ -19,33 +19,57 @@ class DBProvider {
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker.db";
+    String path = "${dir.path}TopTracker9.db";
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   void _createDB(Database db, int version) async {
     await db.execute('''
-        CREATE TABLE AllUsers(
-          id INTEGER PRIMARY KEY,
-          title TEXT,
-          description TEXT,
-          dueDate TEXT
+        CREATE TABLE Users(
+          profileID INTEGER,
+          detail_project_id INTEGER
         )
       ''');
     await db.execute('''
         CREATE TABLE Projects(
           id INTEGER PRIMARY KEY,
-          title TEXT,
-          description TEXT,
-          dueDate TEXT
+          name TEXT,
+          adminName TEXT,
+          createdAt TEXT,
+          currentUser TEXT,
+          archivedAt TEXT NULL
         )
       ''');
     await db.execute('''
         CREATE TABLE DetailProject(
-          id INTEGER PRIMARY KEY,
-          title TEXT,
-          description TEXT,
-          dueDate TEXT
+         detail_project_id INTEGER PRIMARY KEY,
+          name TEXT,
+          currentUserRole TEXT
+        )
+      ''');
+    await db.execute('''
+        CREATE TABLE UserInfo(
+           profile_id INTEGER,
+          detail_project_id INTEGER,
+          name text,
+          email text,
+          FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
+        )
+      ''');
+    await db.execute('''
+        CREATE TABLE Invites(
+          invite_id INTEGER PRIMARY KEY,
+           detail_project_id INTEGER,
+          name TEXT,
+           FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
+        )
+      ''');
+    await db.execute('''
+        CREATE TABLE UserEngagements(
+           user_engagaments_id INTEGER,
+          detail_project_id INTEGER,
+          workedTotal INTEGER,
+          FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
         )
       ''');
   }

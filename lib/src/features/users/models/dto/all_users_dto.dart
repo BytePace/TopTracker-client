@@ -10,6 +10,12 @@ class ProfileIdDto {
       profileID: json['id'].toInt(),
     );
   }
+    factory ProfileIdDto.fromMap(Map<String, dynamic> map) {
+    return ProfileIdDto(
+      name: map['name'],
+      profileID: map['profile_id'].toInt(),
+    );
+  }
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

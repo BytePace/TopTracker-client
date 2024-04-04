@@ -28,7 +28,6 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Future<void> fetchUpdate() async {
-    await Future.delayed(const Duration(seconds: 2));
     projectListBloc.add(LoadProjectEvent());
   }
 
