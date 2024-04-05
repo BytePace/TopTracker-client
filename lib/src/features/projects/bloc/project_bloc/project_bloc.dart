@@ -36,39 +36,34 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(ProjectListLoading());
     projects = await _projectRepository.getProjects();
     allProfileID = await _userRepository.getAllProfileID();
-    emit(ProjectListLoaded(
-        projects: projects,
-        allProfileID: allProfileID,
-        allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
-    allUser = await _userRepository.checkAllUsers(allProfileID);
+    allUser = await _userRepository.getAllUsers();
+    
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
   }
 
   _updateProject(UpdateProjectEvent event, Emitter<ProjectState> emit) async {
     emit(ProjectListLoading());
-    projects = await _projectRepository.getProjects();
-    allProfileID = await _userRepository.getAllProfileID();
+    projects = await _projectRepository.getNetworkProjects();
+    allProfileID = await _userRepository.updateAllProfileID();
     emit(ProjectListLoaded(
         projects: projects,
         allProfileID: allProfileID,
         allUser: [UserModel(profileID: 0, name: "Loading...", email: "")]));
-    allUser = await _userRepository.checkAllUsers(allProfileID);
+    allUser = await _userRepository.updateAllUsers();
+    await _projectRepository.updateProject(projects);
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
   }
 
   _onRestoreProject(
       RestoreProjectEvent event, Emitter<ProjectState> emit) async {
-    for (int i = 0; i < projects.length; i++) {
-      if (projects[i].id == event.id) {
-        projects[i].archivedAt = null;
-        break;
-      }
-    }
+    await _projectRepository.restoreProject(event.context, event.id);
+    projects = await _projectRepository.getProjects();
+    allProfileID = await _userRepository.getAllProfileID();
+    allUser = await _userRepository.getAllUsers();
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));
-    _projectRepository.restoreProject(event.context, event.id);
   }
 
   _onDeleteProject(DeleteProjectEvent event, Emitter<ProjectState> emit) async {

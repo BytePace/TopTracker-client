@@ -30,6 +30,18 @@ class ProjectModel {
       profilesIDs: dto.profilesIDs,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'adminName': adminName,
+      'createdAt': createdAt,
+      'archivedAt': archivedAt,
+      'currentUser': currentUser,
+    };
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

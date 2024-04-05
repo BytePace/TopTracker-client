@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqlite_api.dart';
+
 import 'package:tt_bytepace/src/database/database.dart';
 
 import 'package:tt_bytepace/src/features/archived_projects/view/archived_project_info_srceen.dart';
@@ -13,6 +12,7 @@ import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
@@ -32,7 +32,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
   bool isAsc = true;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     projects = widget.projects;
   }
@@ -98,6 +98,8 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                                     dio: Dio(BaseOptions(
                                         baseUrl:
                                             "https://tracker-api.toptal.com"))),
+                                dbUserDataSource: DbUserDataSource(
+                                    database: DBProvider.db.database),
                               ),
                             ),
                             child: ArchivedProjectInfoScreen(

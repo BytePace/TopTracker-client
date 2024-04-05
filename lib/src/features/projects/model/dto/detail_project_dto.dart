@@ -42,13 +42,20 @@ class DetailProjectDto {
       List<InvitedDto> invitations,
       List<UserEngagementsDto> engagements) {
     return DetailProjectDto(
-      id: map['datail_project_id'].toInt(),
+      id: map['detail_project_id'],
       name: map['name'],
       currentUserRole: map['currentUserRole'],
       users: users,
       invitations: invitations,
       engagements: engagements,
     );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'detail_project_id': id,
+      'name': name,
+      'currentUserRole': currentUserRole
+    };
   }
 }
 
@@ -61,6 +68,14 @@ class UserEngagementsDto {
     required this.workedTotal,
   });
 
+  Map<String, dynamic> toMap(int projectID) {
+    return {
+      'user_engagaments_id': profileId,
+      'workedTotal': workedTotal,
+      "detail_project_id": projectID
+    };
+  }
+
   factory UserEngagementsDto.fromJson(Map<String, dynamic> json) {
     return UserEngagementsDto(
       profileId: json['profile_id'].toInt(),
@@ -70,8 +85,8 @@ class UserEngagementsDto {
 
   factory UserEngagementsDto.fromMap(Map<String, dynamic> map) {
     return UserEngagementsDto(
-      profileId: map['user_engagaments_id'].toInt(),
-      workedTotal: map['workedTotal'].toInt(),
+      profileId: map['user_engagaments_id'],
+      workedTotal: map['workedTotal'],
     );
   }
   @override
@@ -109,10 +124,20 @@ class UserInfoDto {
       name: json['name'],
     );
   }
-    factory UserInfoDto.fromMap(Map<String, dynamic> map) {
+
+  Map<String, dynamic> toMap(int projectID) {
+    return {
+      'profile_id': profileID,
+      'name': name,
+      'email': email,
+      "detail_project_id": projectID
+    };
+  }
+
+  factory UserInfoDto.fromMap(Map<String, dynamic> map) {
     return UserInfoDto(
       email: map['email'],
-      profileID: map['profile_id'].toInt(),
+      profileID: map['profile_id'],
       name: map['name'],
     );
   }
@@ -154,6 +179,14 @@ class InvitedDto {
     required this.inviteID,
     required this.name,
   });
+
+  Map<String, dynamic> toMap(int projectID) {
+    return {
+      'invite_id': inviteID,
+      'name': name,
+      "detail_project_id": projectID
+    };
+  }
 
   factory InvitedDto.fromJson(Map<String, dynamic> json) {
     return InvitedDto(

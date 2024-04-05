@@ -36,6 +36,9 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
     emit(DetailProjectListLoading());
     detailProjectModel =
         await _projectRepository.getDetailProject(event.projectID);
+    print("      ");
+    print(detailProjectModel.engagements);
+    print("      ");
     emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
   }
 

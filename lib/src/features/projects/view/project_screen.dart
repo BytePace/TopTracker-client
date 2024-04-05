@@ -11,6 +11,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
@@ -30,7 +31,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   bool isAsc = true;
   late List<ProjectModel> projects;
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     projects = widget.projects;
   }
@@ -99,6 +100,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                       dio: Dio(BaseOptions(
                                           baseUrl:
                                               "https://tracker-api.toptal.com"))),
+                                  dbUserDataSource: DbUserDataSource(
+                                      database: DBProvider.db.database),
                                 ),
                               ),
                               child: ProjectInfoScreen(

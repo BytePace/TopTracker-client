@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
-import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
 abstract interface class IUserDataSource {
   Future<void> revokeInvite(int invitationID);
 
-  Future<void> addUser(String email, String rate, String role, int id);
+  Future<InvitedDto> addUser(String email, String rate, String role, int id);
 
   Future<void> deleteUser(int projectId, int profileId);
 
@@ -17,8 +16,6 @@ abstract interface class IUserDataSource {
   Future<List<UserInfoDto>> getAllUsers();
 
   Future<List<ProfileIdDto>> getAllProfileID();
-
-  Future<List<UserInfoDto>> checkAllUsers(List<ProfileIdModel> allProfileID);
 }
 
 class NetworkUserDataSource implements IUserDataSource {
@@ -48,18 +45,16 @@ class NetworkUserDataSource implements IUserDataSource {
       String email, String rate, String role, int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
-
     final Map<String, dynamic> userData = {
       "invites": [
         {'email': email, 'rate': rate, 'role': role}
       ],
       "access_token": access_token
     };
-
     final response =
         await _dio.post('/projects/$id/invitations', data: userData);
     if (response.statusCode == 201) {
-      return InvitedDto.fromJson(response.data['invitations']);
+      return InvitedDto.fromJson(response.data['invitations'][0]);
     } else {
       throw Exception();
     }
@@ -114,11 +109,6 @@ class NetworkUserDataSource implements IUserDataSource {
         allUsers[element["id"]] = UserInfoDto.fromJson(element);
       });
     }
-    Map<String, dynamic> jsonMap = {};
-    allUsers.forEach((key, value) {
-      jsonMap[key.toString()] = value.toJson();
-    });
-    prefs.setString("allUser", json.encode(jsonMap));
 
     return allUsers.values.toList();
   }
@@ -136,21 +126,5 @@ class NetworkUserDataSource implements IUserDataSource {
           .add(ProfileIdDto(profileID: element['id'], name: element["label"]));
     });
     return idList;
-  }
-
-  @override
-  Future<List<UserInfoDto>> checkAllUsers(
-      List<ProfileIdModel> allProfileID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final allUsersString = prefs.getString("allUser") ?? "{}";
-
-    List<UserInfoDto> list = [];
-    json.decode(allUsersString).forEach((key, value) {
-      list.add(UserInfoDto.fromJson(value));
-    });
-    if (list.length != allProfileID.length) {
-      return await getAllUsers();
-    }
-    return list;
   }
 }

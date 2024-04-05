@@ -3,6 +3,10 @@ import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 
 List<UserInfoModel> getListUsersOnProject(
     List<UserEngagementsModel> engagements, List<UserModel> allUsers) {
+  print("_-----_");
+  print(engagements);
+  print(allUsers);
+  print("_-----_");
   final List<UserInfoModel> usersOnProject = [];
   for (var userEngagement in engagements) {
     for (var user in allUsers) {

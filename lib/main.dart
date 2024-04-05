@@ -12,6 +12,7 @@ import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/theme.dart';
@@ -33,6 +34,7 @@ void initGetIt() {
       ),
       userRepository: UserRepository(
         networkUserDataSource: NetworkUserDataSource(dio: dio),
+        dbUserDataSource: DbUserDataSource(database: database),
       ),
     ),
   );
@@ -43,6 +45,7 @@ void initGetIt() {
       networkProjectDataSource: NetworkProjectDataSource(dio: dio),
     ),
     userRepository: UserRepository(
+      dbUserDataSource: DbUserDataSource(database: database),
       networkUserDataSource: NetworkUserDataSource(dio: dio),
     ),
   ));

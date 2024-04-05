@@ -58,6 +58,7 @@ class UserEngagementsModel {
       workedTotal: dto.workedTotal,
     );
   }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -91,6 +92,15 @@ class UserModel {
       profileID: dto.profileID,
       name: dto.name,
     );
+  }
+
+  Map<String, dynamic> toMap(int projectID) {
+    return {
+      'profileID': profileID,
+      'name': name,
+      'email': email,
+      "detail_project_id": projectID
+    };
   }
 
   @override
