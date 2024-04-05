@@ -4,8 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:tt_bytepace/src/features/menu/services_provider/project_provider.dart';
-import 'package:tt_bytepace/src/features/menu/models/all_users_model.dart';
+import 'package:tt_bytepace/src/features/menu/services/services_provider/project_provider.dart';
+import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 import 'package:tt_bytepace/src/features/menu/models/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/menu/models/project_model.dart';
 
@@ -18,7 +18,8 @@ void main() {
     test("get projects method", () async {
       List<ProjectModel> projects = await mockProjectServices.getProjects();
       List<ProjectModel> projectsExpect = [
-        const ProjectModel(
+        ProjectModel(
+          currentUser: "admin",
             id: 208305,
             name: "ИПР",
             adminName: "Tatiana Tytar",
@@ -76,18 +77,18 @@ void main() {
         UserEngagementsModel(profileId: 1, workedTotal: 2),
         UserEngagementsModel(profileId: 2, workedTotal: 2)
       ];
-      List<ProfileID> allUsersProfileID = [
-        ProfileID(profileID: 1, name: "name"),
-        ProfileID(profileID: 2, name: "name"),
-        ProfileID(profileID: 3, name: "name"),
-        ProfileID(profileID: 4, name: "name"),
+      List<ProfileIdDto> allUsersProfileID = [
+        ProfileIdDto(profileID: 1, name: "name"),
+        ProfileIdDto(profileID: 2, name: "name"),
+        ProfileIdDto(profileID: 3, name: "name"),
+        ProfileIdDto(profileID: 4, name: "name"),
       ];
       expect(
           mockProjectServices.getListUsersProfileIDOnProject(
               engagements, allUsersProfileID),
           [
-            ProfileID(profileID: 1, name: "name"),
-            ProfileID(profileID: 2, name: "name")
+            ProfileIdDto(profileID: 1, name: "name"),
+            ProfileIdDto(profileID: 2, name: "name")
           ]);
     });
   });
@@ -165,10 +166,10 @@ class MockProjectServices extends ProjectProvider {
   }
 
   @override
-  List<ProfileID> getListUsersProfileIDOnProject(
+  List<ProfileIdDto> getListUsersProfileIDOnProject(
       List<UserEngagementsModel> engagements,
-      List<ProfileID> allUsersProfileID) {
-    final List<ProfileID> usersOnProject = [];
+      List<ProfileIdDto> allUsersProfileID) {
+    final List<ProfileIdDto> usersOnProject = [];
     for (var userEngagement in engagements) {
       for (var user in allUsersProfileID) {
         if (userEngagement.profileId == user.profileID) {

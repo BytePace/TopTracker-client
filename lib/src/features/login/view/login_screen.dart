@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
+import 'package:tt_bytepace/src/resources/colors.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,13 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("login");
-    final viewModel = Provider.of<AuthService>(context);
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     emailController.text = "";
     passwordController.text = "";
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: CustomColors.greyColor[300],
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -29,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 50),
-
                 //logo
                 Icon(
                   Icons.message,
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //welcome message
                 const Text(
-                  "text",
+                  CustomText.welcomeMessageText,
                   style: TextStyle(fontSize: 16),
                 ),
 
@@ -65,31 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
 
                 TextButton(
-                  child: Text("log in"),
+                  child: const Text(CustomText.loginButtonText),
                   onPressed: () {
-                    viewModel.login(
-                        emailController.text, passwordController.text);
+                    authBloc.add(LogInEvent(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context));
                   },
                 ),
-                const SizedBox(height: 20),
-
-                //register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Not a member?"),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Text(
-                        "Register Now",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                )
               ],
             ),
           ),

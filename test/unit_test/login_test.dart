@@ -1,19 +1,19 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:tt_bytepace/src/features/login/models/login_model.dart';
+import 'package:tt_bytepace/src/features/login/models/dto/login_dto.dart';
 import 'package:tt_bytepace/src/features/login/services/auth_service.dart';
 
 void main() {
-  late LoginModel loginModel;
+  late LoginDto loginModel;
 
   setUp(() {
-    loginModel = const LoginModel(
+    loginModel = const LoginDto(
         username: 'name', email: 'email', id: 1, access_token: 'token');
   });
   group("Login test", () {
     test('login_model from json', () {
-      loginModel = LoginModel.fromJson({
+      loginModel = LoginDto.fromJson({
         "access_token":
             "SXBRQ1pwa0dsNUo0TGZxQjZld0JGZGU1ejdGYThXVncyRnoyMUJmL3JobEM5WHZQWVpPcTRlMGJlR0VyQ2szOS0tQkdEMCtxdklaNk0yQThBcXBGMFhyQT09--3bc39e766b3d149fe510571dffbddc9fda1a5ab1",
         "user": {

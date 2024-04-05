@@ -1,29 +1,26 @@
-import 'package:tt_bytepace/src/features/login/models/dto/login_dto.dart';
-
-class LoginModel {
+class LoginDto {
   final int id;
   final String username;
   final String email;
   final String access_token;
 
-  const LoginModel(
+  const LoginDto(
       {required this.id,
       required this.username,
       required this.email,
       required this.access_token});
 
-  factory LoginModel.fromDto(LoginDto dto) {
-    return LoginModel(
-      id: dto.id,
-      username: dto.username,
-      email: dto.email,
-      access_token: dto.access_token,
-    );
+  factory LoginDto.fromJson(Map<String, dynamic> json) {
+    return LoginDto(
+        id: json['user']['id'].toInt(),
+        username: json['user']['name'],
+        email: json['user']['email'],
+        access_token: json['access_token']);
   }
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LoginModel &&
+      other is LoginDto &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           username == other.username &&
