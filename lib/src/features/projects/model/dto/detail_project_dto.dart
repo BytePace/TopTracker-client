@@ -57,6 +57,12 @@ class DetailProjectDto {
       'currentUserRole': currentUserRole
     };
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "$users, $invitations, $id, $name, $engagements, $currentUserRole";
+  }
 }
 
 class UserEngagementsDto {

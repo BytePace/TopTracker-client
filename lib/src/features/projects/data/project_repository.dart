@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
@@ -15,6 +13,8 @@ abstract interface class IProjectRepository {
   Future<List<ProjectModel>> getNetworkProjects();
 
   Future<DetailProjectModel> getDetailProject(int id);
+
+  Future<void> dropDB();
 
   Future<void> restoreProject(BuildContext context, int projectID);
 
@@ -38,8 +38,9 @@ class ProjectRepository implements IProjectRepository {
     var dtos = <ProjectDto>[];
     try {
       dtos = await _dbProjectDataSource.getProjects();
-    } on Exception {
-      throw Exception;
+      
+    } catch (e) {
+      print(e);
     }
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
@@ -68,12 +69,11 @@ class ProjectRepository implements IProjectRepository {
     try {
       dto = await _networkProjectDataSource.getDetailProject(id);
       await _dbProjectDataSource.updateDetailProject(dto);
-    } on SocketException {
-      dto = await _dbProjectDataSource.getDetailProject(id);
-      print("no connection wi fi");
     } catch (e) {
-      print(e);
+      dto = await _dbProjectDataSource.getDetailProject(id);
+      print("no connection wi fi $e");
     }
+    print(dto);
     return DetailProjectModel.fromDto(dto);
   }
 
@@ -109,5 +109,10 @@ class ProjectRepository implements IProjectRepository {
   @override
   Future<void> updateProject(List<ProjectModel> projects) async {
     await _dbProjectDataSource.updateProject(projects);
+  }
+
+  @override
+  Future<void> dropDB() async {
+    await _dbProjectDataSource.dropDB();
   }
 }

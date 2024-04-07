@@ -52,6 +52,10 @@ void initGetIt() {
 
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(
+      projectRepository: ProjectRepository(
+        dbProjectDataSource: DbProjectDataSource(database: database),
+        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+      ),
       authRepository: AuthRepository(
         networkAuthDataSources: NetworkAuthDataSources(dio: dio),
       ),

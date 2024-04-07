@@ -37,7 +37,6 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
         return projects;
       } else {
-        print(response.data);
         print("Ошибка загрузки проектов");
         throw Exception();
       }

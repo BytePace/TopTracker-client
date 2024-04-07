@@ -19,4 +19,8 @@ class DeleteProjectEvent extends ProjectEvent {
   DeleteProjectEvent({required this.id, required this.context});
 }
 
-class UpdateProjectEvent extends ProjectEvent {}
+class UpdateProjectEvent extends ProjectEvent {
+  final BuildContext context;
+
+  UpdateProjectEvent({required this.context});
+}

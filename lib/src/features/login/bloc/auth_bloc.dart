@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
+import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 part 'auth_event.dart';
@@ -9,8 +10,12 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthRepository _authRepository;
-  AuthBloc({required IAuthRepository authRepository})
+  final IProjectRepository _projectRepository;
+  AuthBloc(
+      {required IAuthRepository authRepository,
+      required IProjectRepository projectRepository})
       : _authRepository = authRepository,
+        _projectRepository = projectRepository,
         super(const LoginInitialState(loginModel: null)) {
     on<LogInEvent>(_login);
     on<LogOutEvent>(_logout);
@@ -34,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       Navigator.of(event.context).pop();
       await _authRepository.doLogout();
+      await _projectRepository.dropDB();
     } catch (e) {
       emit(LoginErrorState(error: e.toString()));
     } finally {

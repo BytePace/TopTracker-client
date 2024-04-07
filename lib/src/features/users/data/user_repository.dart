@@ -43,24 +43,11 @@ class UserRepository implements IUserRepository {
       final invite =
           await _networkUserDataSource.addUser(email, rate, role, id);
       _dbUserDataSource.addUser(invite.inviteID, id, invite.name ?? "name");
-      print(invite);
       showCnackBar(context, "Пользователь добавлен");
     } catch (e) {
       print("ошибка добавления пользователя $e");
       showCnackBar(context, "Произошла ошибка ");
     }
-  }
-
-  @override
-  Future<List<UserModel>> updateAllUsers() async {
-    var dtos = <UserInfoDto>[];
-    try {
-      dtos = await _networkUserDataSource.getAllUsers();
-      await _dbUserDataSource.updateAllUsers(dtos);
-    } catch (e) {
-      print("Ошибка получения updateAllUsers $e");
-    }
-    return dtos.map((e) => UserModel.fromDto(e)).toList();
   }
 
   @override
@@ -87,7 +74,7 @@ class UserRepository implements IUserRepository {
     return dtos.map((e) => ProfileIdModel.fromDto(e)).toList();
   }
 
-   @override
+  @override
   Future<List<ProfileIdModel>> updateAllProfileID() async {
     var dtos = <ProfileIdDto>[];
     try {
@@ -99,11 +86,22 @@ class UserRepository implements IUserRepository {
   }
 
   @override
+  Future<List<UserModel>> updateAllUsers() async {
+    var dtos = <UserInfoDto>[];
+    try {
+      dtos = await _networkUserDataSource.getAllUsers();
+      await _dbUserDataSource.updateAllUsers(dtos);
+    } catch (e) {
+      print("Ошибка получения updateAllUsers $e");
+    }
+    return dtos.map((e) => UserModel.fromDto(e)).toList();
+  }
+
+  @override
   Future<List<UserModel>> getAllUsers() async {
     var dtos = <UserInfoDto>[];
     try {
       dtos = await _dbUserDataSource.getAllUsers();
-      print(dtos);
     } catch (e) {
       print("Ошибка получения getAllUsers $e");
     }

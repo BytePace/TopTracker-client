@@ -28,7 +28,7 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Future<void> fetchUpdate() async {
-    projectListBloc.add(UpdateProjectEvent());
+    projectListBloc.add(UpdateProjectEvent(context: context));
   }
 
   @override

@@ -29,7 +29,6 @@ class NetworkUserDataSource implements IUserDataSource {
     String? access_token = prefs.getString("access_token");
 
     final Map<String, dynamic> userData = {'access_token': access_token};
-    print(invitationID);
     final response = await _dio.delete(
       data: userData,
       '/invitations/$invitationID',

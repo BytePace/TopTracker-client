@@ -19,7 +19,8 @@ class DBProvider {
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker37.db";
+    String path = "${dir.path}TopTracker39.db";
+    print(path);
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 

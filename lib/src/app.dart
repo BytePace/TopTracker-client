@@ -29,13 +29,13 @@ class _AppState extends State<App> {
           builder: (BuildContext context, state) {
             if (state is IsLoginState) {
               return const LoginScreen();
-            } else if (state is LoginErrorState) {
-              return Container();
-            } else {
+            } else if (state is LoginSuccessState) {
               return BlocProvider<ProjectBloc>(
                 create: (context) => GetIt.I<ProjectBloc>(),
                 child: const MenuScreen(),
               );
+            } else {
+              return Container();
             }
           },
         ));
