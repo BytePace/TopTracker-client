@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 part 'detail_project_event.dart';
 part 'detail_project_state.dart';
@@ -40,29 +41,47 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
   }
 
   _deleteUser(DeleteUserEvent event, Emitter<DetailProjectState> emit) async {
-    await _userRepository.delUser(
-        event.projectID, event.profileID, event.context);
+    try {
+      await _userRepository.delUser(event.projectID, event.profileID);
 
-    detailProjectModel =
-        await _projectRepository.getDetailProject(event.projectID);
-    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+      detailProjectModel =
+          await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+      showCnackBar(event.context, "Пользователь добавлен");
+    } catch (e) {
+      print("ошибка добавления пользователя $e");
+      showCnackBar(event.context, "Произошла ошибка ");
+    }
   }
 
   _addUser(AddUSerEvent event, Emitter<DetailProjectState> emit) async {
-    await _userRepository.addUser(
-        event.email, event.rate, event.role, event.projectID, event.context);
+    try {
+      await _userRepository.addUser(
+          event.email, event.rate, event.role, event.projectID);
 
-    detailProjectModel =
-        await _projectRepository.getDetailProject(event.projectID);
-    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+      detailProjectModel =
+          await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+      showCnackBar(event.context, "Пользователь удален");
+    } catch (e) {
+      print("ошибка удаления пользователя $e");
+      showCnackBar(event.context, "Произошла ошибка $e");
+    }
   }
 
   _revokeInvite(
       RevokeInviteEvent event, Emitter<DetailProjectState> emit) async {
-    await _userRepository.revokeInvite(event.invitationsID, event.context);
+    try {
+      await _userRepository.revokeInvite(event.invitationsID);
 
-    detailProjectModel =
-        await _projectRepository.getDetailProject(event.projectID);
-    emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+      detailProjectModel =
+          await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
+
+      showCnackBar(event.context, "Приглашение отменено");
+    } catch (e) {
+      print("произошла отмены приглашения ошибка $e");
+      showCnackBar(event.context, "Произошла ошибка");
+    }
   }
 }

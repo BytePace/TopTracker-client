@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 

@@ -1,24 +1,11 @@
-import 'package:sqflite/sqlite_api.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
-abstract interface class ISavableUserDataSource {
-  Future<void> revokeInvite(int invitationID);
-
-  Future<void> addUser(int inviteID, int projectID, String name);
-
-  Future<void> deleteUser(int projectId, int profileId);
-
-  Future<List<UserDto>> getAllUsers();
-
-  Future<void> updateAllUsers(List<UserDto> allUsers);
-
-  Future<List<ProfileIdDto>> getAllProfileID();
-}
-
-class DbUserDataSource implements ISavableUserDataSource {
+class DbUserDataSourceTest implements ISavableUserDataSource {
   final Future<Database> _database;
-  const DbUserDataSource({required Future<Database> database})
+  const DbUserDataSourceTest({required Future<Database> database})
       : _database = database;
 
   @override
@@ -61,7 +48,7 @@ class DbUserDataSource implements ISavableUserDataSource {
     for (var element in detailProjectsMapList) {
       profileIDList.add(ProfileIdDto.fromMap(element));
     }
-
+    print(profileIDList);
     return profileIDList;
   }
 

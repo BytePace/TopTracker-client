@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
-import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
@@ -16,11 +14,11 @@ abstract interface class IProjectRepository {
 
   Future<void> dropDB();
 
-  Future<void> restoreProject(BuildContext context, int projectID);
+  Future<void> restoreProject(int projectID);
 
-  Future<void> deleteProject(BuildContext context, int projectID);
+  Future<void> deleteProject(int projectID);
 
-  Future<void> archiveProject(BuildContext context, int projectID);
+  Future<void> archiveProject(int projectID);
 
   Future<void> updateProject(List<ProjectModel> projects);
 }
@@ -79,32 +77,16 @@ class ProjectRepository implements IProjectRepository {
   }
 
   @override
-  Future<void> restoreProject(BuildContext context, int projectID) async {
-    try {
-      await _networkProjectDataSource.restoreProject(projectID);
+  Future<void> restoreProject(int projectID) async {
+    await _networkProjectDataSource.restoreProject(projectID);
 
-      await _dbProjectDataSource.restoreProject(projectID);
-
-      showCnackBar(context, "Проект разархивирован");
-      Navigator.of(context).pop();
-    } catch (e) {
-      showCnackBar(context, "Произошла ошибка");
-      print("Ошибка разархивирования проекта");
-    }
+    await _dbProjectDataSource.restoreProject(projectID);
   }
 
   @override
-  Future<void> deleteProject(BuildContext context, int projectID) async {
-    try {
-      await _networkProjectDataSource.deleteProject(projectID);
-      await _dbProjectDataSource.deleteProject(projectID);
-
-      showCnackBar(context, "Проект удален");
-      Navigator.of(context).pop();
-    } catch (e) {
-      print("Произошла ошибка при удалении $e");
-      showCnackBar(context, "Произошла ошибка");
-    }
+  Future<void> deleteProject(int projectID) async {
+    await _networkProjectDataSource.deleteProject(projectID);
+    await _dbProjectDataSource.deleteProject(projectID);
   }
 
   @override
@@ -118,16 +100,10 @@ class ProjectRepository implements IProjectRepository {
   }
 
   @override
-  Future<void> archiveProject(BuildContext context, int projectID) async {
+  Future<void> archiveProject(int projectID) async {
     try {
       await _networkProjectDataSource.archiveProject(projectID);
       await _dbProjectDataSource.archiveProject(projectID);
-
-      showCnackBar(context, "Проект архивирован");
-      Navigator.of(context).pop();
-    } catch (e) {
-      print("Произошла ошибка при удалении $e");
-      showCnackBar(context, "Произошла ошибка");
-    }
+    } catch (e) {}
   }
 }

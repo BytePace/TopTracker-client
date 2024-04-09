@@ -82,27 +82,48 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
   _onRestoreProject(
       RestoreProjectEvent event, Emitter<ProjectState> emit) async {
-    await _projectRepository.restoreProject(event.context, event.id);
-    projects = await _projectRepository.getProjects();
-    allProfileID = await _userRepository.getAllProfileID();
-    allUser = await _userRepository.getAllUsers();
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
+    try {
+      await _projectRepository.restoreProject(event.id);
+      showCnackBar(event.context, "Проект разархивирован");
+      Navigator.of(event.context).pop();
+      projects = await _projectRepository.getProjects();
+      allProfileID = await _userRepository.getAllProfileID();
+      allUser = await _userRepository.getAllUsers();
+      emit(ProjectListLoaded(
+          allUser: allUser, projects: projects, allProfileID: allProfileID));
+    } catch (e) {
+      print("Произошла ошибка при разахривации $e");
+      showCnackBar(event.context, "Произошла ошибка");
+    }
   }
 
   _onDeleteProject(DeleteProjectEvent event, Emitter<ProjectState> emit) async {
-    projects.removeWhere((element) => element.id == event.id);
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
-    _projectRepository.deleteProject(event.context, event.id);
+    try {
+      _projectRepository.deleteProject(event.id);
+      projects.removeWhere((element) => element.id == event.id);
+      emit(ProjectListLoaded(
+          allUser: allUser, projects: projects, allProfileID: allProfileID));
+      showCnackBar(event.context, "Проект удален");
+      Navigator.of(event.context).pop();
+    } catch (e) {
+      print("Произошла ошибка при удалении $e");
+      showCnackBar(event.context, "Произошла ошибка");
+    }
   }
 
   _archiveProject(ArchiveProjectEvent event, Emitter<ProjectState> emit) async {
-    await _projectRepository.archiveProject(event.context, event.id);
-    projects = await _projectRepository.getProjects();
-    allProfileID = await _userRepository.getAllProfileID();
-    allUser = await _userRepository.getAllUsers();
-    emit(ProjectListLoaded(
-        allUser: allUser, projects: projects, allProfileID: allProfileID));
+    try {
+      await _projectRepository.archiveProject(event.id);
+      projects = await _projectRepository.getProjects();
+      allProfileID = await _userRepository.getAllProfileID();
+      allUser = await _userRepository.getAllUsers();
+      emit(ProjectListLoaded(
+          allUser: allUser, projects: projects, allProfileID: allProfileID));
+      showCnackBar(event.context, "Проект архивирован");
+      Navigator.of(event.context).pop();
+    } catch (e) {
+      print("Произошла ошибка при архивации $e");
+      showCnackBar(event.context, "Произошла ошибка");
+    }
   }
 }

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+
 import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
-import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
@@ -8,12 +7,11 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
 abstract interface class IUserRepository {
-  Future<void> revokeInvite(int invitationID, BuildContext context);
+  Future<void> revokeInvite(int invitationID);
 
-  Future<void> addUser(
-      String email, String rate, String role, int id, BuildContext context);
+  Future<void> addUser(String email, String rate, String role, int id);
 
-  Future<void> delUser(int projectId, int profileId, BuildContext context);
+  Future<void> delUser(int projectId, int profileId);
 
   Future<List<int>> getProjectsID();
 
@@ -37,30 +35,25 @@ class UserRepository implements IUserRepository {
         _dbUserDataSource = dbUserDataSource;
 
   @override
-  Future<void> addUser(String email, String rate, String role, int id,
-      BuildContext context) async {
+  Future<void> addUser(
+    String email,
+    String rate,
+    String role,
+    int id,
+  ) async {
     try {
       final invite =
           await _networkUserDataSource.addUser(email, rate, role, id);
       _dbUserDataSource.addUser(invite.inviteID, id, invite.name ?? "name");
-      showCnackBar(context, "Пользователь добавлен");
     } catch (e) {
       print("ошибка добавления пользователя $e");
-      showCnackBar(context, "Произошла ошибка ");
     }
   }
 
   @override
-  Future<void> delUser(
-      int projectId, int profileId, BuildContext context) async {
-    try {
-      await _networkUserDataSource.deleteUser(projectId, profileId);
-      await _dbUserDataSource.deleteUser(projectId, profileId);
-      showCnackBar(context, "Пользователь удален");
-    } catch (e) {
-      print("ошибка удаления пользователя $e");
-      showCnackBar(context, "Произошла ошибка $e");
-    }
+  Future<void> delUser(int projectId, int profileId) async {
+    await _networkUserDataSource.deleteUser(projectId, profileId);
+    await _dbUserDataSource.deleteUser(projectId, profileId);
   }
 
   @override
@@ -120,14 +113,12 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<void> revokeInvite(int invitationID, BuildContext context) async {
+  Future<void> revokeInvite(int invitationID) async {
     try {
       await _networkUserDataSource.revokeInvite(invitationID);
       await _dbUserDataSource.revokeInvite(invitationID);
-      showCnackBar(context, "Приглашение отменено");
     } catch (e) {
       print("произошла отмены приглашения ошибка $e");
-      showCnackBar(context, "Произошла ошибка");
     }
   }
 }
