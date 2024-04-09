@@ -9,9 +9,9 @@ abstract interface class ISavableUserDataSource {
 
   Future<void> deleteUser(int projectId, int profileId);
 
-  Future<List<UserInfoDto>> getAllUsers();
+  Future<List<UserDto>> getAllUsers();
 
-  Future<void> updateAllUsers(List<UserInfoDto> allUsers);
+  Future<void> updateAllUsers(List<UserDto> allUsers);
 
   Future<List<ProfileIdDto>> getAllProfileID();
 }
@@ -42,7 +42,7 @@ class DbUserDataSource implements ISavableUserDataSource {
     );
     await database.delete(
       'UserInfo',
-      where: 'detail_project_id = ? AND profile_id = ?',
+      where: 'detail_project_id = ? AND userID = ?',
       whereArgs: [projectId, profileId],
     );
     await database.delete(
@@ -68,13 +68,13 @@ class DbUserDataSource implements ISavableUserDataSource {
   }
 
   @override
-  Future<List<UserInfoDto>> getAllUsers() async {
+  Future<List<UserDto>> getAllUsers() async {
     final database = await _database;
-    List<UserInfoDto> projectList = [];
+    List<UserDto> projectList = [];
     final List<Map<String, dynamic>> detailProjectsMapList =
         await database.query("Users", distinct: true);
     for (var element in detailProjectsMapList) {
-      projectList.add(UserInfoDto.fromMap(element));
+      projectList.add(UserDto.fromMap(element));
     }
 
     //await database.close();
@@ -93,19 +93,22 @@ class DbUserDataSource implements ISavableUserDataSource {
   }
 
   @override
-  Future<void> updateAllUsers(List<UserInfoDto> allUsers) async {
-    final database = await _database;
-    final batch = database.batch();
-    batch.delete("Users");
-    await batch.commit();
-    for (var user in allUsers) {
-      batch.insert('Users', {
-        "profile_id": user.profileID,
-        "name": user.name,
-        "email": user.email
-      });
+  Future<void> updateAllUsers(List<UserDto> allUsers) async {
+    try {
+      final database = await _database;
+      final batch = database.batch();
+      batch.delete("Users");
+      await batch.commit();
+      for (var user in allUsers) {
+        batch.insert('Users', {
+          "profile_id": user.userID,
+          "name": user.name,
+          "email": user.email
+        });
+      }
+      await batch.commit();
+    } on Exception {
+      throw Exception();
     }
-    await batch.commit();
   }
-
 }

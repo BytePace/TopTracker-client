@@ -2,7 +2,7 @@ class DetailProjectDto {
   final int id;
   final String name;
   final String currentUserRole;
-  final List<UserInfoDto> users;
+  final List<UserDto> users;
   final List<InvitedDto> invitations;
   final List<UserEngagementsDto> engagements;
 
@@ -16,8 +16,8 @@ class DetailProjectDto {
   });
 
   factory DetailProjectDto.fromJson(Map<String, dynamic> json) {
-    final List<UserInfoDto> users = [];
-    json["users"].forEach((json) => {users.add(UserInfoDto.fromJson(json))});
+    final List<UserDto> users = [];
+    json["users"].forEach((json) => {users.add(UserDto.fromJson(json))});
 
     final List<UserEngagementsDto> engagements = [];
     json["engagements"].forEach(
@@ -38,7 +38,7 @@ class DetailProjectDto {
 
   factory DetailProjectDto.fromMap(
       Map<String, dynamic> map,
-      List<UserInfoDto> users,
+      List<UserDto> users,
       List<InvitedDto> invitations,
       List<UserEngagementsDto> engagements) {
     return DetailProjectDto(
@@ -67,16 +67,18 @@ class DetailProjectDto {
 
 class UserEngagementsDto {
   final int profileId;
+  final int userID;
   final int workedTotal;
 
-  UserEngagementsDto({
-    required this.profileId,
-    required this.workedTotal,
-  });
+  UserEngagementsDto(
+      {required this.profileId,
+      required this.workedTotal,
+      required this.userID});
 
   Map<String, dynamic> toMap(int projectID) {
     return {
       'user_engagaments_id': profileId,
+      'userID': userID,
       'workedTotal': workedTotal,
       "detail_project_id": projectID
     };
@@ -85,12 +87,14 @@ class UserEngagementsDto {
   factory UserEngagementsDto.fromJson(Map<String, dynamic> json) {
     return UserEngagementsDto(
       profileId: json['profile_id'].toInt(),
+      userID: json['user_id'].toInt(),
       workedTotal: json['stats']['worked_total'].toInt(),
     );
   }
 
   factory UserEngagementsDto.fromMap(Map<String, dynamic> map) {
     return UserEngagementsDto(
+      userID: map['userID'],
       profileId: map['user_engagaments_id'],
       workedTotal: map['workedTotal'],
     );
@@ -115,35 +119,35 @@ class UserEngagementsDto {
   }
 }
 
-class UserInfoDto {
-  final int profileID;
+class UserDto {
+  final int userID;
   final String name;
   final String email;
 
-  UserInfoDto(
-      {required this.profileID, required this.name, required this.email});
+  UserDto({required this.userID, required this.name, required this.email});
 
-  factory UserInfoDto.fromJson(Map<String, dynamic> json) {
-    return UserInfoDto(
+  factory UserDto.fromJson(Map<String, dynamic> json) {
+    return UserDto(
       email: json['email'],
-      profileID: json['id'].toInt(),
+      userID: json['id'].toInt(),
       name: json['name'],
     );
   }
 
+
   Map<String, dynamic> toMap(int projectID) {
     return {
-      'profile_id': profileID,
+      'userID': userID,
       'name': name,
       'email': email,
       "detail_project_id": projectID
     };
   }
 
-  factory UserInfoDto.fromMap(Map<String, dynamic> map) {
-    return UserInfoDto(
+  factory UserDto.fromMap(Map<String, dynamic> map) {
+    return UserDto(
       email: map['email'],
-      profileID: map['profile_id'],
+      userID: map['profile_id'],
       name: map['name'],
     );
   }
@@ -151,7 +155,7 @@ class UserInfoDto {
   Map<String, dynamic> toJson() {
     return {
       "email": email,
-      "id": profileID,
+      "id": userID,
       "name": name,
     };
   }
@@ -160,20 +164,20 @@ class UserInfoDto {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserInfoDto &&
-        other.profileID == profileID &&
+    return other is UserDto &&
+        other.userID == userID &&
         other.name == name &&
         other.email == email;
   }
 
   @override
   int get hashCode {
-    return profileID.hashCode ^ name.hashCode ^ email.hashCode;
+    return userID.hashCode ^ name.hashCode ^ email.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserModel{profileID: $profileID, name: $name}';
+    return 'UserModel{profileID: $userID, name: $name}';
   }
 }
 

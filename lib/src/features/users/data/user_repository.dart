@@ -58,7 +58,7 @@ class UserRepository implements IUserRepository {
       await _dbUserDataSource.deleteUser(projectId, profileId);
       showCnackBar(context, "Пользователь удален");
     } catch (e) {
-      print("ошибка удаления пользователя");
+      print("ошибка удаления пользователя $e");
       showCnackBar(context, "Произошла ошибка $e");
     }
   }
@@ -87,7 +87,7 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<List<UserModel>> updateAllUsers() async {
-    var dtos = <UserInfoDto>[];
+    var dtos = <UserDto>[];
     try {
       dtos = await _networkUserDataSource.getAllUsers();
       await _dbUserDataSource.updateAllUsers(dtos);
@@ -99,7 +99,7 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<List<UserModel>> getAllUsers() async {
-    var dtos = <UserInfoDto>[];
+    var dtos = <UserDto>[];
     try {
       dtos = await _dbUserDataSource.getAllUsers();
     } catch (e) {

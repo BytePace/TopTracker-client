@@ -13,7 +13,7 @@ abstract interface class IUserDataSource {
 
   Future<List<int>> getProjectsID();
 
-  Future<List<UserInfoDto>> getAllUsers();
+  Future<List<UserDto>> getAllUsers();
 
   Future<List<ProfileIdDto>> getAllProfileID();
 }
@@ -95,17 +95,17 @@ class NetworkUserDataSource implements IUserDataSource {
   }
 
   @override
-  Future<List<UserInfoDto>> getAllUsers() async {
+  Future<List<UserDto>> getAllUsers() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? access_token = prefs.getString("access_token");
 
     final List<int> listProjectIDs = await getProjectsID();
-    final Map<int, UserInfoDto> allUsers = {};
+    final Map<int, UserDto> allUsers = {};
     for (int i = 0; i < listProjectIDs.length; i++) {
       final response2 = await _dio.get(
           '/projects/${listProjectIDs[i]}/engagements?access_token=$access_token&archived=true');
       response2.data['workers'].forEach((element) {
-        allUsers[element["id"]] = UserInfoDto.fromJson(element);
+        allUsers[element["id"]] = UserDto.fromJson(element);
       });
     }
 

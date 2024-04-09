@@ -20,6 +20,8 @@ abstract interface class IProjectRepository {
 
   Future<void> deleteProject(BuildContext context, int projectID);
 
+  Future<void> archiveProject(BuildContext context, int projectID);
+
   Future<void> updateProject(List<ProjectModel> projects);
 }
 
@@ -38,7 +40,6 @@ class ProjectRepository implements IProjectRepository {
     var dtos = <ProjectDto>[];
     try {
       dtos = await _dbProjectDataSource.getProjects();
-      
     } catch (e) {
       print(e);
     }
@@ -114,5 +115,19 @@ class ProjectRepository implements IProjectRepository {
   @override
   Future<void> dropDB() async {
     await _dbProjectDataSource.dropDB();
+  }
+
+  @override
+  Future<void> archiveProject(BuildContext context, int projectID) async {
+    try {
+      await _networkProjectDataSource.archiveProject(projectID);
+      await _dbProjectDataSource.archiveProject(projectID);
+
+      showCnackBar(context, "Проект архивирован");
+      Navigator.of(context).pop();
+    } catch (e) {
+      print("Произошла ошибка при удалении $e");
+      showCnackBar(context, "Произошла ошибка");
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/data/data_sources/auth_data_sources.dart';
+import 'package:tt_bytepace/src/features/profile/data/data_sources/profile_data_sources.dart';
+import 'package:tt_bytepace/src/features/profile/data/profile_repository.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 
@@ -61,6 +63,10 @@ void initGetIt() {
       ),
     ),
   );
+
+  GetIt.I.registerSingleton<ProfileRepository>(ProfileRepository(
+    networkProfileDataSources: NetworkProfileDataSources(dio: dio),
+  ));
 }
 
 class MainApp extends StatefulWidget {

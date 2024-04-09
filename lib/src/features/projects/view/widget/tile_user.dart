@@ -26,13 +26,16 @@ class UserTile extends StatelessWidget {
           Text(allUsers[index].name,
               style: Theme.of(context).textTheme.bodyMedium),
           Text(
-              "Total hours: ${(allUsers[index].workedTotal / 60 / 60).round()}"),
+              "Total hours: ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [
                     PopupMenuItem<int>(
                       value: 0,
-                      child: Text("Delete user", style: Theme.of(context).textTheme.bodyMedium,),
+                      child: Text(
+                        "Delete user",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                   ];
                 }, onSelected: (value) {
@@ -55,7 +58,8 @@ class UserTile extends StatelessWidget {
                                   },
                                   child: Text(
                                     "Delete",
-                                    style: Theme.of(context).textTheme.labelMedium,
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
                                   )),
                             ));
                   }

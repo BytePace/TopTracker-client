@@ -13,6 +13,8 @@ abstract interface class ISavableProjectDataSource {
 
   Future<void> deleteProject(int projectID);
 
+  Future<void> archiveProject(int projectID);
+
   Future<void> dropDB();
 
   Future<void> updateProject(List<ProjectModel> projects);
@@ -29,7 +31,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
   Future<DetailProjectDto> getDetailProject(int id) async {
     final database = await _database;
     const keyArg = "detail_project_id = ?";
-    print(id);
 
     DetailProjectDto detailProjectsList = const DetailProjectDto(
       users: [],
@@ -42,38 +43,32 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
     final List<UserEngagementsDto> userEngagementsDto = [];
     final List<InvitedDto> invitations = [];
-    final List<UserInfoDto> userInfo = [];
-    try {
-      final List<Map<String, dynamic>> detailProjectsMapList =
-          await database.query("DetailProject", where: keyArg, whereArgs: [id]);
-      print("                ");
-      print(detailProjectsMapList);
-      for (var project in detailProjectsMapList) {
-        final List<Map<String, dynamic>> userInfoMapList =
-            await database.query("UserInfo", where: keyArg, whereArgs: [id]);
-        for (var info in userInfoMapList) {
-          userInfo.add(UserInfoDto.fromMap(info));
-        }
+    final List<UserDto> userInfo = [];
 
-        final List<Map<String, dynamic>> userEngagementsMapList = await database
-            .query("UserEngagements", where: keyArg, whereArgs: [id]);
-        for (var info in userEngagementsMapList) {
-          userEngagementsDto.add(UserEngagementsDto.fromMap(info));
-        }
-
-        final List<Map<String, dynamic>> invitesMapList =
-            await database.query("Invites", where: keyArg, whereArgs: [id]);
-        for (var info in invitesMapList) {
-          invitations.add(InvitedDto.fromMap(info));
-        }
-
-        detailProjectsList = DetailProjectDto.fromMap(
-            project, userInfo, invitations, userEngagementsDto);
+    final List<Map<String, dynamic>> detailProjectsMapList =
+        await database.query("DetailProject", where: keyArg, whereArgs: [id]);
+    for (var project in detailProjectsMapList) {
+      final List<Map<String, dynamic>> userInfoMapList =
+          await database.query("UserInfo", where: keyArg, whereArgs: [id]);
+      for (var info in userInfoMapList) {
+        userInfo.add(UserDto.fromMap(info));
       }
-    } catch (e) {
-      print(e);
+
+      final List<Map<String, dynamic>> userEngagementsMapList = await database
+          .query("UserEngagements", where: keyArg, whereArgs: [id]);
+      for (var info in userEngagementsMapList) {
+        userEngagementsDto.add(UserEngagementsDto.fromMap(info));
+      }
+
+      final List<Map<String, dynamic>> invitesMapList =
+          await database.query("Invites", where: keyArg, whereArgs: [id]);
+      for (var info in invitesMapList) {
+        invitations.add(InvitedDto.fromMap(info));
+      }
+
+      detailProjectsList = DetailProjectDto.fromMap(
+          project, userInfo, invitations, userEngagementsDto);
     }
-    print(detailProjectsList);
     return detailProjectsList;
   }
 
@@ -115,7 +110,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<List<ProjectDto>> getProjects() async {
-    
     final database = await _database;
     const keyArg = "detail_project_id = ?";
 
@@ -171,35 +165,39 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<void> updateDetailProject(DetailProjectDto detailProjects) async {
-    try {
-      final database = await _database;
-      final batch = database.batch();
-
-      batch.delete("Invites",
-          where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
-      batch.delete("UserEngagements",
-          where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
-      batch.delete("UserInfo",
-          where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
-      batch.delete("DetailProject",
-          where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
-      await batch.commit();
-      batch.insert('DetailProject', detailProjects.toMap());
-      for (var user in detailProjects.users) {
-        batch.insert('UserInfo', user.toMap(detailProjects.id));
-      }
-      for (var invite in detailProjects.invitations) {
-        batch.insert('Invites', invite.toMap(detailProjects.id));
-      }
-      for (var userEngagement in detailProjects.engagements) {
-        batch.insert(
-            'UserEngagements', userEngagement.toMap(detailProjects.id));
-      }
-
-      await batch.commit();
-    } catch (e) {
-      print(e);
+    final database = await _database;
+    final batch = database.batch();
+    batch.delete("DetailProject",
+        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+    batch.delete("Invites",
+        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+    batch.delete("UserEngagements",
+        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+    await batch.commit();
+    batch.insert('DetailProject', detailProjects.toMap());
+    for (var user in detailProjects.users) {
+      batch.insert('UserInfo', user.toMap(detailProjects.id));
     }
+    for (var invite in detailProjects.invitations) {
+      batch.insert('Invites', invite.toMap(detailProjects.id));
+    }
+    for (var userEngagement in detailProjects.engagements) {
+      batch.insert('UserEngagements', userEngagement.toMap(detailProjects.id));
+    }
+
+    await batch.commit();
+  }
+
+  @override
+  Future<void> archiveProject(int projectID) async {
+    final database = await _database;
+    await database.update(
+      'Projects',
+      {'archivedAt': DateTime.now().toString()},
+      where: 'id = ?',
+      whereArgs: [projectID],
+    );
+    //await database.close();
   }
 
   @override

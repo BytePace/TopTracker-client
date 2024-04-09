@@ -15,24 +15,31 @@ class AllUsersList extends StatelessWidget {
       children: [
         Text("Все пользователи",
             style: Theme.of(context).textTheme.headlineMedium),
-        Column(
-          children: List.generate(
-            allUsers.length,
-            (index) => Padding(
-              padding: const EdgeInsets.all(4),
-              child: OutlinedButton(
-                onPressed: () {
-                  BlocProvider.of<DetailProjectBloc>(context).add(AddUSerEvent(
-                      email: allUsers[index].email,
-                      role: "worker",
-                      rate: "",
-                      projectID: id,
-                      context: context));
-                },
-                child: ListTile(
-                  dense: true,
-                  title: Text(allUsers[index].name),
-                  trailing: const Icon(Icons.add),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            children: List.generate(
+              allUsers.length,
+              (index) => Padding(
+                padding: const EdgeInsets.all(4),
+                child: OutlinedButton(
+                  onPressed: () {
+                    allUsers[0].userID == 0
+                        ? ""
+                        : BlocProvider.of<DetailProjectBloc>(context).add(
+                            AddUSerEvent(
+                                email: allUsers[index].email,
+                                role: "worker",
+                                rate: "",
+                                projectID: id,
+                                context: context));
+                  },
+                  child: ListTile(
+                    dense: true,
+                    title: Text(allUsers[index].name),
+                    subtitle: Text(allUsers[index].userID.toString()),
+                    trailing: const Icon(Icons.add),
+                  ),
                 ),
               ),
             ),

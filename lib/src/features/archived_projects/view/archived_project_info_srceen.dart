@@ -88,7 +88,8 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         builder: (context, state) {
           if (state is DetailProjectListLoaded) {
             final allUsers = getListUsersOnProject(
-                state.detailProjectModel.engagements, widget.allUsers);
+                state.detailProjectModel.engagements,
+                state.detailProjectModel.users);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: ListView(
@@ -96,10 +97,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                   Card(
                     child: Column(
                       children: List.generate(
-                          getListUsersOnProject(
-                                  state.detailProjectModel.engagements,
-                                  widget.allUsers)
-                              .length,
+                          allUsers.length,
                           (index) => UserTileArchived(
                                 index: index,
                                 allUsers: allUsers,
