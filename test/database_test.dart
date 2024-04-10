@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBProviderTest {
   DBProviderTest._();
@@ -20,6 +20,10 @@ class DBProviderTest {
   }
 
   Future<Database> _initDb() async {
+    // Инициализация FFI базы данных sqflite
+    sqfliteFfiInit();
+    // Установка databaseFactory для FFI
+    databaseFactory = databaseFactoryFfi;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
             const MethodChannel('plugins.flutter.io/path_provider'),
@@ -28,6 +32,7 @@ class DBProviderTest {
     });
     Directory dir = await getApplicationDocumentsDirectory();
     String path = "${dir.path}TopTracker.db";
+    print("db init");
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 

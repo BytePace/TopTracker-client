@@ -18,7 +18,6 @@ import 'package:tt_bytepace/src/resources/text.dart';
 
 import '../../users/data/user_repository.dart';
 
-
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
   final List<UserModel> allUsers;
@@ -47,6 +46,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
             children: [
               Expanded(
                 child: TextField(
+                  key: const Key('searchTextField'),
                   decoration: const InputDecoration(
                     hintText: CustomText.hintSearchProjectText,
                   ),
@@ -85,36 +85,37 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BlocProvider<DetailProjectBloc>(
-                                create: (context) => DetailProjectBloc(
-                                  projectRepository: ProjectRepository(
-                                    dbProjectDataSource:
-                                        DbProjectDataSource(
-                                            database:
-                                                DBProvider.db.database),
-                                    networkProjectDataSource:
-                                        NetworkProjectDataSource(
-                                            dio: Dio(BaseOptions(
-                                                baseUrl:
-                                                    "https://tracker-api.toptal.com"))),
-                                  ),
-                                  userRepository: UserRepository(
-                                    networkUserDataSource:
-                                        NetworkUserDataSource(
-                                            dio: Dio(BaseOptions(
-                                                baseUrl:
-                                                    "https://tracker-api.toptal.com"))),
-                                    dbUserDataSource: DbUserDataSource(
-                                        database: DBProvider.db.database),
-                                  ),
-                                ),
-                                child: ProjectInfoScreen(
-                                  role: projects[index].currentUser,
-                                  id: projects[index].id,
-                                  name: projects[index].name,
-                                  allUsers: widget.allUsers,
-                                ),
-                              )));
+                              builder: (context) =>
+                                  BlocProvider<DetailProjectBloc>(
+                                    create: (context) => DetailProjectBloc(
+                                      projectRepository: ProjectRepository(
+                                        dbProjectDataSource:
+                                            DbProjectDataSource(
+                                                database:
+                                                    DBProvider.db.database),
+                                        networkProjectDataSource:
+                                            NetworkProjectDataSource(
+                                                dio: Dio(BaseOptions(
+                                                    baseUrl:
+                                                        "https://tracker-api.toptal.com"))),
+                                      ),
+                                      userRepository: UserRepository(
+                                        networkUserDataSource:
+                                            NetworkUserDataSource(
+                                                dio: Dio(BaseOptions(
+                                                    baseUrl:
+                                                        "https://tracker-api.toptal.com"))),
+                                        dbUserDataSource: DbUserDataSource(
+                                            database: DBProvider.db.database),
+                                      ),
+                                    ),
+                                    child: ProjectInfoScreen(
+                                      role: projects[index].currentUser,
+                                      id: projects[index].id,
+                                      name: projects[index].name,
+                                      allUsers: widget.allUsers,
+                                    ),
+                                  )));
                     },
                     projectModel: projects[index]);
               },

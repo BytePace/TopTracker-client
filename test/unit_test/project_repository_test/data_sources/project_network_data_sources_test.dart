@@ -20,7 +20,7 @@ class NetworkProjectDataSourceTest implements IProjectDataSource {
             "admin_profile": {
               "name": "Tatiana Tytar",
             },
-            "created_at": "1",
+            "created_at": "2018-04-06T12:56:24+06:00",
             "engagement_ids": [1],
           }
         ]

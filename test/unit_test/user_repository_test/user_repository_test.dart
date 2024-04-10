@@ -8,7 +8,6 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
 import '../../database_test.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'data_sources/user_db_data_source_test.dart';
 import 'data_sources/user_network_data_sources_test.dart';
@@ -18,10 +17,6 @@ void main() {
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    // Инициализация FFI базы данных sqflite
-    sqfliteFfiInit();
-    // Установка databaseFactory для FFI
-    databaseFactory = databaseFactoryFfi;
     userRepositoryTest = UserRepositoryTest(
         networkUserDataSource: NetworkUserDataSourceTest(),
         dbUserDataSource:
@@ -53,7 +48,7 @@ void main() {
       final database = await DBProviderTest.db.database;
       await userRepositoryTest.addUser("", "", "", 0);
       final users = await database
-          .query("Invites", where: "invite_id = ?", whereArgs: [10]);
+          .query("Invites", where: 'invite_id = ?', whereArgs: [10]);
       expect(users.isNotEmpty,
           true); //получаем приглашение если оно есть то правильно
     });
@@ -70,7 +65,7 @@ void main() {
       await userRepositoryTest.delUser(1, 1);
       final users = await database.query(
         'Users',
-        where: 'profile_id = ? or ',
+        where: 'profile_id = ?',
         whereArgs: [1],
       );
       expect(users.isEmpty,
@@ -79,7 +74,7 @@ void main() {
     test(' get all profile id', () async {
       final response = await userRepositoryTest.getProjectsID();
 
-      expect(response, [1]); 
+      expect(response, [1]);
     });
   });
 }

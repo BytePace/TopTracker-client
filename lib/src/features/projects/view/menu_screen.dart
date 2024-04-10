@@ -27,6 +27,7 @@ class _MenuScreenState extends State<MenuScreen> {
   void initState() {
     super.initState();
     projectListBloc.add(LoadProjectEvent());
+    print("loadnig prohect");
   }
 
   Future<void> _fetchUpdate() async {
@@ -80,6 +81,7 @@ class _MenuScreenState extends State<MenuScreen> {
               }
             },
             listener: (BuildContext context, ProjectState state) {
+              print(state);
               if (state is ProjectListLoaded) {
                 setState(() {
                   _projects = state.projects;

@@ -92,10 +92,14 @@ class DbProjectDataSourceTest implements ISavableProjectDataSource {
 
   @override
   Future<List<ProjectDto>> getProjects() async {
+    print("get db");
     final database = await _database;
+    print("get db");
     const keyArg = "detail_project_id = ?";
+    print("get db");
 
     List<ProjectDto> projectList = [];
+    print("get db");
 
     final List<Map<String, dynamic>> projectsMapList =
         await database.query("Projects");
@@ -113,6 +117,7 @@ class DbProjectDataSourceTest implements ISavableProjectDataSource {
       projectList.add(ProjectDto.fromMap(project, list));
     }
     //await database.close();
+    print(projectList);
     return projectList;
   }
 

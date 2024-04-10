@@ -16,8 +16,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   void initState() {
-    GetIt.I<AuthBloc>().add(InitialEvent());
     super.initState();
+    GetIt.I<AuthBloc>().add(InitialEvent());
+    
   }
 
   @override

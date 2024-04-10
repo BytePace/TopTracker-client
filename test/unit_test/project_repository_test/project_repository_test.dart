@@ -8,7 +8,7 @@ import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import '../../database_test.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 import 'data_sources/project_db_data_sources_test.dart';
 import 'data_sources/project_network_data_sources_test.dart';
 
@@ -17,10 +17,6 @@ void main() {
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    // Инициализация FFI базы данных sqflite
-    sqfliteFfiInit();
-    // Установка databaseFactory для FFI
-    databaseFactory = databaseFactoryFfi;
     projectRepositoryTest = ProjectRepositoryTest(
         networkProjectDataSource: NetworkProjectDataSourceTest(),
         dbProjectDataSource:
@@ -146,10 +142,12 @@ class ProjectRepositoryTest implements IProjectRepository {
   Future<List<ProjectModel>> getProjects() async {
     var dtos = <ProjectDto>[];
     try {
+      print("gets [prprp]");
       dtos = await _dbProjectDataSource.getProjects();
     } catch (e) {
       print(e);
     }
+    print(dtos.map((e) => ProjectModel.fromDto(e)).toList());
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
 
