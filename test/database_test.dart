@@ -1,8 +1,6 @@
-import 'dart:io';
-
+import 'package:path/path.dart' as p;
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBProviderTest {
@@ -30,8 +28,8 @@ class DBProviderTest {
             (MethodCall methodCall) async {
       return '.';
     });
-    Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker.db";
+    var databasesPath = await getDatabasesPath();
+    String path = p.join(databasesPath, 'TrackerToptal.db');
     print("db init");
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }

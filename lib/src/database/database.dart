@@ -1,7 +1,6 @@
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DBProvider {
   DBProvider._();
@@ -18,8 +17,8 @@ class DBProvider {
   }
 
   Future<Database> _initDb() async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker41.db";
+    var databasesPath = await getDatabasesPath();
+    String path = p.join(databasesPath, 'TrackerToptal.db');
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -31,7 +30,7 @@ class DBProvider {
         )
       ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE Users(
           profile_id INTEGER primary key,
           name text,

@@ -21,6 +21,7 @@ import 'package:tt_bytepace/src/resources/theme.dart';
 import 'package:sqflite/sqflite.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
   initGetIt();
 }
