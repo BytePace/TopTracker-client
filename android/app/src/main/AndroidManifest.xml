@@ -3,7 +3,7 @@
 
     <application
 
-        android:label="tt_bytepace"
+        android:label="TopTracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
