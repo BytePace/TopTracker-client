@@ -43,8 +43,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Restore project",
-        content: "Are you sure want to archive this project?",
+        title: CustomText.archiveProject,
+        content: CustomText.wantArchiveProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -52,7 +52,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                   .add(ArchiveProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              "Archive",
+              CustomText.archive,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -64,8 +64,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Delete project",
-        content: "Are you sure want to delete this project?",
+        title: CustomText.deleteProject,
+        content: CustomText.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -73,7 +73,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                   .add(DeleteProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              "Delete",
+              CustomText.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -115,13 +115,12 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                               children: [
                                 OutlinedButton(
                                     onPressed: _archiveProject,
-                                    child: const Text(CustomText
-                                        .archiveProjectOutlinedButtonText)),
+                                    child:
+                                        const Text(CustomText.archiveProject)),
                                 const SizedBox(height: 16),
                                 OutlinedButton(
                                     onPressed: _deleteProject,
-                                    child: const Text(CustomText
-                                        .deleteProjectOutlinedButtonText))
+                                    child: const Text(CustomText.deleteProject))
                               ],
                             )
                           : Container(),

@@ -23,6 +23,7 @@ class ProfileRepository implements IProfileRepository {
     } catch (e) {
       print(e);
     }
+    print(dto);
     return UserInfoModel.fromDto(dto);
   }
 }

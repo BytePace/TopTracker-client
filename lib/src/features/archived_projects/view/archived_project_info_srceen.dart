@@ -40,8 +40,8 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Restore project",
-        content: "Are you sure want to restore this project?",
+        title: CustomText.restoreProject,
+        content: CustomText.wantRestoreProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -49,7 +49,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                   .add(RestoreProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              "Restore",
+              CustomText.restore,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -61,8 +61,8 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Delete project",
-        content: "Are you sure want to delete this project?",
+        title: CustomText.deleteProject,
+        content: CustomText.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -70,7 +70,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                   .add(DeleteProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              "Delete",
+              CustomText.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -112,12 +112,12 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                             OutlinedButton(
                                 onPressed: _restoreProject,
                                 child: const Text(CustomText
-                                    .restoreProjectOutlinedButtonText)),
+                                    .restoreProject)),
                             const SizedBox(height: 16),
                             OutlinedButton(
                                 onPressed: _deleteProject,
                                 child: const Text(
-                                    CustomText.deleteProjectOutlinedButtonText))
+                                    CustomText.deleteProject))
                           ],
                         )
                       : Container()

@@ -6,6 +6,7 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/utils/methods.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class UserInfoScreen extends StatelessWidget {
   final List<ProjectModel> projects;
@@ -45,9 +46,8 @@ class UserInfoScreen extends StatelessWidget {
                               context: context,
                               builder: (ctx) => MyAlertDialog(
                                     ctx: context,
-                                    title: "Delete user",
-                                    content:
-                                        "Are you sure want to delete this user from project?",
+                                    title: CustomText.deleteThisUser,
+                                    content: CustomText.wantDeleteUser,
                                     isYes: TextButton(
                                         onPressed: () async {
                                           Navigator.of(ctx).pop();
@@ -61,8 +61,10 @@ class UserInfoScreen extends StatelessWidget {
                                                   context: context));
                                         },
                                         child: Text(
-                                          "Delete",
-                                          style: Theme.of(context).textTheme.labelMedium,
+                                          CustomText.deleteUser,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium,
                                         )),
                                   ))
                           : () {};

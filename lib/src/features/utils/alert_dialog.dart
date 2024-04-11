@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class MyAlertDialog extends StatelessWidget {
   final BuildContext ctx;
@@ -29,7 +30,7 @@ class MyAlertDialog extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              "Cancel",
+              CustomText.alertCancel,
               style: Theme.of(context).textTheme.labelMedium,
             )),
         isYes

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/profile/view/profile_screen.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class MyAppBar extends StatelessWidget {
   final int currentTub;
@@ -15,10 +16,10 @@ class MyAppBar extends StatelessWidget {
         Text(
             key: const Key("appbar"),
             currentTub == 0
-                ? "Projects"
+                ? CustomText.bottomBarProjects
                 : currentTub == 1
-                    ? "Archived Projects"
-                    : "Users"),
+                    ? CustomText.bottomBarArchivedProjects
+                    : CustomText.bottomBarUsers),
         IconButton(
           icon: const Icon(Icons.person),
           onPressed: () => Navigator.push(

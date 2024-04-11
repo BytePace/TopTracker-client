@@ -93,15 +93,15 @@ class _MenuScreenState extends State<MenuScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.cases_rounded),
-            label: 'Projects',
+            label: CustomText.bottomBarProjects,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.badge_rounded),
-            label: 'Archived Projects',
+            label: CustomText.bottomBarArchivedProjects,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: 'Users',
+            label: CustomText.bottomBarUsers,
           )
         ],
         currentIndex: _currentTub,

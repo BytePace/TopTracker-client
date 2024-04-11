@@ -6,6 +6,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 abstract interface class INetworkProfileDataSources {
   Future<UserInfoDto> getStats(List<ProjectModel> projects);
+  DateTime getMondayDate(DateTime date);
 }
 
 class NetworkProfileDataSources implements INetworkProfileDataSources {
@@ -44,6 +45,7 @@ class NetworkProfileDataSources implements INetworkProfileDataSources {
     }
   }
 
+  @override
   DateTime getMondayDate(DateTime date) {
     DateTime now = date;
     int mondayOffset = now.weekday - DateTime.monday;

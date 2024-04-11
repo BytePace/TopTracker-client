@@ -4,6 +4,7 @@ import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detai
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class UserTile extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -26,14 +27,14 @@ class UserTile extends StatelessWidget {
           Text(allUsers[index].name,
               style: Theme.of(context).textTheme.bodyMedium),
           Text(
-              "Total hours: ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
+              "${CustomText.totalHours} ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [
                     PopupMenuItem<int>(
                       value: 0,
                       child: Text(
-                        "Delete user",
+                        CustomText.deleteThisUser,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
@@ -44,8 +45,8 @@ class UserTile extends StatelessWidget {
                         context: context,
                         builder: (ctx) => MyAlertDialog(
                               ctx: context,
-                              title: "Delete user",
-                              content: "Are you sure want to delete this user?",
+                              title: CustomText.deleteThisUser,
+                              content: CustomText.wantDeleteUser,
                               isYes: TextButton(
                                   onPressed: () async {
                                     Navigator.of(ctx).pop();
@@ -57,7 +58,7 @@ class UserTile extends StatelessWidget {
                                             context: context));
                                   },
                                   child: Text(
-                                    "Delete",
+                                    CustomText.deleteUser,
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   )),

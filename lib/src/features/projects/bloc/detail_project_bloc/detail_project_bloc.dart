@@ -47,7 +47,7 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showCnackBar(event.context, "Пользователь добавлен");
+      showCnackBar(event.context, "Пользователь удален");
     } catch (e) {
       print("ошибка добавления пользователя $e");
       showCnackBar(event.context, "Произошла ошибка ");
@@ -62,7 +62,7 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showCnackBar(event.context, "Пользователь удален");
+      showCnackBar(event.context, "Пользователь добавлен");
     } catch (e) {
       print("ошибка удаления пользователя $e");
       showCnackBar(event.context, "Произошла ошибка $e");

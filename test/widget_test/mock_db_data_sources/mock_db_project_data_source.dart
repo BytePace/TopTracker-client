@@ -38,7 +38,7 @@ class DbProjectDataSourceMockTest implements ISavableProjectDataSource {
           name: "1",
           adminName: "",
           createdAt: "2018-04-06T12:56:24+06:00",
-          profilesIDs: [],
+          profilesIDs: [0],
           archivedAt: null,
           currentUser: 'admin'),
       ProjectDto(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 class AddUserForm extends StatefulWidget {
   final int id;
@@ -29,7 +30,7 @@ class _AddUserFormState extends State<AddUserForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Добавить пользователя",
+        Text(CustomText.addUser,
             style: Theme.of(context).textTheme.headlineMedium),
         Column(
           children: [
@@ -72,12 +73,13 @@ class _AddUserFormState extends State<AddUserForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     try {
-                      BlocProvider.of<DetailProjectBloc>(context).add(AddUSerEvent(
-                          email: _email,
-                          role: _role,
-                          rate: "",
-                          projectID: widget.id,
-                          context: context));
+                      BlocProvider.of<DetailProjectBloc>(context).add(
+                          AddUSerEvent(
+                              email: _email,
+                              role: _role,
+                              rate: "",
+                              projectID: widget.id,
+                              context: context));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Что то пошло не так")));
