@@ -2,20 +2,20 @@ class LoginDto {
   final int id;
   final String username;
   final String email;
-  final String access_token;
+  final String accessToken;
 
   const LoginDto(
       {required this.id,
       required this.username,
       required this.email,
-      required this.access_token});
+      required this.accessToken});
 
   factory LoginDto.fromJson(Map<String, dynamic> json) {
     return LoginDto(
         id: json['user']['id'].toInt(),
         username: json['user']['name'],
         email: json['user']['email'],
-        access_token: json['access_token']);
+        accessToken: json['access_token']);
   }
   @override
   bool operator ==(Object other) =>
@@ -25,9 +25,9 @@ class LoginDto {
           id == other.id &&
           username == other.username &&
           email == other.email &&
-          access_token == other.access_token;
+          accessToken == other.accessToken;
 
   @override
   int get hashCode =>
-      id.hashCode ^ username.hashCode ^ email.hashCode ^ access_token.hashCode;
+      id.hashCode ^ username.hashCode ^ email.hashCode ^ accessToken.hashCode;
 }

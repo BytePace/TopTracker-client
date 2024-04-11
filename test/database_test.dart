@@ -30,7 +30,6 @@ class DBProviderTest {
     });
     var databasesPath = await getDatabasesPath();
     String path = p.join(databasesPath, 'TrackerToptal.db');
-    print("db init");
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 

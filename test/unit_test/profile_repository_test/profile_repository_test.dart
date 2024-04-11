@@ -20,7 +20,6 @@ void main() {
     test('get day of monday', () async {
       final now = DateTime.now();
       DateTime monday = profileRepositoryTest.getMondayDate(now);
-      print(monday);
       expect(monday.day, 8);
     });
 

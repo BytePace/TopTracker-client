@@ -72,7 +72,6 @@ class ProjectRepository implements IProjectRepository {
       dto = await _dbProjectDataSource.getDetailProject(id);
       print("no connection wi fi $e");
     }
-    print(dto);
     return DetailProjectModel.fromDto(dto);
   }
 
@@ -104,6 +103,8 @@ class ProjectRepository implements IProjectRepository {
     try {
       await _networkProjectDataSource.archiveProject(projectID);
       await _dbProjectDataSource.archiveProject(projectID);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

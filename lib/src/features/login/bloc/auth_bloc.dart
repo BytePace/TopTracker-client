@@ -22,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<InitialEvent>(_init);
   }
   LoginModel loginModel =
-      const LoginModel(id: 0, username: "", email: "", access_token: "");
+      const LoginModel(id: 0, username: "", email: "", accessToken: "");
 
   Future<void> _login(LogInEvent event, Emitter<AuthState> emit) async {
     try {

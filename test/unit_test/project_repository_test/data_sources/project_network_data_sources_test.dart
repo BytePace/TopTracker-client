@@ -27,7 +27,6 @@ class NetworkProjectDataSourceTest implements IProjectDataSource {
       };
 
       final List<ProjectDto> projects = [];
-      print((response)["projects"]);
       (response)["projects"]
           .forEach((json) => {projects.add(ProjectDto.fromJson(json))});
 

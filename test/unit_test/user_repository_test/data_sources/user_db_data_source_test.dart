@@ -48,7 +48,6 @@ class DbUserDataSourceTest implements ISavableUserDataSource {
     for (var element in detailProjectsMapList) {
       profileIDList.add(ProfileIdDto.fromMap(element));
     }
-    print(profileIDList);
     return profileIDList;
   }
 

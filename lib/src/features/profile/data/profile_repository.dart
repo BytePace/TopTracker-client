@@ -17,13 +17,12 @@ class ProfileRepository implements IProfileRepository {
   @override
   Future<UserInfoModel> getStats(List<ProjectModel> projects) async {
     UserInfoDto dto =
-        UserInfoDto(profileID: 9, name: "", email: "", workedTotal: 0);
+        const UserInfoDto(profileID: 9, name: "", email: "", workedTotal: 0);
     try {
       dto = await _networkAuthDataSources.getStats(projects);
     } catch (e) {
       print(e);
     }
-    print(dto);
     return UserInfoModel.fromDto(dto);
   }
 }

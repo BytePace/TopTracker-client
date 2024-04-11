@@ -142,12 +142,10 @@ class ProjectRepositoryTest implements IProjectRepository {
   Future<List<ProjectModel>> getProjects() async {
     var dtos = <ProjectDto>[];
     try {
-      print("gets [prprp]");
       dtos = await _dbProjectDataSource.getProjects();
     } catch (e) {
       print(e);
     }
-    print(dtos.map((e) => ProjectModel.fromDto(e)).toList());
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
 

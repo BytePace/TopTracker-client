@@ -16,7 +16,7 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<LoginModel> doLogin(String email, String password) async {
-    var dto = const LoginDto(id: 0, username: "", email: "", access_token: "");
+    var dto = const LoginDto(id: 0, username: "", email: "", accessToken: "");
     try {
       dto = await _networkAuthDataSources.login(email, password);
     } on Exception {

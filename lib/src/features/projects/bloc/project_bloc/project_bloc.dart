@@ -36,14 +36,9 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   }
 
   _onLoadProject(LoadProjectEvent event, Emitter<ProjectState> emit) async {
-    print("1");
     emit(ProjectListLoading());
-    print("2");
     try {
-
       projects = await _projectRepository.getProjects();
-          print("22");
-      print(projects);
     } catch (e) {
       print(e);
     }
@@ -52,7 +47,6 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         allProfileID: allProfileID,
         allUser: [UserModel(userID: 0, name: "Loading...", email: "")]));
     allProfileID = await _userRepository.getAllProfileID();
-    print("3");
     if (projects.isEmpty) {
       emit(ProjectListLoading());
       projects = await _projectRepository.getNetworkProjects();
@@ -62,11 +56,9 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           projects: projects,
           allProfileID: allProfileID,
           allUser: [UserModel(userID: 0, name: "Loading...", email: "")]));
-      print("4");
       allUser = await _userRepository.updateAllUsers();
     }
     allUser = await _userRepository.getAllUsers();
-    print(projects);
 
     emit(ProjectListLoaded(
         allUser: allUser, projects: projects, allProfileID: allProfileID));

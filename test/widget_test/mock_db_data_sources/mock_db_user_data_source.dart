@@ -24,7 +24,6 @@ class DbUserDataSourceMockTest implements ISavableUserDataSource {
 
   @override
   Future<void> updateAllUsers(List<UserDto> allUsers) async {
-    // TODO: implement updateAllUsers
     throw UnimplementedError();
   }
 }

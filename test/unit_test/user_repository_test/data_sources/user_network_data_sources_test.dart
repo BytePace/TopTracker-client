@@ -77,7 +77,6 @@ class NetworkUserDataSourceTest implements IUserDataSource {
       idList
           .add(ProfileIdDto(profileID: element['id'], name: element["label"]));
     });
-    print(idList);
     return idList;
   }
 }

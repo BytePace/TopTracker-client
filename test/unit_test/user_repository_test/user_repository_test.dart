@@ -100,7 +100,6 @@ class UserRepositoryTest implements IUserRepository {
       final invite =
           await _networkUserDataSource.addUser(email, rate, role, id);
       _dbUserDataSource.addUser(invite.inviteID, id, invite.name ?? "name");
-      print(invite.inviteID);
     } catch (e) {
       print("ошибка добавления пользователя $e");
     }

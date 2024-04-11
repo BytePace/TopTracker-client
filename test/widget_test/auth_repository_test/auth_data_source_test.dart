@@ -7,7 +7,7 @@ class NetworkAuthDataSourcesTest implements IAuthDataSources {
 
   @override
   Future<LoginDto> login(String email, String password) async {
-    return const LoginDto(id: 0, username: "", email: "", access_token: "");
+    return const LoginDto(id: 0, username: "", email: "", accessToken: "");
   }
 
   @override

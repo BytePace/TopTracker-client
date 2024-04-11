@@ -19,7 +19,6 @@ class NetworkProfileDataSourcesTest implements INetworkProfileDataSources {
       "billable_seconds": 0,
       "billable_amount": null
     };
-    print(UserInfoDto.fromJson(response));
     return UserInfoDto.fromJson(response);
   }
 

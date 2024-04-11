@@ -25,11 +25,11 @@ class NetworkProjectDataSource implements IProjectDataSource {
   @override
   Future<List<ProjectDto>> getProjects() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+    String? accessToken = prefs.getString("access_token");
 
     try {
       final response = await _dio
-          .get('/web/projects?access_token=$access_token&archived=true');
+          .get('/web/projects?access_token=$accessToken&archived=true');
       if (response.statusCode == 200) {
         final List<ProjectDto> projects = [];
 
@@ -51,11 +51,11 @@ class NetworkProjectDataSource implements IProjectDataSource {
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+    String? accessToken = prefs.getString("access_token");
 
     try {
       final response = await _dio
-          .get('/web/projects/$id?access_token=$access_token&archived=true');
+          .get('/web/projects/$id?access_token=$accessToken&archived=true');
       if (response.statusCode == 200) {
         return DetailProjectDto.fromJson(response.data);
       } else {
@@ -71,9 +71,9 @@ class NetworkProjectDataSource implements IProjectDataSource {
   @override
   Future<void> restoreProject(int projectID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+    String? accessToken = prefs.getString("access_token");
 
-    final Map<String, dynamic> userData = {"access_token": access_token};
+    final Map<String, dynamic> userData = {"access_token": accessToken};
 
     try {
       final response = await _dio.put(
@@ -93,9 +93,9 @@ class NetworkProjectDataSource implements IProjectDataSource {
   @override
   Future<void> deleteProject(int projectID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+    String? accessToken = prefs.getString("access_token");
 
-    final Map<String, dynamic> projectData = {"access_token": access_token};
+    final Map<String, dynamic> projectData = {"access_token": accessToken};
 
     try {
       final response =
@@ -113,9 +113,9 @@ class NetworkProjectDataSource implements IProjectDataSource {
   @override
   Future<void> archiveProject(int projectID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? access_token = prefs.getString("access_token");
+    String? accessToken = prefs.getString("access_token");
 
-    final Map<String, dynamic> projectData = {"access_token": access_token};
+    final Map<String, dynamic> projectData = {"access_token": accessToken};
 
     try {
       final response =
