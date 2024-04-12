@@ -16,10 +16,10 @@ class MyAppBar extends StatelessWidget {
         Text(
             key: const Key("appbar"),
             currentTub == 0
-                ? CustomText.bottomBarProjects
+                ? DisplayText.bottomBarProjects
                 : currentTub == 1
-                    ? CustomText.bottomBarArchivedProjects
-                    : CustomText.bottomBarUsers),
+                    ? DisplayText.bottomBarArchivedProjects
+                    : DisplayText.bottomBarUsers),
         IconButton(
           icon: const Icon(Icons.person),
           onPressed: () => Navigator.push(

@@ -1,4 +1,6 @@
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 

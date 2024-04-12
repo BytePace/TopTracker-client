@@ -27,14 +27,14 @@ class UserTile extends StatelessWidget {
           Text(allUsers[index].name,
               style: Theme.of(context).textTheme.bodyMedium),
           Text(
-              "${CustomText.totalHours} ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
+              "${DisplayText.totalHours} ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [
                     PopupMenuItem<int>(
                       value: 0,
                       child: Text(
-                        CustomText.deleteThisUser,
+                        DisplayText.deleteThisUser,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
@@ -45,8 +45,8 @@ class UserTile extends StatelessWidget {
                         context: context,
                         builder: (ctx) => MyAlertDialog(
                               ctx: context,
-                              title: CustomText.deleteThisUser,
-                              content: CustomText.wantDeleteUser,
+                              title: DisplayText.deleteThisUser,
+                              content: DisplayText.wantDeleteUser,
                               isYes: TextButton(
                                   onPressed: () async {
                                     Navigator.of(ctx).pop();
@@ -58,7 +58,7 @@ class UserTile extends StatelessWidget {
                                             context: context));
                                   },
                                   child: Text(
-                                    CustomText.deleteUser,
+                                    DisplayText.deleteUser,
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   )),

@@ -47,7 +47,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
               Expanded(
                 child: TextField(
                   decoration: const InputDecoration(
-                    hintText: CustomText.hintSearchProjectText,
+                    hintText: DisplayText.hintSearchProjectText,
                   ),
                   onChanged: (value) {
                     setState(() {

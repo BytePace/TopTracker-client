@@ -78,7 +78,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      showCnackBar(event.context, "Нет интернета");
+      showSnackBar(event.context, "Нет интернета");
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -88,7 +88,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       RestoreProjectEvent event, Emitter<ProjectState> emit) async {
     try {
       await _projectRepository.restoreProject(event.id);
-      showCnackBar(event.context, "Проект разархивирован");
+      showSnackBar(event.context, "Проект разархивирован");
       Navigator.of(event.context).pop();
       projects = await _projectRepository.getProjects();
       allProfileID = await _userRepository.getAllProfileID();
@@ -97,7 +97,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
       print("Произошла ошибка при разахривации $e");
-      showCnackBar(event.context, "Произошла ошибка");
+      showSnackBar(event.context, "Произошла ошибка");
     }
   }
 
@@ -107,11 +107,11 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       projects.removeWhere((element) => element.id == event.id);
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
-      showCnackBar(event.context, "Проект удален");
+      showSnackBar(event.context, "Проект удален");
       Navigator.of(event.context).pop();
     } catch (e) {
       print("Произошла ошибка при удалении $e");
-      showCnackBar(event.context, "Произошла ошибка");
+      showSnackBar(event.context, "Произошла ошибка");
     }
   }
 
@@ -123,11 +123,11 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       allUser = await _userRepository.getAllUsers();
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
-      showCnackBar(event.context, "Проект архивирован");
+      showSnackBar(event.context, "Проект архивирован");
       Navigator.of(event.context).pop();
     } catch (e) {
       print("Произошла ошибка при архивации $e");
-      showCnackBar(event.context, "Произошла ошибка");
+      showSnackBar(event.context, "Произошла ошибка");
     }
   }
 }

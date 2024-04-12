@@ -43,8 +43,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: CustomText.archiveProject,
-        content: CustomText.wantArchiveProject,
+        title: DisplayText.archiveProject,
+        content: DisplayText.wantArchiveProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -52,7 +52,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                   .add(ArchiveProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              CustomText.archive,
+              DisplayText.archive,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -64,8 +64,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: CustomText.deleteProject,
-        content: CustomText.wantDeleteProject,
+        title: DisplayText.deleteProject,
+        content: DisplayText.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -73,7 +73,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                   .add(DeleteProjectEvent(id: widget.id, context: context));
             },
             child: Text(
-              CustomText.delete,
+              DisplayText.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -116,11 +116,11 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                                 OutlinedButton(
                                     onPressed: _archiveProject,
                                     child:
-                                        const Text(CustomText.archiveProject)),
+                                        const Text(DisplayText.archiveProject)),
                                 const SizedBox(height: 16),
                                 OutlinedButton(
                                     onPressed: _deleteProject,
-                                    child: const Text(CustomText.deleteProject))
+                                    child: const Text(DisplayText.deleteProject))
                               ],
                             )
                           : Container(),

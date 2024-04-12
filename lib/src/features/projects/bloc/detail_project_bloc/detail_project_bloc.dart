@@ -28,7 +28,7 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
         super(ProjectInitial()) {
     on<LoadDetailProjectEvent>(_onLoadProject);
     on<DeleteUserEvent>(_deleteUser);
-    on<AddUSerEvent>(_addUser);
+    on<AddUserEvent>(_addUser);
     on<RevokeInviteEvent>(_revokeInvite);
   }
 
@@ -47,14 +47,14 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showCnackBar(event.context, "Пользователь удален");
+      showSnackBar(event.context, "Пользователь удален");
     } catch (e) {
       print("ошибка добавления пользователя $e");
-      showCnackBar(event.context, "Произошла ошибка ");
+      showSnackBar(event.context, "Произошла ошибка ");
     }
   }
 
-  _addUser(AddUSerEvent event, Emitter<DetailProjectState> emit) async {
+  _addUser(AddUserEvent event, Emitter<DetailProjectState> emit) async {
     try {
       await _userRepository.addUser(
           event.email, event.rate, event.role, event.projectID);
@@ -62,10 +62,10 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showCnackBar(event.context, "Пользователь добавлен");
+      showSnackBar(event.context, "Пользователь добавлен");
     } catch (e) {
       print("ошибка удаления пользователя $e");
-      showCnackBar(event.context, "Произошла ошибка $e");
+      showSnackBar(event.context, "Произошла ошибка $e");
     }
   }
 
@@ -78,10 +78,10 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
           await _projectRepository.getDetailProject(event.projectID);
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
 
-      showCnackBar(event.context, "Приглашение отменено");
+      showSnackBar(event.context, "Приглашение отменено");
     } catch (e) {
       print("произошла отмены приглашения ошибка $e");
-      showCnackBar(event.context, "Произошла ошибка");
+      showSnackBar(event.context, "Произошла ошибка");
     }
   }
 }

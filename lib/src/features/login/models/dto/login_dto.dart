@@ -1,3 +1,4 @@
+
 class LoginDto {
   final int id;
   final String username;
@@ -12,10 +13,10 @@ class LoginDto {
 
   factory LoginDto.fromJson(Map<String, dynamic> json) {
     return LoginDto(
-        id: json['user']['id'].toInt(),
-        username: json['user']['name'],
-        email: json['user']['email'],
-        accessToken: json['access_token']);
+        id: json[_JsonKey.user][_JsonKey.loginID].toInt(),
+        username: json[_JsonKey.user][_JsonKey.name],
+        email: json[_JsonKey.user][_JsonKey.email],
+        accessToken: json[_JsonKey.accessToken]);
   }
   @override
   bool operator ==(Object other) =>
@@ -30,4 +31,12 @@ class LoginDto {
   @override
   int get hashCode =>
       id.hashCode ^ username.hashCode ^ email.hashCode ^ accessToken.hashCode;
+}
+
+class _JsonKey {
+  static const user = "user";
+  static const loginID = "id";
+  static const name = "name";
+  static const accessToken = "access_token";
+  static const email = "email";
 }

@@ -1,5 +1,6 @@
 import 'package:sqflite/sqlite_api.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/database/database.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
 abstract interface class ISavableUserDataSource {
@@ -26,7 +27,11 @@ class DbUserDataSource implements ISavableUserDataSource {
     final database = await _database;
     await database.insert(
       'Invites',
-      {'invite_id': inviteID, 'detail_project_id': projectID, "name": name},
+      {
+        DbInvitesKeys.inviteID: inviteID,
+        DbInvitesKeys.detailProjectID: projectID,
+        DbInvitesKeys.name: name
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -36,17 +41,19 @@ class DbUserDataSource implements ISavableUserDataSource {
     final database = await _database;
     await database.delete(
       'Users',
-      where: 'profile_id = ?',
+      where: '${DbUsersKeys.profileID} = ?',
       whereArgs: [profileId],
     );
     await database.delete(
       'UserInfo',
-      where: 'detail_project_id = ? AND userID = ?',
+      where:
+          '${DbUserInfoKeys.detailProjectID} = ? AND ${DbUserInfoKeys.userID} = ?',
       whereArgs: [projectId, profileId],
     );
     await database.delete(
       'UserEngagements',
-      where: 'detail_project_id = ? AND user_engagaments_id = ?',
+      where:
+          '${DbUserEngagementsKeys.detailProjectID} = ? AND ${DbUserEngagementsKeys.userEngagementsID} = ?',
       whereArgs: [projectId, profileId],
     );
     //await database.close();
@@ -84,7 +91,7 @@ class DbUserDataSource implements ISavableUserDataSource {
     final database = await _database;
     await database.delete(
       'Invites',
-      where: 'invite_id = ?',
+      where: '${DbInvitesKeys.inviteID} = ?',
       whereArgs: [invitationID],
     );
     //await database.close();
@@ -99,9 +106,9 @@ class DbUserDataSource implements ISavableUserDataSource {
       await batch.commit();
       for (var user in allUsers) {
         batch.insert('Users', {
-          "profile_id": user.userID,
-          "name": user.name,
-          "email": user.email
+          DbUsersKeys.profileID: user.userID,
+          DbUsersKeys.name: user.name,
+          DbUsersKeys.email: user.email
         });
       }
       await batch.commit();

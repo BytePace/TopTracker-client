@@ -1,3 +1,5 @@
+import 'package:tt_bytepace/src/database/database.dart';
+
 class ProfileIdDto {
   final int profileID;
   final String name;
@@ -6,14 +8,14 @@ class ProfileIdDto {
 
   factory ProfileIdDto.fromJson(Map<String, dynamic> json) {
     return ProfileIdDto(
-      name: json['label'],
-      profileID: json['id'].toInt(),
+      name: json[_JsonKey.userName],
+      profileID: json[_JsonKey.profileID].toInt(),
     );
   }
-    factory ProfileIdDto.fromMap(Map<String, dynamic> map) {
+  factory ProfileIdDto.fromMap(Map<String, dynamic> map) {
     return ProfileIdDto(
-      name: map['name'],
-      profileID: map['profile_id'].toInt(),
+      name: map[DbUsersKeys.name],
+      profileID: map[DbUsersKeys.profileID].toInt(),
     );
   }
   @override
@@ -27,4 +29,9 @@ class ProfileIdDto {
 
   @override
   int get hashCode => profileID.hashCode ^ name.hashCode;
+}
+
+class _JsonKey {
+  static const userName = 'label';
+  static const profileID = "id";
 }

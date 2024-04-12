@@ -1,4 +1,4 @@
-import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_info_dto.dart';
 
 class UserInfoModel {
   final int profileID;

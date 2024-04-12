@@ -1,4 +1,4 @@
-class CustomText {
+class DisplayText {
   static const welcomeMessageText = "TopTracker";
 
   static const hintSearchProjectText = "Введите название проекта";
@@ -7,8 +7,8 @@ class CustomText {
   static const addUser = "Добавить пользователя";
   static const allUsers = "Все пользователи";
 
-  static const logoutText = "logout";
-  static const loginButtonText = "log in";
+  static const logoutText = "Logout";
+  static const loginButtonText = "Log in";
 
   static const totalHours = "Total hours:";
 
@@ -42,4 +42,10 @@ class CustomText {
   static const deleteThisUser = "Delete user";
   static const wantDeleteUser = "Are you sure want to delete this user?";
   static const deleteUser = "Delete";
+}
+
+
+
+class InvitedText{
+  
 }

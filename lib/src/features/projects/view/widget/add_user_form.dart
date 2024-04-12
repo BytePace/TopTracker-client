@@ -30,7 +30,7 @@ class _AddUserFormState extends State<AddUserForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(CustomText.addUser,
+        Text(DisplayText.addUser,
             style: Theme.of(context).textTheme.headlineMedium),
         Column(
           children: [
@@ -74,7 +74,7 @@ class _AddUserFormState extends State<AddUserForm> {
                     _formKey.currentState!.save();
                     try {
                       BlocProvider.of<DetailProjectBloc>(context).add(
-                          AddUSerEvent(
+                          AddUserEvent(
                               email: _email,
                               role: _role,
                               rate: "",

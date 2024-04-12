@@ -1,5 +1,9 @@
 import 'package:sqflite/sqlite_api.dart';
+import 'package:tt_bytepace/src/database/database.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_engagements_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import '../../model/dto/detail_project_dto.dart';
@@ -30,7 +34,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
     final database = await _database;
-    const keyArg = "detail_project_id = ?";
+    const keyArg = "${DbDetailProjectKeys.detailProjectID} = ?";
 
     DetailProjectDto detailProjectsList = const DetailProjectDto(
       users: [],
@@ -51,7 +55,10 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       final List<Map<String, dynamic>> userInfoMapList =
           await database.query("UserInfo", where: keyArg, whereArgs: [id]);
       for (var info in userInfoMapList) {
-        userInfo.add(UserDto.fromMap(info));
+        userInfo.add(UserDto(
+            userID: info[DbUserInfoKeys.userID],
+            name: info[DbUserInfoKeys.name],
+            email: info[DbUserInfoKeys.email]));
       }
 
       final List<Map<String, dynamic>> userEngagementsMapList = await database
@@ -77,32 +84,32 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final database = await _database;
     await database.delete(
       'UserEngagements',
-      where: 'detail_project_id = ?',
+      where: '${DbUserEngagementsKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
     await database.delete(
       'Invites',
-      where: 'detail_project_id = ?',
+      where: '${DbInvitesKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
     await database.delete(
       'UserInfo',
-      where: 'detail_project_id = ?',
+      where: '${DbUserInfoKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
     await database.delete(
       'UsersProfileID',
-      where: 'detail_project_id = ?',
+      where: '${DbUsersProfileIDKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
     await database.delete(
       'DetailProject',
-      where: 'detail_project_id = ?',
+      where: '${DbDetailProjectKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
     await database.delete(
       'Projects',
-      where: 'id = ?',
+      where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
     //await database.close();
@@ -111,7 +118,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
   @override
   Future<List<ProjectDto>> getProjects() async {
     final database = await _database;
-    const keyArg = "detail_project_id = ?";
+    const keyArg = "${DbUsersProfileIDKeys.detailProjectID} = ?";
 
     List<ProjectDto> projectList = [];
 
@@ -124,9 +131,9 @@ class DbProjectDataSource implements ISavableProjectDataSource {
           "UsersProfileID",
           distinct: true,
           where: keyArg,
-          whereArgs: [project['id']]);
+          whereArgs: [project[DbProjectsKeys.id]]);
       for (var info in userInfoMapList) {
-        list.add(info["profile_id"]);
+        list.add(info[DbUsersProfileIDKeys.profileID]);
       }
       projectList.add(ProjectDto.fromMap(project, list));
     }
@@ -139,8 +146,8 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final database = await _database;
     await database.update(
       'Projects',
-      {'archivedAt': null},
-      where: 'id = ?',
+      {DbProjectsKeys.archivedAt: null},
+      where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
     //await database.close();
@@ -156,8 +163,10 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     for (var project in projects) {
       batch.insert('Projects', project.toMap());
       for (var user in project.profilesIDs) {
-        batch.insert('UsersProfileID',
-            {"profile_id": user, "detail_project_id": project.id});
+        batch.insert('UsersProfileID', {
+          DbUsersProfileIDKeys.profileID: user,
+          DbUsersProfileIDKeys.detailProjectID: project.id
+        });
       }
     }
     await batch.commit();
@@ -168,11 +177,14 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final database = await _database;
     final batch = database.batch();
     batch.delete("DetailProject",
-        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+        where: '${DbDetailProjectKeys.detailProjectID} = ?',
+        whereArgs: [detailProjects.id]);
     batch.delete("Invites",
-        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+        where: '${DbInvitesKeys.detailProjectID} = ?',
+        whereArgs: [detailProjects.id]);
     batch.delete("UserEngagements",
-        where: 'detail_project_id = ?', whereArgs: [detailProjects.id]);
+        where: '${DbUserEngagementsKeys.detailProjectID} = ?',
+        whereArgs: [detailProjects.id]);
     await batch.commit();
     batch.insert('DetailProject', detailProjects.toMap());
     for (var user in detailProjects.users) {
@@ -193,8 +205,8 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final database = await _database;
     await database.update(
       'Projects',
-      {'archivedAt': DateTime.now().toString()},
-      where: 'id = ?',
+      {DbProjectsKeys.archivedAt: DateTime.now().toString()},
+      where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
     //await database.close();

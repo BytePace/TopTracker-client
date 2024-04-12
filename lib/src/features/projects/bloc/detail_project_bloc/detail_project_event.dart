@@ -20,14 +20,14 @@ class DeleteUserEvent extends DetailProjectEvent {
       required this.context});
 }
 
-class AddUSerEvent extends DetailProjectEvent {
+class AddUserEvent extends DetailProjectEvent {
   final String email;
   final String role;
   final String rate;
   final int projectID;
   final BuildContext context;
 
-  AddUSerEvent(
+  AddUserEvent(
       {required this.email,
       required this.role,
       required this.rate,

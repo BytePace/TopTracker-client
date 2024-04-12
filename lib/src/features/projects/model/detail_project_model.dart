@@ -1,4 +1,7 @@
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_engagements_dto.dart';
 
 class DetailProjectModel {
   final int id;

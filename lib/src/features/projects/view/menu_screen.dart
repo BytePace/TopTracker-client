@@ -70,7 +70,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        hintText: CustomText.hintSearchProjectText,
+                        hintText: DisplayText.hintSearchProjectText,
                       ),
                     ),
                     SizedBox(height: 220),
@@ -93,15 +93,15 @@ class _MenuScreenState extends State<MenuScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.cases_rounded),
-            label: CustomText.bottomBarProjects,
+            label: DisplayText.bottomBarProjects,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.badge_rounded),
-            label: CustomText.bottomBarArchivedProjects,
+            label: DisplayText.bottomBarArchivedProjects,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: CustomText.bottomBarUsers,
+            label: DisplayText.bottomBarUsers,
           )
         ],
         currentIndex: _currentTub,

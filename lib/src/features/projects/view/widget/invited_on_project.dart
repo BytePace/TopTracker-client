@@ -15,7 +15,7 @@ class InvitedOnProject extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(CustomText.invitedUsersText,
+              Text(DisplayText.invitedUsersText,
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 16),
               Column(

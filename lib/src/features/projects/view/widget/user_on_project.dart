@@ -15,7 +15,7 @@ class UserOnProject extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(CustomText.userOnProjectText,
+        Text(DisplayText.userOnProjectText,
             style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
         Card(

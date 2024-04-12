@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
             title: Text(
-          CustomText.userStats,
+          DisplayText.userStats,
           style: Theme.of(context).textTheme.headlineSmall,
         )),
         body: FutureBuilder(
@@ -47,14 +47,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${CustomText.name} ${snapshot.data.name}",
+                              Text("${DisplayText.name} ${snapshot.data.name}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
                                       .copyWith(fontSize: 18)),
                               const SizedBox(height: 8),
                               Text(
-                                  "${CustomText.currentWeekHours} ${double.parse((snapshot.data.workedTotal / 60 / 60).toStringAsFixed(2))}",
+                                  "${DisplayText.currentWeekHours} ${double.parse((snapshot.data.workedTotal / 60 / 60).toStringAsFixed(2))}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -69,15 +69,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               context: context,
                               builder: (ctx) => MyAlertDialog(
                                 ctx: context,
-                                title: CustomText.logOut,
-                                content: CustomText.wantLogout,
+                                title: DisplayText.logOut,
+                                content: DisplayText.wantLogout,
                                 isYes: TextButton(
                                   onPressed: () {
                                     authBloc.add(LogOutEvent(context: ctx));
                                     Navigator.of(context).pop();
                                   },
                                   child: Text(
-                                    CustomText.logOut,
+                                    DisplayText.logOut,
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   ),
@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             );
                           },
-                          child: const Text(CustomText.logOut))
+                          child: const Text(DisplayText.logOut))
                     ],
                   ),
                 );

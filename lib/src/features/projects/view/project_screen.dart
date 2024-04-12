@@ -48,7 +48,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 child: TextField(
                   key: const Key('searchTextField'),
                   decoration: const InputDecoration(
-                    hintText: CustomText.hintSearchProjectText,
+                    hintText: DisplayText.hintSearchProjectText,
                   ),
                   onChanged: (value) {
                     setState(() {

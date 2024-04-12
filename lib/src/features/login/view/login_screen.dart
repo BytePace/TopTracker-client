@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //welcome message
                 const Text(
-                  CustomText.welcomeMessageText,
+                  DisplayText.welcomeMessageText,
                   style: TextStyle(fontSize: 16),
                 ),
 
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
 
                 TextButton(
-                  child: const Text(CustomText.loginButtonText),
+                  child: const Text(DisplayText.loginButtonText),
                   onPressed: () {
                     authBloc.add(LogInEvent(
                         email: emailController.text,

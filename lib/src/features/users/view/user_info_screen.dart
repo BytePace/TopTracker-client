@@ -46,8 +46,8 @@ class UserInfoScreen extends StatelessWidget {
                               context: context,
                               builder: (ctx) => MyAlertDialog(
                                     ctx: context,
-                                    title: CustomText.deleteThisUser,
-                                    content: CustomText.wantDeleteUser,
+                                    title: DisplayText.deleteThisUser,
+                                    content: DisplayText.wantDeleteUser,
                                     isYes: TextButton(
                                         onPressed: () async {
                                           Navigator.of(ctx).pop();
@@ -61,7 +61,7 @@ class UserInfoScreen extends StatelessWidget {
                                                   context: context));
                                         },
                                         child: Text(
-                                          CustomText.deleteUser,
+                                          DisplayText.deleteUser,
                                           style: Theme.of(context)
                                               .textTheme
                                               .labelMedium,

@@ -1,5 +1,5 @@
 import 'package:tt_bytepace/src/features/profile/data/data_sources/profile_data_sources.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_info_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 class NetworkProfileDataSourcesTest implements INetworkProfileDataSources {

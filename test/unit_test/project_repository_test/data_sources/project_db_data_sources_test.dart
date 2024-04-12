@@ -1,7 +1,10 @@
 import 'package:sqflite/sqlite_api.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_engagements_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 class DbProjectDataSourceTest implements ISavableProjectDataSource {

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
@@ -28,9 +29,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
       emit(LoginSuccessState());
-      showCnackBar(event.context, "Succesful login");
+      showSnackBar(event.context, "Succesful login");
     } catch (e) {
-      showCnackBar(event.context, "Неправильный логин или пароль");
+      showSnackBar(event.context, "Неправильный логин или пароль");
       emit(IsLoginState());
     }
   }

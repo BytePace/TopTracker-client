@@ -14,7 +14,7 @@ class AllUsersList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(CustomText.allUsers,
+        Text(DisplayText.allUsers,
             style: Theme.of(context).textTheme.headlineMedium),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -28,7 +28,7 @@ class AllUsersList extends StatelessWidget {
                     allUsers[0].userID == 0
                         ? ""
                         : BlocProvider.of<DetailProjectBloc>(context).add(
-                            AddUSerEvent(
+                            AddUserEvent(
                                 email: allUsers[index].email,
                                 role: "worker",
                                 rate: "",
