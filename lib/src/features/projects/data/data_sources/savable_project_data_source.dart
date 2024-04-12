@@ -185,6 +185,9 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     batch.delete("UserEngagements",
         where: '${DbUserEngagementsKeys.detailProjectID} = ?',
         whereArgs: [detailProjects.id]);
+    batch.delete("UserInfo",
+        where: '${DbUserInfoKeys.detailProjectID} = ?',
+        whereArgs: [detailProjects.id]);
     await batch.commit();
     batch.insert('DetailProject', detailProjects.toMap());
     for (var user in detailProjects.users) {
