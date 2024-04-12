@@ -44,10 +44,12 @@ class DetailProjectModel {
 }
 
 class UserEngagementsModel {
+  final int userID;
   final int profileId;
   final int workedTotal;
 
   UserEngagementsModel({
+    required this.userID,
     required this.profileId,
     required this.workedTotal,
   });
@@ -56,8 +58,10 @@ class UserEngagementsModel {
     return UserEngagementsModel(
       profileId: dto.profileId,
       workedTotal: dto.workedTotal,
+      userID: dto.userID,
     );
   }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -79,18 +83,27 @@ class UserEngagementsModel {
 }
 
 class UserModel {
-  final int profileID;
+  final int userID;
   final String name;
   final String email;
 
-  UserModel({required this.profileID, required this.name, required this.email});
+  UserModel({required this.userID, required this.name, required this.email});
 
-  factory UserModel.fromDto(UserInfoDto dto) {
+  factory UserModel.fromDto(UserDto dto) {
     return UserModel(
       email: dto.email,
-      profileID: dto.profileID,
+      userID: dto.userID,
       name: dto.name,
     );
+  }
+
+  Map<String, dynamic> toMap(int projectID) {
+    return {
+      'profileID': userID,
+      'name': name,
+      'email': email,
+      "detail_project_id": projectID
+    };
   }
 
   @override
@@ -98,19 +111,19 @@ class UserModel {
     if (identical(this, other)) return true;
 
     return other is UserModel &&
-        other.profileID == profileID &&
+        other.userID == userID &&
         other.name == name &&
         other.email == email;
   }
 
   @override
   int get hashCode {
-    return profileID.hashCode ^ name.hashCode ^ email.hashCode;
+    return userID.hashCode ^ name.hashCode ^ email.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserModel{profileID: $profileID, name: $name}';
+    return 'UserModel{profileID: $userID, name: $name}';
   }
 }
 

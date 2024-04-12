@@ -13,6 +13,8 @@ abstract class IProjectDataSource {
   Future<void> restoreProject(int projectID);
 
   Future<void> deleteProject(int projectID);
+
+  Future<void> archiveProject(int projectID);
 }
 
 class NetworkProjectDataSource implements IProjectDataSource {
@@ -37,7 +39,6 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
         return projects;
       } else {
-        print(response.data);
         print("Ошибка загрузки проектов");
         throw Exception();
       }
@@ -106,6 +107,23 @@ class NetworkProjectDataSource implements IProjectDataSource {
       }
     } catch (e) {
       throw Exception();
+    }
+  }
+
+  @override
+  Future<void> archiveProject(int projectID) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? access_token = prefs.getString("access_token");
+
+    final Map<String, dynamic> projectData = {"access_token": access_token};
+
+    try {
+      final response =
+          await _dio.put('/projects/$projectID/archive', data: projectData);
+
+      if (response.statusCode == 200) {}
+    } catch (e) {
+      print(e);
     }
   }
 }

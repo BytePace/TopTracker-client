@@ -18,7 +18,10 @@ class NetworkAuthDataSources implements IAuthDataSources {
   @override
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
+    final loginData = {"access_token": prefs.getString("access_token")};
+    await _dio.delete('/sessions/me', data: loginData);
     await prefs.remove('access_token');
+    await prefs.remove('current_user_id');
   }
 
   @override
@@ -29,20 +32,20 @@ class NetworkAuthDataSources implements IAuthDataSources {
       'remember_me': true
     };
     try {
-      final response =
-          await _dio.post('/sessions', data: loginData);
+      final response = await _dio.post('/sessions', data: loginData);
 
       if (response.statusCode == 201) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("access_token", response.data['access_token']);
+        await prefs.setInt("current_user_id", response.data['profiles'][0]['id'].toInt());
         return LoginDto.fromJson(response.data);
       } else {
         print(response.statusCode);
         print(response.data);
         throw Exception('Failed to load data');
       }
-    } catch (e) {
-      throw Exception('Failed to login $e');
+    } on Exception {
+      throw Exception('Failed to login');
     }
   }
 

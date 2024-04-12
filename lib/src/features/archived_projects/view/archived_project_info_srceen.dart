@@ -43,7 +43,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         title: "Restore project",
         content: "Are you sure want to restore this project?",
         isYes: TextButton(
-            onPressed: () async {
+            onPressed: () {
               Navigator.of(ctx).pop();
               GetIt.I<ProjectBloc>()
                   .add(RestoreProjectEvent(id: widget.id, context: context));
@@ -64,7 +64,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         title: "Delete project",
         content: "Are you sure want to delete this project?",
         isYes: TextButton(
-            onPressed: () async {
+            onPressed: () {
               Navigator.of(ctx).pop();
               GetIt.I<ProjectBloc>()
                   .add(DeleteProjectEvent(id: widget.id, context: context));
@@ -88,7 +88,8 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         builder: (context, state) {
           if (state is DetailProjectListLoaded) {
             final allUsers = getListUsersOnProject(
-                state.detailProjectModel.engagements, widget.allUsers);
+                state.detailProjectModel.engagements,
+                state.detailProjectModel.users);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: ListView(
@@ -96,10 +97,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                   Card(
                     child: Column(
                       children: List.generate(
-                          getListUsersOnProject(
-                                  state.detailProjectModel.engagements,
-                                  widget.allUsers)
-                              .length,
+                          allUsers.length,
                           (index) => UserTileArchived(
                                 index: index,
                                 allUsers: allUsers,
@@ -112,16 +110,12 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                       ? Column(
                           children: [
                             OutlinedButton(
-                                onPressed: () {
-                                  _restoreProject;
-                                },
+                                onPressed: _restoreProject,
                                 child: const Text(CustomText
                                     .restoreProjectOutlinedButtonText)),
                             const SizedBox(height: 16),
                             OutlinedButton(
-                                onPressed: () {
-                                  _deleteProject;
-                                },
+                                onPressed: _deleteProject,
                                 child: const Text(
                                     CustomText.deleteProjectOutlinedButtonText))
                           ],

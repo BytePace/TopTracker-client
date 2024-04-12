@@ -19,15 +19,23 @@ class DBProvider {
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker9.db";
+    String path = "${dir.path}TopTracker41.db";
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   void _createDB(Database db, int version) async {
     await db.execute('''
-        CREATE TABLE Users(
-          profileID INTEGER,
+        CREATE TABLE UsersProfileID(
+          profile_id INTEGER ,
           detail_project_id INTEGER
+        )
+      ''');
+
+       await db.execute('''
+        CREATE TABLE Users(
+          profile_id INTEGER primary key,
+          name text,
+          email text
         )
       ''');
     await db.execute('''
@@ -49,7 +57,7 @@ class DBProvider {
       ''');
     await db.execute('''
         CREATE TABLE UserInfo(
-           profile_id INTEGER,
+           userID INTEGER,
           detail_project_id INTEGER,
           name text,
           email text,
@@ -67,6 +75,7 @@ class DBProvider {
     await db.execute('''
         CREATE TABLE UserEngagements(
            user_engagaments_id INTEGER,
+           userID INTEGER,
           detail_project_id INTEGER,
           workedTotal INTEGER,
           FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)

@@ -6,12 +6,15 @@ import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/data/data_sources/auth_data_sources.dart';
+import 'package:tt_bytepace/src/features/profile/data/data_sources/profile_data_sources.dart';
+import 'package:tt_bytepace/src/features/profile/data/profile_repository.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/theme.dart';
@@ -33,6 +36,7 @@ void initGetIt() {
       ),
       userRepository: UserRepository(
         networkUserDataSource: NetworkUserDataSource(dio: dio),
+        dbUserDataSource: DbUserDataSource(database: database),
       ),
     ),
   );
@@ -43,17 +47,26 @@ void initGetIt() {
       networkProjectDataSource: NetworkProjectDataSource(dio: dio),
     ),
     userRepository: UserRepository(
+      dbUserDataSource: DbUserDataSource(database: database),
       networkUserDataSource: NetworkUserDataSource(dio: dio),
     ),
   ));
 
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(
+      projectRepository: ProjectRepository(
+        dbProjectDataSource: DbProjectDataSource(database: database),
+        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+      ),
       authRepository: AuthRepository(
         networkAuthDataSources: NetworkAuthDataSources(dio: dio),
       ),
     ),
   );
+
+  GetIt.I.registerSingleton<ProfileRepository>(ProfileRepository(
+    networkProfileDataSources: NetworkProfileDataSources(dio: dio),
+  ));
 }
 
 class MainApp extends StatefulWidget {

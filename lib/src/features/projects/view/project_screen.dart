@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
@@ -11,10 +12,12 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
+import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 import '../../users/data/user_repository.dart';
+import '../bloc/project_bloc/project_bloc.dart';
 
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -30,7 +33,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   bool isAsc = true;
   late List<ProjectModel> projects;
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     projects = widget.projects;
   }
@@ -82,32 +85,36 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                BlocProvider<DetailProjectBloc>(
-                              create: (context) => DetailProjectBloc(
-                                projectRepository: ProjectRepository(
-                                  dbProjectDataSource: DbProjectDataSource(
-                                      database: DBProvider.db.database),
-                                  networkProjectDataSource:
-                                      NetworkProjectDataSource(
-                                          dio: Dio(BaseOptions(
-                                              baseUrl:
-                                                  "https://tracker-api.toptal.com"))),
+                              builder: (context) => BlocProvider<DetailProjectBloc>(
+                                create: (context) => DetailProjectBloc(
+                                  projectRepository: ProjectRepository(
+                                    dbProjectDataSource:
+                                        DbProjectDataSource(
+                                            database:
+                                                DBProvider.db.database),
+                                    networkProjectDataSource:
+                                        NetworkProjectDataSource(
+                                            dio: Dio(BaseOptions(
+                                                baseUrl:
+                                                    "https://tracker-api.toptal.com"))),
+                                  ),
+                                  userRepository: UserRepository(
+                                    networkUserDataSource:
+                                        NetworkUserDataSource(
+                                            dio: Dio(BaseOptions(
+                                                baseUrl:
+                                                    "https://tracker-api.toptal.com"))),
+                                    dbUserDataSource: DbUserDataSource(
+                                        database: DBProvider.db.database),
+                                  ),
                                 ),
-                                userRepository: UserRepository(
-                                  networkUserDataSource: NetworkUserDataSource(
-                                      dio: Dio(BaseOptions(
-                                          baseUrl:
-                                              "https://tracker-api.toptal.com"))),
+                                child: ProjectInfoScreen(
+                                  role: projects[index].currentUser,
+                                  id: projects[index].id,
+                                  name: projects[index].name,
+                                  allUsers: widget.allUsers,
                                 ),
-                              ),
-                              child: ProjectInfoScreen(
-                                id: projects[index].id,
-                                name: projects[index].name,
-                                allUsers: widget.allUsers,
-                              ),
-                            ),
-                          ));
+                              )));
                     },
                     projectModel: projects[index]);
               },

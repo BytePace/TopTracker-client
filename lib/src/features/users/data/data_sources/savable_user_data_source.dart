@@ -9,7 +9,9 @@ abstract interface class ISavableUserDataSource {
 
   Future<void> deleteUser(int projectId, int profileId);
 
-  Future<List<UserInfoDto>> getAllUsers();
+  Future<List<UserDto>> getAllUsers();
+
+  Future<void> updateAllUsers(List<UserDto> allUsers);
 
   Future<List<ProfileIdDto>> getAllProfileID();
 }
@@ -35,12 +37,12 @@ class DbUserDataSource implements ISavableUserDataSource {
     final database = await _database;
     await database.delete(
       'Users',
-      where: 'detail_project_id = ? AND profileId = ?',
-      whereArgs: [projectId, profileId],
+      where: 'profile_id = ?',
+      whereArgs: [profileId],
     );
     await database.delete(
       'UserInfo',
-      where: 'detail_project_id = ? AND profile_id = ?',
+      where: 'detail_project_id = ? AND userID = ?',
       whereArgs: [projectId, profileId],
     );
     await database.delete(
@@ -56,23 +58,25 @@ class DbUserDataSource implements ISavableUserDataSource {
     final database = await _database;
     List<ProfileIdDto> profileIDList = [];
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await database.query("UserInfo", distinct: true);
-    detailProjectsMapList.forEach((user) async {
-      profileIDList.add(ProfileIdDto.fromMap(user));
-    });
+        await database.query("Users");
+    for (var element in detailProjectsMapList) {
+      profileIDList.add(ProfileIdDto.fromMap(element));
+    }
+
     //await database.close();
     return profileIDList;
   }
 
   @override
-  Future<List<UserInfoDto>> getAllUsers() async {
+  Future<List<UserDto>> getAllUsers() async {
     final database = await _database;
-    List<UserInfoDto> projectList = [];
+    List<UserDto> projectList = [];
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await database.query("UserInfo", distinct: true);
-    detailProjectsMapList.forEach((user) async {
-      projectList.add(UserInfoDto.fromMap(user));
-    });
+        await database.query("Users", distinct: true);
+    for (var element in detailProjectsMapList) {
+      projectList.add(UserDto.fromMap(element));
+    }
+
     //await database.close();
     return projectList;
   }
@@ -86,5 +90,25 @@ class DbUserDataSource implements ISavableUserDataSource {
       whereArgs: [invitationID],
     );
     //await database.close();
+  }
+
+  @override
+  Future<void> updateAllUsers(List<UserDto> allUsers) async {
+    try {
+      final database = await _database;
+      final batch = database.batch();
+      batch.delete("Users");
+      await batch.commit();
+      for (var user in allUsers) {
+        batch.insert('Users', {
+          "profile_id": user.userID,
+          "name": user.name,
+          "email": user.email
+        });
+      }
+      await batch.commit();
+    } on Exception {
+      throw Exception();
+    }
   }
 }
