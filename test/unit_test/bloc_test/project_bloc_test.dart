@@ -54,7 +54,7 @@ void main() {
       final allUsersLoad = UserModel(userID: 0, name: "", email: '');
 
       blocTest<ProjectBloc, ProjectState>(
-        'emits [IsLoginState] when InitialEvent is added.',
+        'emits [ProjectListLoading and ProjectListLoaded] when LoadProjectEvent is added.',
         build: () => buildBloc(),
         wait: const Duration(seconds: 1),
         act: (bloc) => bloc.add(LoadProjectEvent()),
@@ -71,7 +71,7 @@ void main() {
         ],
       );
       blocTest<ProjectBloc, ProjectState>(
-          'emits [LoginSuccess] when LoginEvent is added.',
+          'emits [ProjectListLoading and ProjectListLoaded] when UpdateProjectEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(UpdateProjectEvent()),
@@ -88,7 +88,7 @@ void main() {
               ]);
 
       blocTest<ProjectBloc, ProjectState>(
-          'emits [LoginSuccess] when LoginEvent is added.',
+          'emits [ProjectListMessage and ProjectListLoaded] when RestoreProjectEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(RestoreProjectEvent(id: 0)),
@@ -102,7 +102,7 @@ void main() {
               ]);
 
       blocTest<ProjectBloc, ProjectState>(
-          'emits [LoginSuccess] when LoginEvent is added.',
+          'emits [ProjectListMessage and ProjectListLoaded] when DeleteProjectEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(DeleteProjectEvent(id: 0)),
@@ -112,7 +112,7 @@ void main() {
               ]);
 
       blocTest<ProjectBloc, ProjectState>(
-          'emits [LoginSuccess] when LoginEvent is added.',
+          'emits [ProjectListMessage and ProjectListLoaded] when ArchiveProjectEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(ArchiveProjectEvent(id: 0)),
