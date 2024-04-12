@@ -45,8 +45,9 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
+              Navigator.of(context).pop();
               GetIt.I<ProjectBloc>()
-                  .add(RestoreProjectEvent(id: widget.id, context: context));
+                  .add(RestoreProjectEvent(id: widget.id));
             },
             child: Text(
               DisplayText.restore,
@@ -66,8 +67,9 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
+              Navigator.of(context).pop();
               GetIt.I<ProjectBloc>()
-                  .add(DeleteProjectEvent(id: widget.id, context: context));
+                  .add(DeleteProjectEvent(id: widget.id));
             },
             child: Text(
               DisplayText.delete,
@@ -111,13 +113,11 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                           children: [
                             OutlinedButton(
                                 onPressed: _restoreProject,
-                                child: const Text(DisplayText
-                                    .restoreProject)),
+                                child: const Text(DisplayText.restoreProject)),
                             const SizedBox(height: 16),
                             OutlinedButton(
                                 onPressed: _deleteProject,
-                                child: const Text(
-                                    DisplayText.deleteProject))
+                                child: const Text(DisplayText.deleteProject))
                           ],
                         )
                       : Container()

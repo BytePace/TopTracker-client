@@ -32,8 +32,7 @@ class AllUsersList extends StatelessWidget {
                                 email: allUsers[index].email,
                                 role: "worker",
                                 rate: "",
-                                projectID: id,
-                                context: context));
+                                projectID: id));
                   },
                   child: ListTile(
                     dense: true,

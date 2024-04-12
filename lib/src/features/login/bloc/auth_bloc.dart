@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
-import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -28,31 +27,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _login(LogInEvent event, Emitter<AuthState> emit) async {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
-      emit(LoginSuccessState());
-      showSnackBar(event.context, "Succesful login");
+      emit(const LoginMessageState(message: 'Успешный вход'));
+      emit(SignInState());
     } catch (e) {
-      showSnackBar(event.context, "Неправильный логин или пароль");
-      emit(IsLoginState());
+      emit(const LoginMessageState(message: "Неправильный логин или пароль"));
+      emit(const IsLoginState());
     }
   }
 
   Future<void> _logout(LogOutEvent event, Emitter<AuthState> emit) async {
     try {
-      Navigator.of(event.context).pop();
-      await _authRepository.doLogout();
       await _projectRepository.dropDB();
+      await _authRepository.doLogout();
+      emit(const IsLoginState());
     } catch (e) {
-      emit(LoginErrorState(error: e.toString()));
-    } finally {
-      emit(IsLoginState());
+      emit(LoginMessageState(message: e.toString()));
+      emit(const IsLoginState());
     }
   }
 
   void _init(InitialEvent event, Emitter<AuthState> emit) async {
     if (await _authRepository.getToken() == null) {
-      emit(IsLoginState());
+      emit(const IsLoginState());
     } else {
-      emit(LoginSuccessState());
+      emit(SignInState());
     }
   }
 }

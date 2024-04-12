@@ -78,8 +78,7 @@ class _AddUserFormState extends State<AddUserForm> {
                               email: _email,
                               role: _role,
                               rate: "",
-                              projectID: widget.id,
-                              context: context));
+                              projectID: widget.id));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Что то пошло не так")));

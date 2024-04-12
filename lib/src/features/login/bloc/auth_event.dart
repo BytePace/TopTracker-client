@@ -6,24 +6,22 @@ sealed class AuthEvent extends Equatable {}
 class LogInEvent extends AuthEvent {
   final String email;
   final String password;
-  final BuildContext context;
 
   LogInEvent(
-      {required this.email, required this.password, required this.context});
+      {required this.email, required this.password});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [email, password, context];
+  List<Object?> get props => [email, password];
 }
 
 class LogOutEvent extends AuthEvent {
-  final BuildContext context;
 
-  LogOutEvent({required this.context});
+  LogOutEvent();
 
   @override
   // TODO: implement props
-  List<Object?> get props => [context];
+  List<Object?> get props => [];
 }
 
 class InitialEvent extends AuthEvent {

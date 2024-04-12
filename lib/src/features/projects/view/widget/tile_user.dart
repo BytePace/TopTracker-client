@@ -54,8 +54,8 @@ class UserTile extends StatelessWidget {
                                         .add(DeleteUserEvent(
                                             projectID: detailProjectModel.id,
                                             profileID:
-                                                allUsers[index].profileID,
-                                            context: context));
+                                                allUsers[index].profileID
+                                            ));
                                   },
                                   child: Text(
                                     DisplayText.deleteUser,

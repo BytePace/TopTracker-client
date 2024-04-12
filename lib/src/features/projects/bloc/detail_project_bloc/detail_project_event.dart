@@ -12,12 +12,10 @@ class LoadDetailProjectEvent extends DetailProjectEvent {
 class DeleteUserEvent extends DetailProjectEvent {
   final int projectID;
   final int profileID;
-  final BuildContext context;
 
   DeleteUserEvent(
       {required this.projectID,
-      required this.profileID,
-      required this.context});
+      required this.profileID});
 }
 
 class AddUserEvent extends DetailProjectEvent {
@@ -25,23 +23,19 @@ class AddUserEvent extends DetailProjectEvent {
   final String role;
   final String rate;
   final int projectID;
-  final BuildContext context;
 
   AddUserEvent(
       {required this.email,
       required this.role,
       required this.rate,
-      required this.projectID,
-      required this.context});
+      required this.projectID});
 }
 
 class RevokeInviteEvent extends DetailProjectEvent {
   final int projectID;
   final int invitationsID;
-  final BuildContext context;
 
   RevokeInviteEvent(
       {required this.projectID,
-      required this.invitationsID,
-      required this.context});
+      required this.invitationsID});
 }

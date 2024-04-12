@@ -1,7 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 
 import '../../database_test.dart';
@@ -45,11 +43,20 @@ void main() {
         expect: () => <IsLoginState>[IsLoginState()],
       );
       blocTest<AuthBloc, AuthState>(
-        'emits [LoginSuccess] when LoginEvent is added.',
+        'emits [SignInState] when LoginEvent is added.',
         build: () => buildBloc(),
-        act: (bloc) =>
-            bloc.add(LogInEvent(email: '', password: '', context: null)),
-        expect: () => <LoginSuccessState>[LoginSuccessState()],
+        act: (bloc) => bloc.add(LogInEvent(email: '', password: '')),
+        expect: () =>
+            [const LoginMessageState(message: "Успешный вход"), SignInState()],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [IsLoginState] when LogOutEvent is added.',
+        build: () => buildBloc(),
+        wait: const Duration(seconds: 1),
+        seed: () => SignInState(),
+        act: (bloc) => bloc.add(LogOutEvent()),
+        expect: () => [const IsLoginState()],
       );
     });
   });

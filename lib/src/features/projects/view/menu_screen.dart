@@ -7,6 +7,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/project_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/app_bar.dart';
 import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
@@ -30,7 +31,7 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Future<void> _fetchUpdate() async {
-    projectListBloc.add(UpdateProjectEvent(context: context));
+    projectListBloc.add(UpdateProjectEvent());
   }
 
   @override
@@ -84,6 +85,9 @@ class _MenuScreenState extends State<MenuScreen> {
                 setState(() {
                   _projects = state.projects;
                 });
+              }
+              if (state is ProjectListMessage) {
+                showSnackBar(context, state.message);
               }
             },
           ),

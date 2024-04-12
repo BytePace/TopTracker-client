@@ -5,6 +5,7 @@ import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/view/menu_screen.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -18,25 +19,28 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     GetIt.I<AuthBloc>().add(InitialEvent());
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => GetIt.I<AuthBloc>(),
-        child: BlocBuilder<AuthBloc, AuthState>(
+        child: BlocConsumer<AuthBloc, AuthState>(
           bloc: GetIt.I<AuthBloc>(),
           builder: (BuildContext context, state) {
-            if (state is IsLoginState) {
-              return const LoginScreen();
-            } else if (state is LoginSuccessState) {
+            if (state is SignInState) {
               return BlocProvider<ProjectBloc>(
                 create: (context) => GetIt.I<ProjectBloc>(),
                 child: const MenuScreen(),
               );
             } else {
-              return Container();
+              print("rebuild");
+              return const LoginScreen();
+            }
+          },
+          listener: (BuildContext context, AuthState state) {
+            if (state is LoginMessageState) {
+              showSnackBar(context, state.message);
             }
           },
         ));

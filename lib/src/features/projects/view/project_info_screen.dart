@@ -10,6 +10,7 @@ import 'package:tt_bytepace/src/features/projects/view/widget/all_users_list.dar
 import 'package:tt_bytepace/src/features/projects/view/widget/invited_on_project.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
@@ -48,8 +49,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(ArchiveProjectEvent(id: widget.id, context: context));
+              Navigator.of(context).pop();
+              GetIt.I<ProjectBloc>().add(ArchiveProjectEvent(id: widget.id));
             },
             child: Text(
               DisplayText.archive,
@@ -69,8 +70,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(DeleteProjectEvent(id: widget.id, context: context));
+              Navigator.of(context).pop();
+              GetIt.I<ProjectBloc>().add(DeleteProjectEvent(id: widget.id));
             },
             child: Text(
               DisplayText.delete,
@@ -95,55 +96,61 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             });
           }
         },
-        child: BlocBuilder<DetailProjectBloc, DetailProjectState>(
-            bloc: BlocProvider.of<DetailProjectBloc>(context),
-            builder: (context, state) {
-              if (state is DetailProjectListLoaded) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ListView(
-                    children: [
-                      UserOnProject(
-                          key: UniqueKey(),
-                          detailProjectModel: state.detailProjectModel,
-                          allUsers: getListUsersOnProject(
-                              state.detailProjectModel.engagements,
-                              state.detailProjectModel.users)),
-                      const SizedBox(height: 16),
-                      widget.role == "admin" || widget.role == "supervisor"
-                          ? Column(
-                              children: [
-                                OutlinedButton(
-                                    onPressed: _archiveProject,
-                                    child:
-                                        const Text(DisplayText.archiveProject)),
-                                const SizedBox(height: 16),
-                                OutlinedButton(
-                                    onPressed: _deleteProject,
-                                    child: const Text(DisplayText.deleteProject))
-                              ],
-                            )
-                          : Container(),
-                      const SizedBox(height: 16),
-                      InvitedOnProject(
+        child: BlocConsumer<DetailProjectBloc, DetailProjectState>(
+          bloc: BlocProvider.of<DetailProjectBloc>(context),
+          builder: (context, state) {
+            if (state is DetailProjectListLoaded) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ListView(
+                  children: [
+                    UserOnProject(
                         key: UniqueKey(),
                         detailProjectModel: state.detailProjectModel,
-                      ),
-                      const SizedBox(height: 16),
-                      AddUserForm(id: widget.id),
-                      const SizedBox(height: 16),
-                      AllUsersList(
-                          key: UniqueKey(),
-                          allUsers: getAllUsersWhithoutOnProject(
-                              state.detailProjectModel.engagements, _allUsers),
-                          id: widget.id),
-                    ],
-                  ),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
+                        allUsers: getListUsersOnProject(
+                            state.detailProjectModel.engagements,
+                            state.detailProjectModel.users)),
+                    const SizedBox(height: 16),
+                    widget.role == "admin" || widget.role == "supervisor"
+                        ? Column(
+                            children: [
+                              OutlinedButton(
+                                  onPressed: _archiveProject,
+                                  child:
+                                      const Text(DisplayText.archiveProject)),
+                              const SizedBox(height: 16),
+                              OutlinedButton(
+                                  onPressed: _deleteProject,
+                                  child: const Text(DisplayText.deleteProject))
+                            ],
+                          )
+                        : Container(),
+                    const SizedBox(height: 16),
+                    InvitedOnProject(
+                      key: UniqueKey(),
+                      detailProjectModel: state.detailProjectModel,
+                    ),
+                    const SizedBox(height: 16),
+                    AddUserForm(id: widget.id),
+                    const SizedBox(height: 16),
+                    AllUsersList(
+                        key: UniqueKey(),
+                        allUsers: getAllUsersWhithoutOnProject(
+                            state.detailProjectModel.engagements, _allUsers),
+                        id: widget.id),
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+          listener: (BuildContext context, DetailProjectState state) {
+            if (state is DetailProjectListMessage) {
+              showSnackBar(context, state.message);
+            }
+          },
+        ),
       ),
     );
   }

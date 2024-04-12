@@ -83,6 +83,6 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTheme,
-        home: const App());
+        home: const Scaffold(body: App()));
   }
 }

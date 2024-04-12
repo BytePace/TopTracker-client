@@ -53,12 +53,11 @@ class UserInfoScreen extends StatelessWidget {
                                           Navigator.of(ctx).pop();
                                           GetIt.I<DetailProjectBloc>().add(
                                               DeleteUserEvent(
-                                                  projectID: userProjectList[
-                                                          index2]
-                                                      .id,
+                                                  projectID:
+                                                      userProjectList[index2]
+                                                          .id,
                                                   profileID: allProfileID[index]
-                                                      .profileID,
-                                                  context: context));
+                                                      .profileID));
                                         },
                                         child: Text(
                                           DisplayText.deleteUser,

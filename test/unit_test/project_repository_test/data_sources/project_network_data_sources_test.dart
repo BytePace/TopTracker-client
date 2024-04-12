@@ -66,7 +66,7 @@ class NetworkProjectDataSourceTest implements IProjectDataSource {
         "engagements": [],
         "invitations": []
       };
-
+      print(DetailProjectDto.fromJson(response));
       return DetailProjectDto.fromJson(response);
     } catch (e) {
       print("Ошибка загрузки деталей проекта $e");

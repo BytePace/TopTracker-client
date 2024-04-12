@@ -29,8 +29,7 @@ class InvitedOnProject extends StatelessWidget {
                           RevokeInviteEvent(
                               invitationsID: detailProjectModel
                                   .invitations[index].inviteID,
-                              projectID: detailProjectModel.id,
-                              context: context));
+                              projectID: detailProjectModel.id));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

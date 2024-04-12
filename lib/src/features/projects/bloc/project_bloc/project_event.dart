@@ -7,28 +7,20 @@ class LoadProjectEvent extends ProjectEvent {}
 
 class RestoreProjectEvent extends ProjectEvent {
   final int id;
-  final BuildContext context;
 
-  RestoreProjectEvent({required this.id, required this.context});
+  RestoreProjectEvent({required this.id});
 }
 
 class DeleteProjectEvent extends ProjectEvent {
   final int id;
-  final BuildContext context;
 
-  DeleteProjectEvent({required this.id, required this.context});
+  DeleteProjectEvent({required this.id});
 }
+
 class ArchiveProjectEvent extends ProjectEvent {
   final int id;
-  final BuildContext context;
 
-  ArchiveProjectEvent({required this.id, required this.context});
+  ArchiveProjectEvent({required this.id});
 }
 
-
-
-class UpdateProjectEvent extends ProjectEvent {
-  final BuildContext context;
-
-  UpdateProjectEvent({required this.context});
-}
+class UpdateProjectEvent extends ProjectEvent {}

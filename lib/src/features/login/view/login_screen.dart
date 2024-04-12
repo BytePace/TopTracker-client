@@ -69,8 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     authBloc.add(LogInEvent(
                         email: emailController.text,
-                        password: passwordController.text,
-                        context: context));
+                        password: passwordController.text));
                   },
                 ),
               ],

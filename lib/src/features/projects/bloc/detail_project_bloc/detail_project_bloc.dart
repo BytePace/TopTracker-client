@@ -1,10 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
-import 'package:tt_bytepace/src/features/utils/methods.dart';
 
 part 'detail_project_event.dart';
 part 'detail_project_state.dart';
@@ -25,7 +25,7 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
       required IUserRepository userRepository})
       : _projectRepository = projectRepository,
         _userRepository = userRepository,
-        super(ProjectInitial()) {
+        super(DetailProjectInitial()) {
     on<LoadDetailProjectEvent>(_onLoadProject);
     on<DeleteUserEvent>(_deleteUser);
     on<AddUserEvent>(_addUser);
@@ -46,11 +46,12 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListMessage(message: "Пользователь удален"));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showSnackBar(event.context, "Пользователь удален");
     } catch (e) {
       print("ошибка добавления пользователя $e");
-      showSnackBar(event.context, "Произошла ошибка ");
+      emit(DetailProjectListMessage(message: "Произошла ошибка"));
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
 
@@ -61,11 +62,13 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListMessage(message: "Пользователь добавлен"));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-      showSnackBar(event.context, "Пользователь добавлен");
     } catch (e) {
       print("ошибка удаления пользователя $e");
-      showSnackBar(event.context, "Произошла ошибка $e");
+      emit(DetailProjectListMessage(
+          message: "Произошла ошибка при добавлении пользователя"));
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
 
@@ -76,12 +79,12 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
+      emit(DetailProjectListMessage(message: "Приглашение отменено"));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
-
-      showSnackBar(event.context, "Приглашение отменено");
     } catch (e) {
       print("произошла отмены приглашения ошибка $e");
-      showSnackBar(event.context, "Произошла ошибка");
+      emit(DetailProjectListMessage(message: "Произошла ошибка"));
+      emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
 }
