@@ -48,10 +48,12 @@ class _MenuScreenState extends State<MenuScreen> {
             bloc: projectListBloc,
             builder: (context, state) {
               if (state is ProjectListLoaded) {
+                List<ProjectModel> projectList = state.projects;
+                projectList.sort((a, b) => a.name.compareTo(b.name));
                 return [
                   ProjectScreen(
                       key: UniqueKey(),
-                      projects: state.projects
+                      projects: projectList
                           .where((element) => element.archivedAt == null)
                           .toList(),
                       allUsers: state.allUser),

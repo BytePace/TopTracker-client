@@ -27,7 +27,7 @@ class UserTile extends StatelessWidget {
           Text(allUsers[index].name,
               style: Theme.of(context).textTheme.bodyMedium),
           Text(
-              "${DisplayText.totalHours} ${double.parse((allUsers[index].workedTotal / 60 / 60).toStringAsFixed(2))}"),
+              "${DisplayText.totalHours} ${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}"),
           detailProjectModel.currentUserRole == "admin"
               ? PopupMenuButton(itemBuilder: (context) {
                   return [
@@ -54,8 +54,7 @@ class UserTile extends StatelessWidget {
                                         .add(DeleteUserEvent(
                                             projectID: detailProjectModel.id,
                                             profileID:
-                                                allUsers[index].profileID
-                                            ));
+                                                allUsers[index].profileID));
                                   },
                                   child: Text(
                                     DisplayText.deleteUser,

@@ -65,8 +65,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
                   onPressed: () {
                     setState(() {
                       isAsc
-                          ? projects.sort((a, b) => a.name.compareTo(b.name))
-                          : projects.sort((a, b) => b.name.compareTo(a.name));
+                          ? projects.sort((a, b) => b.name.compareTo(a.name))
+                          : projects.sort((a, b) => a.name.compareTo(b.name));
                       isAsc = !isAsc;
                     });
                   },

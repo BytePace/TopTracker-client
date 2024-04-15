@@ -14,6 +14,9 @@ abstract interface class IProjectRepository {
 
   Future<void> dropDB();
 
+  Future<String> addWorkTime(
+      int projectID, String startTime, String endTime, String description);
+
   Future<void> restoreProject(int projectID);
 
   Future<void> deleteProject(int projectID);
@@ -106,5 +109,12 @@ class ProjectRepository implements IProjectRepository {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  Future<String> addWorkTime(int projectID, String startTime, String endTime,
+      String description) async {
+    return await _networkProjectDataSource.addWorkTime(
+        projectID, startTime, endTime, description);
   }
 }

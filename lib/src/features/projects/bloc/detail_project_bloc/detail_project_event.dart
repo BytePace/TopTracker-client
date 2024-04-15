@@ -13,9 +13,7 @@ class DeleteUserEvent extends DetailProjectEvent {
   final int projectID;
   final int profileID;
 
-  DeleteUserEvent(
-      {required this.projectID,
-      required this.profileID});
+  DeleteUserEvent({required this.projectID, required this.profileID});
 }
 
 class AddUserEvent extends DetailProjectEvent {
@@ -35,7 +33,18 @@ class RevokeInviteEvent extends DetailProjectEvent {
   final int projectID;
   final int invitationsID;
 
-  RevokeInviteEvent(
+  RevokeInviteEvent({required this.projectID, required this.invitationsID});
+}
+
+class AddWorkTimeEvent extends DetailProjectEvent {
+  final int projectID;
+  final String description;
+  final String startTime;
+  final String endTime;
+
+  AddWorkTimeEvent(
       {required this.projectID,
-      required this.invitationsID});
+      required this.description,
+      required this.endTime,
+      required this.startTime});
 }

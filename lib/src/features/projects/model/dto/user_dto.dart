@@ -24,12 +24,18 @@ class UserDto {
     };
   }
 
-  factory UserDto.fromMap(Map<String, dynamic> map) {
+  factory UserDto.fromUsersMap(Map<String, dynamic> map) {
     return UserDto(
       email: map[DbUsersKeys.email],
       userID: map[DbUsersKeys.profileID],
       name: map[DbUsersKeys.name],
     );
+  }
+  factory UserDto.fromUserInfoMap(Map<String, dynamic> map) {
+    return UserDto(
+        userID: map[DbUserInfoKeys.userID],
+        name: map[DbUserInfoKeys.name],
+        email: map[DbUserInfoKeys.email]);
   }
 
   Map<String, dynamic> toJson() {

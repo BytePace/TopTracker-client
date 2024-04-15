@@ -55,10 +55,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       final List<Map<String, dynamic>> userInfoMapList =
           await database.query("UserInfo", where: keyArg, whereArgs: [id]);
       for (var info in userInfoMapList) {
-        userInfo.add(UserDto(
-            userID: info[DbUserInfoKeys.userID],
-            name: info[DbUserInfoKeys.name],
-            email: info[DbUserInfoKeys.email]));
+        userInfo.add(UserDto.fromUserInfoMap(info));
       }
 
       final List<Map<String, dynamic>> userEngagementsMapList = await database
@@ -112,7 +109,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override
@@ -137,7 +133,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       }
       projectList.add(ProjectDto.fromMap(project, list));
     }
-    //await database.close();
     return projectList;
   }
 
@@ -150,7 +145,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override
@@ -212,7 +206,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override

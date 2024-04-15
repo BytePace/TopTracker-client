@@ -6,6 +6,7 @@ import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/add_work_time.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/all_users_list.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/invited_on_project.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.dart';
@@ -131,7 +132,14 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                       detailProjectModel: state.detailProjectModel,
                     ),
                     const SizedBox(height: 16),
-                    AddUserForm(id: widget.id),
+                    AddWorkTime(
+                        projectID: widget.id,
+                        key:
+                            UniqueKey()), //панель добавления времени на проекте
+                    const SizedBox(height: 16),
+                    AddUserForm(
+                        id: widget
+                            .id), //панель добавления пользователя на проект
                     const SizedBox(height: 16),
                     AllUsersList(
                         key: UniqueKey(),
