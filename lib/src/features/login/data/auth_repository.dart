@@ -21,7 +21,6 @@ class AuthRepository implements IAuthRepository {
     try {
       dto = await _networkAuthDataSources.login(email, password);
     } on Exception {
-      print("Ошибка логина");
       throw Exception();
     }
     return LoginModel.fromDto(dto);

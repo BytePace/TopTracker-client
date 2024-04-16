@@ -49,8 +49,6 @@ class NetworkAuthDataSources implements IAuthDataSources {
             "current_user_id", response.data['profiles'][0]['id'].toInt());
         return LoginDto.fromJson(response.data);
       } else {
-        print(response.statusCode);
-        print(response.data);
         throw Exception('Failed to load data');
       }
     } on Exception {
