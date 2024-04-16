@@ -59,7 +59,7 @@ class DbUserDataSourceTest implements ISavableUserDataSource {
     final List<Map<String, dynamic>> detailProjectsMapList =
         await database.query("Users", distinct: true);
     for (var element in detailProjectsMapList) {
-      projectList.add(UserDto.fromMap(element));
+      projectList.add(UserDto.fromUsersMap(element));
     }
 
     //await database.close();

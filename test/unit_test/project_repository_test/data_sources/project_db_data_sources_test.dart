@@ -36,7 +36,7 @@ class DbProjectDataSourceTest implements ISavableProjectDataSource {
       final List<Map<String, dynamic>> userInfoMapList =
           await database.query("UserInfo", where: keyArg, whereArgs: [id]);
       for (var info in userInfoMapList) {
-        userInfo.add(UserDto.fromMap(info));
+        userInfo.add(UserDto.fromUsersMap(info));
       }
 
       final List<Map<String, dynamic>> userEngagementsMapList = await database

@@ -7,15 +7,13 @@ class LogInEvent extends AuthEvent {
   final String email;
   final String password;
 
-  LogInEvent(
-      {required this.email, required this.password});
+  LogInEvent({required this.email, required this.password});
 
   @override
   List<Object?> get props => [email, password];
 }
 
 class LogOutEvent extends AuthEvent {
-
   LogOutEvent();
 
   @override

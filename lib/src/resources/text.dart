@@ -44,5 +44,14 @@ class DisplayText {
   static const deleteUser = "Delete";
 }
 
-class InvitedText {}
+class SnackBarAlertText {
+  static const successLogin = "Успешный вход";
+  static const unSuccessLogin = "Неправильный логин или пароль";
+  static const error = "Произошла ошибка";
+  static const deletedUser = "Пользователь удален";
+  static const addedUser = "Пользователь добавлен";
+  static const addedUserError =  "Произошла ошибка при добавлении пользователя";
+  static const revokeInvite = "Приглашение отменено";
+}
 
+class InvitedText {}

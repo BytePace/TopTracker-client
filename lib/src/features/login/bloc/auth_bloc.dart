@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
+import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -24,14 +26,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _login(LogInEvent event, Emitter<AuthState> emit) async {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
-      emit(const LoginMessageState(message: 'Успешный вход'));
-
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String accessToken = prefs.getString("access_token") ?? "";
-
-      emit(SignInState(accessToken: accessToken));
+      emit(const LoginMessageState(message: SnackBarAlertText.successLogin));
+      emit(SignInState());
     } catch (e) {
-      emit(const LoginMessageState(message: "Неправильный логин или пароль"));
+      emit(const LoginMessageState(message: SnackBarAlertText.unSuccessLogin));
       emit(const IsLoginState());
     }
   }

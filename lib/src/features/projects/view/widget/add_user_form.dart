@@ -19,8 +19,8 @@ class _AddUserFormState extends State<AddUserForm> {
 
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "admin", child: Text("admin")),
-      const DropdownMenuItem(value: "worker", child: Text("worker")),
+      const DropdownMenuItem(value: "admin", child: Text("Role: admin")),
+      const DropdownMenuItem(value: "worker", child: Text("Role: worker")),
     ];
     return menuItems;
   }

@@ -24,7 +24,7 @@ class UserTileArchived extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-                "${DisplayText.totalHours} ${(allUsers[index].workedTotal / 60 / 60).round()}",
+                "${DisplayText.totalHours} ${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}",
                 style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
