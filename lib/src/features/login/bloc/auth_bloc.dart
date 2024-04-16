@@ -1,10 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
-import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 part 'auth_event.dart';
@@ -29,7 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const LoginMessageState(message: SnackBarAlertText.successLogin));
       emit(SignInState());
     } catch (e) {
-      emit(const LoginMessageState(message: SnackBarAlertText.unSuccessLogin));
+      emit(const LoginMessageState(message: SnackBarAlertText.failedLogin));
       emit(const IsLoginState());
     }
   }
@@ -49,9 +47,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (await _authRepository.getToken() == null) {
       emit(const IsLoginState());
     } else {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String accessToken = prefs.getString("access_token") ?? "";
-      emit(SignInState(accessToken: accessToken));
+    
+      emit(SignInState());
     }
   }
 }

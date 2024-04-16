@@ -125,6 +125,11 @@ void main() {
       }
       expect(project, null);
     });
+    test('test add work time', () async {
+     final response = await projectRepositoryTest.addWorkTime(0, "", "", "");
+
+      expect(response, "time added");
+    });
   });
 }
 
@@ -198,13 +203,15 @@ class ProjectRepositoryTest implements IProjectRepository {
   }
 
   @override
-  Future<void> dropDB() async {
-    await _dbProjectDataSource.dropDB();
-  }
-
-  @override
   Future<void> archiveProject(int projectID) async {
     await _networkProjectDataSource.archiveProject(projectID);
     await _dbProjectDataSource.archiveProject(projectID);
+  }
+
+  @override
+  Future<String> addWorkTime(int projectID, String startTime, String endTime,
+      String description) async {
+    return await _networkProjectDataSource.addWorkTime(
+        projectID, startTime, endTime, description);
   }
 }

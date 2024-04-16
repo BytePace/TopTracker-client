@@ -77,6 +77,16 @@ void main() {
                 DetailProjectListLoaded(detailProjectModel: project)
               ]);
       blocTest<DetailProjectBloc, DetailProjectState>(
+          'emits [DetailProjectListMessage and DetailProjectListLoaded] when AddWorkTimeEvent is added.',
+          build: () => buildBloc(),
+          wait: const Duration(seconds: 1),
+          act: (bloc) => bloc.add(AddWorkTimeEvent(
+              projectID: 0, description: '', endTime: '', startTime: '')),
+          expect: () => [
+                DetailProjectListMessage(message: "time added"),
+                DetailProjectListLoaded(detailProjectModel: project)
+              ]);
+      blocTest<DetailProjectBloc, DetailProjectState>(
           'emits [DetailProjectListMessage and DetailProjectListLoaded] when RevokeInviteEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),

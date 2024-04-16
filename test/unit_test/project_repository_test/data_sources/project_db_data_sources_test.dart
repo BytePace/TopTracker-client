@@ -181,15 +181,4 @@ class DbProjectDataSourceTest implements ISavableProjectDataSource {
       whereArgs: [projectID],
     );
   }
-
-  @override
-  Future<void> dropDB() async {
-    final database = await _database;
-    await database.delete('UserEngagements');
-    await database.delete('Invites');
-    await database.delete('UserInfo');
-    await database.delete('UsersProfileID');
-    await database.delete('DetailProject');
-    await database.delete('Projects');
-  }
 }

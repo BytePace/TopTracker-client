@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/models/dto/login_dto.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 abstract interface class IAuthDataSources {
   Future<void> logout();
@@ -23,9 +24,11 @@ class NetworkAuthDataSources implements IAuthDataSources {
 
   @override
   Future<void> logout() async {
-    final loginData = {"access_token": _prefs.getString("access_token")};
+    final loginData = {
+      "access_token": _prefs.getString(SharedPreferencesKey.accessTokenKey)
+    };
     await _dio.delete('/sessions/me', data: loginData);
-    await _prefs.remove('access_token');
+    await _prefs.remove(SharedPreferencesKey.accessTokenKey);
     await _prefs.remove('current_user_id');
   }
 
@@ -40,7 +43,8 @@ class NetworkAuthDataSources implements IAuthDataSources {
       final response = await _dio.post('/sessions', data: loginData);
 
       if (response.statusCode == 201) {
-        await _prefs.setString("access_token", response.data['access_token']);
+        await _prefs.setString(
+            SharedPreferencesKey.accessTokenKey, response.data['access_token']);
         await _prefs.setInt(
             "current_user_id", response.data['profiles'][0]['id'].toInt());
         return LoginDto.fromJson(response.data);
@@ -56,7 +60,7 @@ class NetworkAuthDataSources implements IAuthDataSources {
 
   @override
   Future<String?> getToken() async {
-    return _prefs.getString("access_token");
+    return _prefs.getString(SharedPreferencesKey.accessTokenKey);
   }
 
   @override

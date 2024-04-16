@@ -8,6 +8,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/archived_projects/view/widget/tile_user_archived.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class ArchivedProjectInfoScreen extends StatefulWidget {
@@ -106,7 +107,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                               )),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                   widget.project.currentUser == "admin" ||
                           widget.project.currentUser == "supervisor"
                       ? Column(
@@ -114,7 +115,7 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                             OutlinedButton(
                                 onPressed: _restoreProject,
                                 child: const Text(DisplayText.restoreProject)),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                             OutlinedButton(
                                 onPressed: _deleteProject,
                                 child: const Text(DisplayText.deleteProject))

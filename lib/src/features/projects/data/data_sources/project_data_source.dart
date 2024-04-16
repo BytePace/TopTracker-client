@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 abstract class IProjectDataSource {
   Future<List<ProjectDto>> getProjects();
@@ -30,7 +31,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<List<ProjectDto>> getProjects() async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     try {
       final response = await _dio
@@ -55,7 +56,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     try {
       final response = await _dio
@@ -74,7 +75,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> restoreProject(int projectID) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final Map<String, dynamic> userData = {"access_token": accessToken};
 
@@ -95,7 +96,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> deleteProject(int projectID) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final Map<String, dynamic> projectData = {"access_token": accessToken};
 
@@ -114,7 +115,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> archiveProject(int projectID) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final Map<String, dynamic> projectData = {"access_token": accessToken};
 
@@ -132,7 +133,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
   Future<String> addWorkTime(int projectID, String startTime, String endTime,
       String description) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = prefs.getString(SharedPreferencesKey.accessTokenKey);
     final Map<String, dynamic> workData = {
       "description": description,
       "offline_type": 1,

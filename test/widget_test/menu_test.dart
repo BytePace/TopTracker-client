@@ -18,13 +18,13 @@ import 'mock_db_data_sources/mock_db_project_data_source.dart';
 import 'mock_db_data_sources/mock_db_user_data_source.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
   testWidgets("menu screen test", (WidgetTester tester) async {
+    TestWidgetsFlutterBinding.ensureInitialized();
     initGetItTest();
 
     await tester.pumpWidget(
       const MaterialApp(
-        home: MenuScreen(accessToken: '',),
+        home: MenuScreen(),
       ),
     );
     await tester.pump();
@@ -41,7 +41,8 @@ void main() {
         "searchTextField")); //используем поиск находим проект с названием 2
     await tester.enterText(searchTextField, "2");
     await tester.pump();
-    expect(find.byType(Card), findsOneWidget); //находим один проект
+    final projectInfo = find.byType(Card);
+    expect(projectInfo, findsOneWidget); //находим один проект
 
     // Проверяем начальное состояние BottomNavigationBar
     expect(find.byIcon(Icons.cases_rounded), findsOneWidget);
@@ -56,12 +57,12 @@ void main() {
     //кликаем на Users
     await tester.tap(find.byIcon(Icons.bar_chart));
     await tester.pumpAndSettle();
-    final user = find.text("Aleks");//в users всего один пользователь
+    final user = find.text("Aleks"); //в users всего один пользователь
     expect(user, findsOneWidget);
 
     await tester.tap(user);
     await tester.pumpAndSettle();
-    expect(find.text("1"), findsOneWidget); //смотрим проекты пользователя 
+    expect(find.text("1"), findsOneWidget); //смотрим проекты пользователя
 
     //возвращаемся и кликаем на иконку профиля
     await tester.tap(find.byIcon(Icons.arrow_back));
@@ -69,15 +70,17 @@ void main() {
     await tester.tap(find.byIcon(Icons.person));
     await tester.pumpAndSettle();
 
-    expect(find.text("User Stats"), findsOneWidget); //проверям совпадает ли appbar
+    expect(
+        find.text("User Stats"), findsOneWidget); //проверям совпадает ли appbar
     expect(find.text("name: Aleksandr Sherbakov"), findsOneWidget);
-    expect(find.text("current week hours: 10.0"), findsOneWidget);//проверяем что именно нужное значение отображается
+    expect(find.text("current week hours: 10.0"),
+        findsOneWidget); //проверяем что именно нужное значение отображается
   });
 }
 
 void initGetItTest() {
-  GetIt.I.registerSingleton<DetailProjectBloc>(
-    DetailProjectBloc(
+  GetIt.I.registerFactory<DetailProjectBloc>(() {
+    return DetailProjectBloc(
       projectRepository: ProjectRepositoryTest(
         networkProjectDataSource: NetworkProjectDataSourceTest(),
         dbProjectDataSource: DbProjectDataSourceMockTest(),
@@ -86,8 +89,8 @@ void initGetItTest() {
         networkUserDataSource: NetworkUserDataSourceTest(),
         dbUserDataSource: DbUserDataSourceMockTest(),
       ),
-    ),
-  );
+    );
+  });
   GetIt.I.registerSingleton<ProjectBloc>(
     ProjectBloc(
       projectRepository: ProjectRepositoryTest(
@@ -108,10 +111,6 @@ void initGetItTest() {
   );
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(
-      projectRepository: ProjectRepositoryTest(
-        dbProjectDataSource: DbProjectDataSourceMockTest(),
-        networkProjectDataSource: NetworkProjectDataSourceTest(),
-      ),
       authRepository: AuthRepositoryTest(
         networkAuthDataSources: NetworkAuthDataSourcesTest(),
       ),

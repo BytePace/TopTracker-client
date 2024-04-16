@@ -82,4 +82,10 @@ class NetworkProjectDataSourceTest implements IProjectDataSource {
 
   @override
   Future<void> restoreProject(int projectID) async {}
+
+  @override
+  Future<String> addWorkTime(int projectID, String startTime, String endTime,
+      String description) async {
+    return "time added";
+  }
 }

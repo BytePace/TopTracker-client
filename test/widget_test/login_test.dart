@@ -31,10 +31,6 @@ void main() {
 
     GetIt.I.registerSingleton<AuthBloc>(
       AuthBloc(
-        projectRepository: ProjectRepositoryTest(
-          dbProjectDataSource: DbProjectDataSourceMockTest(),
-          networkProjectDataSource: NetworkProjectDataSourceTest(),
-        ),
         authRepository: AuthRepositoryTest(
           networkAuthDataSources: NetworkAuthDataSourcesTest(),
         ),
@@ -70,8 +66,5 @@ void main() {
 
     var project = find.byType(Card);
     expect(project, findsWidgets);
-
-    
   });
-
 }

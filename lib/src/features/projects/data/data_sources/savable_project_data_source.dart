@@ -19,7 +19,6 @@ abstract interface class ISavableProjectDataSource {
 
   Future<void> archiveProject(int projectID);
 
-
   Future<void> updateProject(List<ProjectModel> projects);
 
   Future<void> updateDetailProject(DetailProjectDto detailProjects);
@@ -32,6 +31,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
+    final database = await DBProvider.db.database;
     const keyArg = "${DbDetailProjectKeys.detailProjectID} = ?";
 
     DetailProjectDto detailProjectsList = const DetailProjectDto(
@@ -48,22 +48,22 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final List<UserDto> userInfo = [];
 
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await _database.query("DetailProject", where: keyArg, whereArgs: [id]);
+        await database.query("DetailProject", where: keyArg, whereArgs: [id]);
     for (var project in detailProjectsMapList) {
       final List<Map<String, dynamic>> userInfoMapList =
-          await _database.query("UserInfo", where: keyArg, whereArgs: [id]);
+          await database.query("UserInfo", where: keyArg, whereArgs: [id]);
       for (var info in userInfoMapList) {
         userInfo.add(UserDto.fromUserInfoMap(info));
       }
 
-      final List<Map<String, dynamic>> userEngagementsMapList = await _database
+      final List<Map<String, dynamic>> userEngagementsMapList = await database
           .query("UserEngagements", where: keyArg, whereArgs: [id]);
       for (var info in userEngagementsMapList) {
         userEngagementsDto.add(UserEngagementsDto.fromMap(info));
       }
 
       final List<Map<String, dynamic>> invitesMapList =
-          await _database.query("Invites", where: keyArg, whereArgs: [id]);
+          await database.query("Invites", where: keyArg, whereArgs: [id]);
       for (var info in invitesMapList) {
         invitations.add(InvitedDto.fromMap(info));
       }
@@ -71,6 +71,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       detailProjectsList = DetailProjectDto.fromMap(
           project, userInfo, invitations, userEngagementsDto);
     }
+    await DBProvider.db.close();
     return detailProjectsList;
   }
 
@@ -134,7 +135,6 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<void> restoreProject(int projectID) async {
-
     await _database.update(
       'Projects',
       {DbProjectsKeys.archivedAt: null},

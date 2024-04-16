@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
+import 'package:tt_bytepace/src/resources/text.dart';
 
 abstract interface class IUserDataSource {
   Future<void> revokeInvite(int invitationID);
@@ -29,7 +30,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<void> revokeInvite(int invitationID) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final Map<String, dynamic> userData = {'access_token': accessToken};
     final response = await _dio.delete(
@@ -45,7 +46,7 @@ class NetworkUserDataSource implements IUserDataSource {
   @override
   Future<InvitedDto> addUser(
       String email, String rate, String role, int id) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
     final Map<String, dynamic> userData = {
       "invites": [
         {'email': email, 'rate': rate, 'role': role}
@@ -63,7 +64,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<void> deleteUser(int projectId, int profileId) async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
     final Map<String, dynamic> userData = {'access_token': accessToken};
 
     final response = await _dio.delete(
@@ -78,7 +79,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<int>> getProjectsID() async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final responseIDs =
         await _dio.get('/web/projects?access_token=$accessToken&archived=true');
@@ -96,7 +97,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<UserDto>> getAllUsers() async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final List<int> listProjectIDs = await getProjectsID();
     final Map<int, UserDto> allUsers = {};
@@ -113,7 +114,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<ProfileIdDto>> getAllProfileID() async {
-    String? accessToken = _prefs.getString("access_token");
+    String? accessToken = _prefs.getString(SharedPreferencesKey.accessTokenKey);
 
     final response = await _dio
         .get('/reports/filters?access_token=$accessToken&archived=true');

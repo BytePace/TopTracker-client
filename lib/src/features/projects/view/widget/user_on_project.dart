@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_user.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class UserOnProject extends StatelessWidget {
@@ -17,7 +18,7 @@ class UserOnProject extends StatelessWidget {
       children: [
         Text(DisplayText.userOnProjectText,
             style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 16),
+        const SizedBox(height: ConstantSize.defaultSeparatorHeight),
         Card(
           child: Column(
             children: List.generate(

@@ -21,6 +21,12 @@ class DBProvider {
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
+  Future close() async {
+    var dbClient = db;
+    _database = null;
+    return dbClient.close();
+  }
+
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
         CREATE TABLE UsersProfileID(

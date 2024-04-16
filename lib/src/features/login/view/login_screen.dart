@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Column(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: ConstantSize.bigSeparatorHeight),
                 //logo
                 Icon(
                   Icons.message,
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.grey[800],
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: ConstantSize.bigSeparatorHeight),
 
                 //welcome message
                 const Text(
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: ConstantSize.bigSeparatorHeight),
 
                 //emailTextField
                 TextField(
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: const Key('emailTextField'),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
                 //PasswordTextField
                 TextField(
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: const Key('passwordTextField'),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
                 TextButton(
                   child: const Text(DisplayText.loginButtonText),

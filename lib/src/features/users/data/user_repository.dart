@@ -1,4 +1,3 @@
-
 import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
@@ -82,8 +81,11 @@ class UserRepository implements IUserRepository {
   Future<List<UserModel>> updateAllUsers() async {
     var dtos = <UserDto>[];
     try {
+      print(1);
       dtos = await _networkUserDataSource.getAllUsers();
+      print(2);
       await _dbUserDataSource.updateAllUsers(dtos);
+      print(3);
     } catch (e) {
       print("Ошибка получения updateAllUsers $e");
     }

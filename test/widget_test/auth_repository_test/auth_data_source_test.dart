@@ -14,4 +14,7 @@ class NetworkAuthDataSourcesTest implements IAuthDataSources {
   Future<String?> getToken() async {
     return null;
   }
+
+  @override
+  Future<void> dropDB() async {}
 }

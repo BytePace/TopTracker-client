@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -11,14 +10,11 @@ import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart'
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
-
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
   final List<UserModel> allUsers;
   const ProjectScreen(
-      {super.key,
-      required this.projects,
-      required this.allUsers});
+      {super.key, required this.projects, required this.allUsers});
 
   @override
   State<ProjectScreen> createState() => _ProjectScreenState();
@@ -77,13 +73,14 @@ class _ProjectScreenState extends State<ProjectScreen> {
               itemCount: projects.length,
               itemBuilder: (BuildContext context, int index) {
                 return ProjectTile(
-                    onTap: () async {
-                      await Navigator.push(
+                    onTap: () {
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => 
+                              builder: (context) =>
                                   BlocProvider<DetailProjectBloc>(
-                                    create: (context) => GetIt.I<DetailProjectBloc>(),
+                                    create: (context) =>
+                                        GetIt.I<DetailProjectBloc>(),
                                     child: ProjectInfoScreen(
                                       role: projects[index].currentUser,
                                       id: projects[index].id,

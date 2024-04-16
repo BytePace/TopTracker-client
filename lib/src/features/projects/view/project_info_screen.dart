@@ -12,6 +12,7 @@ import 'package:tt_bytepace/src/features/projects/view/widget/invited_on_project
 import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
@@ -84,6 +85,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("build");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
@@ -111,7 +113,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                         allUsers: getListUsersOnProject(
                             state.detailProjectModel.engagements,
                             state.detailProjectModel.users)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                     widget.role == "admin" || widget.role == "supervisor"
                         ? Column(
                             children: [
@@ -119,28 +121,28 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                                   onPressed: _archiveProject,
                                   child:
                                       const Text(DisplayText.archiveProject)),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                               OutlinedButton(
                                   onPressed: _deleteProject,
                                   child: const Text(DisplayText.deleteProject))
                             ],
                           )
                         : Container(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                     InvitedOnProject(
                       key: UniqueKey(),
                       detailProjectModel: state.detailProjectModel,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                     AddWorkTime(
                         projectID: widget.id,
                         key:
                             UniqueKey()), //панель добавления времени на проекте
-                    const SizedBox(height: 16),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                     AddUserForm(
                         id: widget
                             .id), //панель добавления пользователя на проект
-                    const SizedBox(height: 16),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
                     AllUsersList(
                         key: UniqueKey(),
                         allUsers: getAllUsersWhithoutOnProject(

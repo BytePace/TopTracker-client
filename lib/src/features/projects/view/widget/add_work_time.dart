@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
 
 class AddWorkTime extends StatefulWidget {
   final int projectID;
@@ -162,7 +163,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
               //Button submit
               ElevatedButton(
@@ -243,7 +244,6 @@ class _AddWorkTimeState extends State<AddWorkTime> {
       });
     }
   }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(

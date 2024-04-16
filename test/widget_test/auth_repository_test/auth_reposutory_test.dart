@@ -30,4 +30,8 @@ class AuthRepositoryTest implements IAuthRepository {
   Future<String?> getToken() {
     return _networkAuthDataSources.getToken();
   }
+  
+  @override
+  Future<void> dropDB() async {
+  }
 }
