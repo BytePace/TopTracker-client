@@ -11,7 +11,6 @@ class LogInEvent extends AuthEvent {
       {required this.email, required this.password});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [email, password];
 }
 
@@ -20,12 +19,10 @@ class LogOutEvent extends AuthEvent {
   LogOutEvent();
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
 class InitialEvent extends AuthEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }

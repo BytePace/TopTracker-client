@@ -1,21 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
-import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthRepository _authRepository;
-  final IProjectRepository _projectRepository;
-  AuthBloc(
-      {required IAuthRepository authRepository,
-      required IProjectRepository projectRepository})
-      : _authRepository = authRepository,
-        _projectRepository = projectRepository,
+  AuthBloc({
+    required IAuthRepository authRepository,
+  })  : _authRepository = authRepository,
         super(const LoginInitialState(loginModel: null)) {
     on<LogInEvent>(_login);
     on<LogOutEvent>(_logout);
@@ -28,7 +25,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
       emit(const LoginMessageState(message: 'Успешный вход'));
-      emit(SignInState());
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String accessToken = prefs.getString("access_token") ?? "";
+
+      emit(SignInState(accessToken: accessToken));
     } catch (e) {
       emit(const LoginMessageState(message: "Неправильный логин или пароль"));
       emit(const IsLoginState());
@@ -37,7 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _logout(LogOutEvent event, Emitter<AuthState> emit) async {
     try {
-      await _projectRepository.dropDB();
+      await _authRepository.dropDB();
       await _authRepository.doLogout();
       emit(const IsLoginState());
     } catch (e) {
@@ -50,7 +51,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (await _authRepository.getToken() == null) {
       emit(const IsLoginState());
     } else {
-      emit(SignInState());
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String accessToken = prefs.getString("access_token") ?? "";
+      emit(SignInState(accessToken: accessToken));
     }
   }
 }

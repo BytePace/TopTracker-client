@@ -12,10 +12,6 @@ class DbProjectDataSourceMockTest implements ISavableProjectDataSource {
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> dropDB() async {
-    throw UnimplementedError();
-  }
 
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {

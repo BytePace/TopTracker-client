@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_bytepace/src/app.dart';
 import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
@@ -22,45 +23,47 @@ import 'package:sqflite/sqflite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initGetIt();
   runApp(const MainApp());
-  initGetIt();
 }
 
-void initGetIt() {
+initGetIt() async {
   final dio = Dio(BaseOptions(baseUrl: "https://tracker-api.toptal.com"));
-  final Future<Database> database = DBProvider.db.database;
+  final Database database = await DBProvider.db.database;
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
   GetIt.I.registerSingleton<ProjectBloc>(
     ProjectBloc(
       projectRepository: ProjectRepository(
-        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+        networkProjectDataSource:
+            NetworkProjectDataSource(dio: dio, prefs: prefs),
         dbProjectDataSource: DbProjectDataSource(database: database),
       ),
       userRepository: UserRepository(
-        networkUserDataSource: NetworkUserDataSource(dio: dio),
+        networkUserDataSource: NetworkUserDataSource(dio: dio, prefs: prefs),
         dbUserDataSource: DbUserDataSource(database: database),
       ),
     ),
   );
 
-  GetIt.I.registerSingleton<DetailProjectBloc>(DetailProjectBloc(
-    projectRepository: ProjectRepository(
-      dbProjectDataSource: DbProjectDataSource(database: database),
-      networkProjectDataSource: NetworkProjectDataSource(dio: dio),
-    ),
-    userRepository: UserRepository(
-      dbUserDataSource: DbUserDataSource(database: database),
-      networkUserDataSource: NetworkUserDataSource(dio: dio),
-    ),
-  ));
+  GetIt.I.registerFactory<DetailProjectBloc>(() {
+    return DetailProjectBloc(
+      projectRepository: ProjectRepository(
+        dbProjectDataSource: DbProjectDataSource(database: database),
+        networkProjectDataSource:
+            NetworkProjectDataSource(dio: dio, prefs: prefs),
+      ),
+      userRepository: UserRepository(
+        dbUserDataSource: DbUserDataSource(database: database),
+        networkUserDataSource: NetworkUserDataSource(dio: dio, prefs: prefs),
+      ),
+    );
+  });
 
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(
-      projectRepository: ProjectRepository(
-        dbProjectDataSource: DbProjectDataSource(database: database),
-        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
-      ),
       authRepository: AuthRepository(
-        networkAuthDataSources: NetworkAuthDataSources(dio: dio),
+        networkAuthDataSources: NetworkAuthDataSources(dio: dio, prefs: prefs),
       ),
     ),
   );

@@ -44,8 +44,5 @@ class DisplayText {
   static const deleteUser = "Delete";
 }
 
+class InvitedText {}
 
-
-class InvitedText{
-  
-}

@@ -19,7 +19,6 @@ abstract interface class ISavableProjectDataSource {
 
   Future<void> archiveProject(int projectID);
 
-  Future<void> dropDB();
 
   Future<void> updateProject(List<ProjectModel> projects);
 
@@ -27,13 +26,12 @@ abstract interface class ISavableProjectDataSource {
 }
 
 class DbProjectDataSource implements ISavableProjectDataSource {
-  final Future<Database> _database;
-  const DbProjectDataSource({required Future<Database> database})
+  final Database _database;
+  const DbProjectDataSource({required Database database})
       : _database = database;
 
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
-    final database = await _database;
     const keyArg = "${DbDetailProjectKeys.detailProjectID} = ?";
 
     DetailProjectDto detailProjectsList = const DetailProjectDto(
@@ -50,10 +48,10 @@ class DbProjectDataSource implements ISavableProjectDataSource {
     final List<UserDto> userInfo = [];
 
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await database.query("DetailProject", where: keyArg, whereArgs: [id]);
+        await _database.query("DetailProject", where: keyArg, whereArgs: [id]);
     for (var project in detailProjectsMapList) {
       final List<Map<String, dynamic>> userInfoMapList =
-          await database.query("UserInfo", where: keyArg, whereArgs: [id]);
+          await _database.query("UserInfo", where: keyArg, whereArgs: [id]);
       for (var info in userInfoMapList) {
         userInfo.add(UserDto(
             userID: info[DbUserInfoKeys.userID],
@@ -61,14 +59,14 @@ class DbProjectDataSource implements ISavableProjectDataSource {
             email: info[DbUserInfoKeys.email]));
       }
 
-      final List<Map<String, dynamic>> userEngagementsMapList = await database
+      final List<Map<String, dynamic>> userEngagementsMapList = await _database
           .query("UserEngagements", where: keyArg, whereArgs: [id]);
       for (var info in userEngagementsMapList) {
         userEngagementsDto.add(UserEngagementsDto.fromMap(info));
       }
 
       final List<Map<String, dynamic>> invitesMapList =
-          await database.query("Invites", where: keyArg, whereArgs: [id]);
+          await _database.query("Invites", where: keyArg, whereArgs: [id]);
       for (var info in invitesMapList) {
         invitations.add(InvitedDto.fromMap(info));
       }
@@ -81,53 +79,50 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<void> deleteProject(int projectID) async {
-    final database = await _database;
-    await database.delete(
+    await _database.delete(
       'UserEngagements',
       where: '${DbUserEngagementsKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
-    await database.delete(
+    await _database.delete(
       'Invites',
       where: '${DbInvitesKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
-    await database.delete(
+    await _database.delete(
       'UserInfo',
       where: '${DbUserInfoKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
-    await database.delete(
+    await _database.delete(
       'UsersProfileID',
       where: '${DbUsersProfileIDKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
-    await database.delete(
+    await _database.delete(
       'DetailProject',
       where: '${DbDetailProjectKeys.detailProjectID} = ?',
       whereArgs: [projectID],
     );
-    await database.delete(
+    await _database.delete(
       'Projects',
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override
   Future<List<ProjectDto>> getProjects() async {
-    final database = await _database;
     const keyArg = "${DbUsersProfileIDKeys.detailProjectID} = ?";
 
     List<ProjectDto> projectList = [];
 
     final List<Map<String, dynamic>> projectsMapList =
-        await database.query("Projects");
+        await _database.query("Projects");
 
     for (var project in projectsMapList) {
       final List<int> list = [];
-      final List<Map<String, dynamic>> userInfoMapList = await database.query(
+      final List<Map<String, dynamic>> userInfoMapList = await _database.query(
           "UsersProfileID",
           distinct: true,
           where: keyArg,
@@ -137,26 +132,23 @@ class DbProjectDataSource implements ISavableProjectDataSource {
       }
       projectList.add(ProjectDto.fromMap(project, list));
     }
-    //await database.close();
     return projectList;
   }
 
   @override
   Future<void> restoreProject(int projectID) async {
-    final database = await _database;
-    await database.update(
+
+    await _database.update(
       'Projects',
       {DbProjectsKeys.archivedAt: null},
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override
   Future<void> updateProject(List<ProjectModel> projects) async {
-    final database = await _database;
-    final batch = database.batch();
+    final batch = _database.batch();
     batch.delete("Projects");
     batch.delete("UsersProfileID");
     await batch.commit();
@@ -174,8 +166,7 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<void> updateDetailProject(DetailProjectDto detailProjects) async {
-    final database = await _database;
-    final batch = database.batch();
+    final batch = _database.batch();
     batch.delete("DetailProject",
         where: '${DbDetailProjectKeys.detailProjectID} = ?',
         whereArgs: [detailProjects.id]);
@@ -205,24 +196,11 @@ class DbProjectDataSource implements ISavableProjectDataSource {
 
   @override
   Future<void> archiveProject(int projectID) async {
-    final database = await _database;
-    await database.update(
+    await _database.update(
       'Projects',
       {DbProjectsKeys.archivedAt: DateTime.now().toString()},
       where: '${DbProjectsKeys.id} = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
-  }
-
-  @override
-  Future<void> dropDB() async {
-    final database = await _database;
-    await database.delete('UserEngagements');
-    await database.delete('Invites');
-    await database.delete('UserInfo');
-    await database.delete('UsersProfileID');
-    await database.delete('DetailProject');
-    await database.delete('Projects');
   }
 }

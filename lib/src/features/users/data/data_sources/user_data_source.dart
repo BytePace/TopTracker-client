@@ -21,13 +21,15 @@ abstract interface class IUserDataSource {
 
 class NetworkUserDataSource implements IUserDataSource {
   final Dio _dio;
+  final SharedPreferences _prefs;
 
-  NetworkUserDataSource({required Dio dio}) : _dio = dio;
+  NetworkUserDataSource({required Dio dio, required SharedPreferences prefs})
+      : _dio = dio,
+        _prefs = prefs;
 
   @override
   Future<void> revokeInvite(int invitationID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final Map<String, dynamic> userData = {'access_token': accessToken};
     final response = await _dio.delete(
@@ -43,8 +45,7 @@ class NetworkUserDataSource implements IUserDataSource {
   @override
   Future<InvitedDto> addUser(
       String email, String rate, String role, int id) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
     final Map<String, dynamic> userData = {
       "invites": [
         {'email': email, 'rate': rate, 'role': role}
@@ -62,8 +63,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<void> deleteUser(int projectId, int profileId) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
     final Map<String, dynamic> userData = {'access_token': accessToken};
 
     final response = await _dio.delete(
@@ -78,11 +78,10 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<int>> getProjectsID() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
-    final responseIDs = await _dio
-        .get('/web/projects?access_token=$accessToken&archived=true');
+    final responseIDs =
+        await _dio.get('/web/projects?access_token=$accessToken&archived=true');
     List<int> projectID = [];
 
     if (responseIDs.statusCode == 200) {
@@ -97,8 +96,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<UserDto>> getAllUsers() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final List<int> listProjectIDs = await getProjectsID();
     final Map<int, UserDto> allUsers = {};
@@ -115,8 +113,7 @@ class NetworkUserDataSource implements IUserDataSource {
 
   @override
   Future<List<ProfileIdDto>> getAllProfileID() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final response = await _dio
         .get('/reports/filters?access_token=$accessToken&archived=true');

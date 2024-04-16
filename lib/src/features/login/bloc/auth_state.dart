@@ -16,11 +16,14 @@ class LoginInitialState extends AuthState {
   List<Object?> get props => [];
 }
 
-
 class SignInState extends AuthState {
+  final String accessToken;
+
+  const SignInState({super.loginModel, required this.accessToken});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [accessToken];
 }
+
 class LoginMessageState extends AuthState {
   final String message;
 
@@ -31,7 +34,6 @@ class LoginMessageState extends AuthState {
 }
 
 class IsLoginState extends AuthState {
-
   const IsLoginState({super.loginModel});
   @override
   List<Object?> get props => [];
