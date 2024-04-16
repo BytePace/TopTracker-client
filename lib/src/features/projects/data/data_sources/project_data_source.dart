@@ -21,13 +21,16 @@ abstract class IProjectDataSource {
 
 class NetworkProjectDataSource implements IProjectDataSource {
   final Dio _dio;
+  final SharedPreferences _prefs;
 
-  const NetworkProjectDataSource({required Dio dio}) : _dio = dio;
+  const NetworkProjectDataSource(
+      {required Dio dio, required SharedPreferences prefs})
+      : _dio = dio,
+        _prefs = prefs;
 
   @override
   Future<List<ProjectDto>> getProjects() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     try {
       final response = await _dio
@@ -52,8 +55,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<DetailProjectDto> getDetailProject(int id) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     try {
       final response = await _dio
@@ -72,8 +74,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> restoreProject(int projectID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final Map<String, dynamic> userData = {"access_token": accessToken};
 
@@ -94,8 +95,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> deleteProject(int projectID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final Map<String, dynamic> projectData = {"access_token": accessToken};
 
@@ -114,8 +114,7 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
   @override
   Future<void> archiveProject(int projectID) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("access_token");
+    String? accessToken = _prefs.getString("access_token");
 
     final Map<String, dynamic> projectData = {"access_token": accessToken};
 

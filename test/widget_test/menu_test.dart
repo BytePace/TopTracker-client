@@ -24,7 +24,7 @@ void main() {
 
     await tester.pumpWidget(
       const MaterialApp(
-        home: MenuScreen(),
+        home: MenuScreen(accessToken: '',),
       ),
     );
     await tester.pump();

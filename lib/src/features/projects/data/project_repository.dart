@@ -12,7 +12,6 @@ abstract interface class IProjectRepository {
 
   Future<DetailProjectModel> getDetailProject(int id);
 
-  Future<void> dropDB();
 
   Future<String> addWorkTime(
       int projectID, String startTime, String endTime, String description);
@@ -96,10 +95,7 @@ class ProjectRepository implements IProjectRepository {
     await _dbProjectDataSource.updateProject(projects);
   }
 
-  @override
-  Future<void> dropDB() async {
-    await _dbProjectDataSource.dropDB();
-  }
+
 
   @override
   Future<void> archiveProject(int projectID) async {

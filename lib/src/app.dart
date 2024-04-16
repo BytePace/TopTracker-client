@@ -34,7 +34,6 @@ class _AppState extends State<App> {
                 child: const MenuScreen(),
               );
             } else {
-              print("rebuild");
               return const LoginScreen();
             }
           },

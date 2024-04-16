@@ -6,6 +6,7 @@ abstract interface class IAuthRepository {
   Future<LoginModel> doLogin(String email, String password);
   Future<void> doLogout();
   Future<String?> getToken();
+  Future<void> dropDB();
 }
 
 class AuthRepository implements IAuthRepository {
@@ -34,5 +35,10 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<String?> getToken() {
     return _networkAuthDataSources.getToken();
+  }
+
+  @override
+  Future<void> dropDB() async {
+    await _networkAuthDataSources.dropDB();
   }
 }
