@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,9 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: ConstantSize.bigSeparatorHeight),
 
                 //welcome message
-                const Text(
-                  DisplayText.welcomeMessageText,
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  AppLocalizations.of(context)!.welcomeMessageText,
+                  style: const TextStyle(fontSize: 16),
                 ),
 
                 const SizedBox(height: ConstantSize.bigSeparatorHeight),
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
                 TextButton(
-                  child: const Text(DisplayText.loginButtonText),
+                  child: Text(AppLocalizations.of(context)!.loginButtonText),
                   onPressed: () {
                     authBloc.add(LogInEvent(
                         email: emailController.text,

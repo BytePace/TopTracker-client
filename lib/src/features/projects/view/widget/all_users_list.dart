@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AllUsersList extends StatelessWidget {
   final List<UserModel> allUsers;
@@ -14,7 +14,7 @@ class AllUsersList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(DisplayText.allUsers,
+        Text(AppLocalizations.of(context)!.allUsers,
             style: Theme.of(context).textTheme.headlineMedium),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),

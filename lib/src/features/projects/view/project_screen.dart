@@ -8,7 +8,7 @@ import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -39,8 +39,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
               Expanded(
                 child: TextField(
                   key: const Key('searchTextField'),
-                  decoration: const InputDecoration(
-                    hintText: DisplayText.hintSearchProjectText,
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.hintSearchProjectText,
                   ),
                   onChanged: (value) {
                     setState(() {

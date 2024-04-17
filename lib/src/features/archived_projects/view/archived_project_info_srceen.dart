@@ -9,7 +9,7 @@ import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/archived_projects/view/widget/tile_user_archived.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArchivedProjectInfoScreen extends StatefulWidget {
   final int id;
@@ -41,17 +41,16 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: DisplayText.restoreProject,
-        content: DisplayText.wantRestoreProject,
+        title: AppLocalizations.of(context)!.restoreProject,
+        content: AppLocalizations.of(context)!.wantRestoreProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
               Navigator.of(context).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(RestoreProjectEvent(id: widget.id));
+              GetIt.I<ProjectBloc>().add(RestoreProjectEvent(id: widget.id));
             },
             child: Text(
-              DisplayText.restore,
+              AppLocalizations.of(context)!.restore,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -63,17 +62,16 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: DisplayText.deleteProject,
-        content: DisplayText.wantDeleteProject,
+        title: AppLocalizations.of(context)!.deleteProject,
+        content: AppLocalizations.of(context)!.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
               Navigator.of(context).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(DeleteProjectEvent(id: widget.id));
+              GetIt.I<ProjectBloc>().add(DeleteProjectEvent(id: widget.id));
             },
             child: Text(
-              DisplayText.delete,
+              AppLocalizations.of(context)!.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -114,11 +112,14 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
                           children: [
                             OutlinedButton(
                                 onPressed: _restoreProject,
-                                child: const Text(DisplayText.restoreProject)),
-                            const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                                child:  Text(AppLocalizations.of(context)!
+                                    .restoreProject)),
+                            const SizedBox(
+                                height: ConstantSize.defaultSeparatorHeight),
                             OutlinedButton(
                                 onPressed: _deleteProject,
-                                child: const Text(DisplayText.deleteProject))
+                                child:  Text(AppLocalizations.of(context)!
+                                    .deleteProject))
                           ],
                         )
                       : Container()

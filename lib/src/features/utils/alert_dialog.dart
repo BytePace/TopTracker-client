@@ -30,7 +30,7 @@ class MyAlertDialog extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              DisplayText.alertCancel,
+              SnackBarAlertText.alertCancel,
               style: Theme.of(context).textTheme.labelMedium,
             )),
         isYes

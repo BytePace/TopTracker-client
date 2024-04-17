@@ -13,7 +13,7 @@ import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.da
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
   final int id;
@@ -46,8 +46,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: DisplayText.archiveProject,
-        content: DisplayText.wantArchiveProject,
+        title: AppLocalizations.of(context)!.archiveProject,
+        content: AppLocalizations.of(context)!.wantArchiveProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -55,7 +55,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
               GetIt.I<ProjectBloc>().add(ArchiveProjectEvent(id: widget.id));
             },
             child: Text(
-              DisplayText.archive,
+              AppLocalizations.of(context)!.archive,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -67,8 +67,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: DisplayText.deleteProject,
-        content: DisplayText.wantDeleteProject,
+        title: AppLocalizations.of(context)!.deleteProject,
+        content: AppLocalizations.of(context)!.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -76,7 +76,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
               GetIt.I<ProjectBloc>().add(DeleteProjectEvent(id: widget.id));
             },
             child: Text(
-              DisplayText.delete,
+              AppLocalizations.of(context)!.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -119,12 +119,14 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                             children: [
                               OutlinedButton(
                                   onPressed: _archiveProject,
-                                  child:
-                                      const Text(DisplayText.archiveProject)),
-                              const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                                  child: Text(AppLocalizations.of(context)!
+                                      .archiveProject)),
+                              const SizedBox(
+                                  height: ConstantSize.defaultSeparatorHeight),
                               OutlinedButton(
                                   onPressed: _deleteProject,
-                                  child: const Text(DisplayText.deleteProject))
+                                  child: Text(AppLocalizations.of(context)!
+                                      .deleteProject))
                             ],
                           )
                         : Container(),

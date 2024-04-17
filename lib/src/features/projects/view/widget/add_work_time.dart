@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddWorkTime extends StatefulWidget {
   final int projectID;
@@ -40,7 +41,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Добавить время",
+        Text(AppLocalizations.of(context)!.addTime,
             style: Theme.of(context).textTheme.headlineMedium),
         Form(
           key: _formKey,

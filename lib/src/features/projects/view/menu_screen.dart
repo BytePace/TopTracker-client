@@ -9,7 +9,7 @@ import 'package:tt_bytepace/src/features/projects/view/widget/app_bar.dart';
 import 'package:tt_bytepace/src/features/users/view/users_sreen.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -69,15 +69,15 @@ class _MenuScreenState extends State<MenuScreen> {
                       allProfileID: state.allProfileID),
                 ][_currentTub];
               } else {
-                return const Column(
+                return Column(
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        hintText: DisplayText.hintSearchProjectText,
+                        hintText: AppLocalizations.of(context)!.hintSearchProjectText,
                       ),
                     ),
-                    SizedBox(height: 220),
-                    Center(child: CircularProgressIndicator()),
+                    const SizedBox(height: 220),
+                    const Center(child: CircularProgressIndicator()),
                   ],
                 );
               }
@@ -96,18 +96,18 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.cases_rounded),
-            label: DisplayText.bottomBarProjects,
+            icon: const Icon(Icons.cases_rounded),
+            label: AppLocalizations.of(context)!.bottomBarProjects,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.badge_rounded),
-            label: DisplayText.bottomBarArchivedProjects,
+            icon: const Icon(Icons.badge_rounded),
+            label: AppLocalizations.of(context)!.bottomBarArchivedProjects,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: DisplayText.bottomBarUsers,
+            icon: const Icon(Icons.bar_chart),
+            label: AppLocalizations.of(context)!.bottomBarUsers,
           )
         ],
         currentIndex: _currentTub,

@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
@@ -11,7 +13,6 @@ abstract interface class IProjectRepository {
   Future<List<ProjectModel>> getNetworkProjects();
 
   Future<DetailProjectModel> getDetailProject(int id);
-
 
   Future<String> addWorkTime(
       int projectID, String startTime, String endTime, String description);
@@ -40,8 +41,8 @@ class ProjectRepository implements IProjectRepository {
     var dtos = <ProjectDto>[];
     try {
       dtos = await _dbProjectDataSource.getProjects();
-    } catch (e) {
-      print(e);
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка getProjects", e, st);
     }
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
@@ -72,7 +73,7 @@ class ProjectRepository implements IProjectRepository {
       await _dbProjectDataSource.updateDetailProject(dto);
     } catch (e) {
       dto = await _dbProjectDataSource.getDetailProject(id);
-      print("no connection wi fi $e");
+      GetIt.I<Talker>().info("no connection wi fi", e);
     }
     return DetailProjectModel.fromDto(dto);
   }
@@ -95,15 +96,13 @@ class ProjectRepository implements IProjectRepository {
     await _dbProjectDataSource.updateProject(projects);
   }
 
-
-
   @override
   Future<void> archiveProject(int projectID) async {
     try {
       await _networkProjectDataSource.archiveProject(projectID);
       await _dbProjectDataSource.archiveProject(projectID);
     } catch (e) {
-      print(e);
+      GetIt.I<Talker>().error("archiveProject error", e);
     }
   }
 

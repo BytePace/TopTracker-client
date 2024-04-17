@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
@@ -44,8 +46,8 @@ class UserRepository implements IUserRepository {
       final invite =
           await _networkUserDataSource.addUser(email, rate, role, id);
       _dbUserDataSource.addUser(invite.inviteID, id, invite.name ?? "name");
-    } catch (e) {
-      print("ошибка добавления пользователя $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка добавления пользователя", e, st);
     }
   }
 
@@ -60,8 +62,8 @@ class UserRepository implements IUserRepository {
     var dtos = <ProfileIdDto>[];
     try {
       dtos = await _dbUserDataSource.getAllProfileID();
-    } catch (e) {
-      print("Ошибка получения allprofileid $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка получения allprofileid", e, st);
     }
     return dtos.map((e) => ProfileIdModel.fromDto(e)).toList();
   }
@@ -71,8 +73,8 @@ class UserRepository implements IUserRepository {
     var dtos = <ProfileIdDto>[];
     try {
       dtos = await _networkUserDataSource.getAllProfileID();
-    } catch (e) {
-      print("Ошибка получения allprofileid $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка обновления allprofileid", e, st);
     }
     return dtos.map((e) => ProfileIdModel.fromDto(e)).toList();
   }
@@ -81,13 +83,10 @@ class UserRepository implements IUserRepository {
   Future<List<UserModel>> updateAllUsers() async {
     var dtos = <UserDto>[];
     try {
-      print(1);
       dtos = await _networkUserDataSource.getAllUsers();
-      print(2);
       await _dbUserDataSource.updateAllUsers(dtos);
-      print(3);
-    } catch (e) {
-      print("Ошибка получения updateAllUsers $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка получения updateAllUsers", e, st);
     }
     return dtos.map((e) => UserModel.fromDto(e)).toList();
   }
@@ -97,8 +96,8 @@ class UserRepository implements IUserRepository {
     var dtos = <UserDto>[];
     try {
       dtos = await _dbUserDataSource.getAllUsers();
-    } catch (e) {
-      print("Ошибка получения getAllUsers $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка получения getAllUsers", e, st);
     }
     return dtos.map((e) => UserModel.fromDto(e)).toList();
   }
@@ -108,8 +107,8 @@ class UserRepository implements IUserRepository {
     var dtos = <int>[];
     try {
       dtos = await _networkUserDataSource.getProjectsID();
-    } catch (e) {
-      print("Ошибка получения getProjectsID");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка получения getProjectsID", e, st);
     }
     return dtos.map((e) => e).toList();
   }
@@ -119,8 +118,8 @@ class UserRepository implements IUserRepository {
     try {
       await _networkUserDataSource.revokeInvite(invitationID);
       await _dbUserDataSource.revokeInvite(invitationID);
-    } catch (e) {
-      print("произошла отмены приглашения ошибка $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка отмены приглашения", e, st);
     }
   }
 }

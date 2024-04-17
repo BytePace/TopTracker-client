@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserTileArchived extends StatelessWidget {
   final List<UserInfoModel> allUsers;
@@ -24,7 +24,8 @@ class UserTileArchived extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-                "${DisplayText.totalHours} ${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}",
+                AppLocalizations.of(context)!.totalHours(
+                    "${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}"),
                 style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],

@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
-import '../../widget_test/auth_repository_test/auth_data_source_test.dart';
-import '../../widget_test/auth_repository_test/auth_reposutory_test.dart';
+import '../widget_test/auth_repository_test/auth_data_source_test.dart';
+import '../widget_test/auth_repository_test/auth_reposutory_test.dart';
 
 
 void main() {

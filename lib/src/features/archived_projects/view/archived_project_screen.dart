@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +7,7 @@ import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detai
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArchivedProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -39,8 +38,9 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
             children: [
               Expanded(
                 child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: DisplayText.hintSearchProjectText,
+                  decoration: InputDecoration(
+                    hintText:
+                        AppLocalizations.of(context)!.hintSearchProjectText,
                   ),
                   onChanged: (value) {
                     setState(() {

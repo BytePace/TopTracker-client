@@ -4,7 +4,7 @@ import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detai
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InvitedOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -16,7 +16,7 @@ class InvitedOnProject extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(DisplayText.invitedUsersText,
+              Text(AppLocalizations.of(context)!.invitedUsersText,
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: ConstantSize.defaultSeparatorHeight),
               Column(

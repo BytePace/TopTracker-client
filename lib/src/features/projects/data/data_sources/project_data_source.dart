@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/project_dto.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
@@ -45,11 +47,10 @@ class NetworkProjectDataSource implements IProjectDataSource {
 
         return projects;
       } else {
-        print("Ошибка загрузки проектов");
         throw Exception();
       }
-    } catch (e) {
-      print("Ошибка загрузки проектов $e");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка загрузки проектов", e, st);
       throw Exception();
     }
   }
@@ -64,11 +65,10 @@ class NetworkProjectDataSource implements IProjectDataSource {
       if (response.statusCode == 200) {
         return DetailProjectDto.fromJson(response.data);
       } else {
-        print("Ошибка загрузки деталей проекта");
         throw Exception();
       }
-    } catch (e) {
-      print("Ошибка загрузки деталей проекта");
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка загрузки деталей проекта", e, st);
       throw Exception();
     }
   }
@@ -124,8 +124,8 @@ class NetworkProjectDataSource implements IProjectDataSource {
           await _dio.put('/projects/$projectID/archive', data: projectData);
 
       if (response.statusCode == 200) {}
-    } catch (e) {
-      print(e);
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка архивации проекта", e, st);
     }
   }
 

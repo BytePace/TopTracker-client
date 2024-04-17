@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 
-import '../../database_test.dart';
-import '../project_repository_test/data_sources/project_db_data_sources_test.dart';
-import '../project_repository_test/data_sources/project_network_data_sources_test.dart';
-import '../project_repository_test/project_repository_test.dart';
-import '../user_repository_test/data_sources/user_db_data_source_test.dart';
-import '../user_repository_test/data_sources/user_network_data_sources_test.dart';
-import '../user_repository_test/user_repository_test.dart';
+import '../database_test.dart';
+import '../unit_test/project_repository_test/data_sources/project_db_data_sources_test.dart';
+import '../unit_test/project_repository_test/data_sources/project_network_data_sources_test.dart';
+import '../unit_test/project_repository_test/project_repository_test.dart';
+import '../unit_test/user_repository_test/data_sources/user_db_data_source_test.dart';
+import '../unit_test/user_repository_test/data_sources/user_network_data_sources_test.dart';
+import '../unit_test/user_repository_test/user_repository_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

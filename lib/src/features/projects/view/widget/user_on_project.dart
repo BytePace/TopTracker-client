@@ -3,7 +3,7 @@ import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dar
 import 'package:tt_bytepace/src/features/projects/model/user_model.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_user.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -16,7 +16,7 @@ class UserOnProject extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(DisplayText.userOnProjectText,
+        Text(AppLocalizations.of(context)!.userOnProjectText,
             style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: ConstantSize.defaultSeparatorHeight),
         Card(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddUserForm extends StatefulWidget {
   final int id;
@@ -30,7 +30,7 @@ class _AddUserFormState extends State<AddUserForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(DisplayText.addUser,
+        Text(AppLocalizations.of(context)!.addUser,
             style: Theme.of(context).textTheme.headlineMedium),
         Column(
           children: [

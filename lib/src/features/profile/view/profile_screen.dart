@@ -5,7 +5,7 @@ import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/profile/data/profile_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
             title: Text(
-          DisplayText.userStats,
+          AppLocalizations.of(context)!.userStats,
           style: Theme.of(context).textTheme.headlineSmall,
         )),
         body: FutureBuilder(
@@ -47,14 +47,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${DisplayText.name} ${snapshot.data.name}",
+                              Text(
+                                  "${AppLocalizations.of(context)!.name} ${snapshot.data.name}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
                                       .copyWith(fontSize: 18)),
                               const SizedBox(height: 8),
                               Text(
-                                  "${DisplayText.currentWeekHours} ${double.parse((snapshot.data.workedTotal / 60 / 60).toStringAsFixed(2))}",
+                                  "${AppLocalizations.of(context)!.currentWeekHours("${double.parse((snapshot.data.workedTotal / 60 / 60).toStringAsFixed(2))}")} ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -69,17 +70,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               context: context,
                               builder: (ctx) => MyAlertDialog(
                                 ctx: context,
-                                title: DisplayText.logOut,
-                                content: DisplayText.wantLogout,
+                                title: AppLocalizations.of(context)!.logOut,
+                                content:
+                                    AppLocalizations.of(context)!.wantLogout,
                                 isYes: TextButton(
                                   onPressed: () {
                                     authBloc.add(LogOutEvent());
                                     Navigator.of(ctx).pop();
                                     Navigator.of(context).pop();
-                                   
                                   },
                                   child: Text(
-                                    DisplayText.logOut,
+                                    AppLocalizations.of(context)!.logOut,
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   ),
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             );
                           },
-                          child: const Text(DisplayText.logOut))
+                          child: Text(AppLocalizations.of(context)!.logOut))
                     ],
                   ),
                 );
