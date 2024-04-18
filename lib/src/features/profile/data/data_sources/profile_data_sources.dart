@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_info_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 abstract interface class INetworkProfileDataSources {
   Future<UserInfoDto> getStats(List<ProjectModel> projects);
+  DateTime getMondayDate(DateTime date);
 }
 
 class NetworkProfileDataSources implements INetworkProfileDataSources {
@@ -17,7 +17,7 @@ class NetworkProfileDataSources implements INetworkProfileDataSources {
   @override
   Future<UserInfoDto> getStats(List<ProjectModel> projects) async {
     final prefs = await SharedPreferences.getInstance();
-    final access_token = prefs.getString("access_token");
+    final accessToken = prefs.getString("access_token");
     final current_user_id = prefs.getInt("current_user_id");
     String queryProjects = "";
     for (var project in projects) {
@@ -31,7 +31,7 @@ class NetworkProfileDataSources implements INetworkProfileDataSources {
 
     try {
       final response = await _dio.get(
-          '/reports/chart?${queryProjects}worker_ids[]=$current_user_id&start_date=$mondayDate&end_date=$currentDate&access_token=$access_token');
+          '/reports/chart?${queryProjects}worker_ids[]=$current_user_id&start_date=$mondayDate&end_date=$currentDate&access_token=$accessToken');
 
       if (response.statusCode == 200) {
         return UserInfoDto.fromJson(response.data['reports']['workers']);
@@ -45,6 +45,7 @@ class NetworkProfileDataSources implements INetworkProfileDataSources {
     }
   }
 
+  @override
   DateTime getMondayDate(DateTime date) {
     DateTime now = date;
     int mondayOffset = now.weekday - DateTime.monday;

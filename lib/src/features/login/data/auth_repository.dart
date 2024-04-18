@@ -6,6 +6,7 @@ abstract interface class IAuthRepository {
   Future<LoginModel> doLogin(String email, String password);
   Future<void> doLogout();
   Future<String?> getToken();
+  Future<void> dropDB();
 }
 
 class AuthRepository implements IAuthRepository {
@@ -16,11 +17,10 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<LoginModel> doLogin(String email, String password) async {
-    var dto = const LoginDto(id: 0, username: "", email: "", access_token: "");
+    var dto = const LoginDto(id: 0, username: "", email: "", accessToken: "");
     try {
       dto = await _networkAuthDataSources.login(email, password);
     } on Exception {
-      print("Ошибка логина");
       throw Exception();
     }
     return LoginModel.fromDto(dto);
@@ -34,5 +34,10 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<String?> getToken() {
     return _networkAuthDataSources.getToken();
+  }
+
+  @override
+  Future<void> dropDB() async {
+    await _networkAuthDataSources.dropDB();
   }
 }

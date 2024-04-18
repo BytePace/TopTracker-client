@@ -1,5 +1,4 @@
-import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_info_dto.dart';
 
 class UserInfoModel {
   final int profileID;
@@ -19,5 +18,27 @@ class UserInfoModel {
         name: dto.name,
         email: dto.email,
         workedTotal: dto.workedTotal);
+  }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is UserInfoModel &&
+        other.profileID == profileID &&
+        other.name == name &&
+        other.email == email &&
+        other.workedTotal == workedTotal;
+  }
+
+  @override
+  int get hashCode {
+    return profileID.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        workedTotal.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'UserInfoModel{profileID: $profileID, name: $name, email: $email, workedTotal: $workedTotal}';
   }
 }

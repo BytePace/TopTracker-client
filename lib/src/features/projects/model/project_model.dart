@@ -67,6 +67,6 @@ class ProjectModel {
 
   @override
   String toString() {
-    return "$name, $archivedAt";
+    return "name: $name, archivedAt: $archivedAt, id $id, currentUser $currentUser, profilesIDs $profilesIDs, createdAt $createdAt, adminName $adminName";
   }
 }

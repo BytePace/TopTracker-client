@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
-import 'package:tt_bytepace/src/features/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
@@ -14,13 +14,14 @@ abstract interface class IProjectRepository {
 
   Future<DetailProjectModel> getDetailProject(int id);
 
-  Future<void> dropDB();
+  Future<String> addWorkTime(
+      int projectID, String startTime, String endTime, String description);
 
-  Future<void> restoreProject(BuildContext context, int projectID);
+  Future<void> restoreProject(int projectID);
 
-  Future<void> deleteProject(BuildContext context, int projectID);
+  Future<void> deleteProject(int projectID);
 
-  Future<void> archiveProject(BuildContext context, int projectID);
+  Future<void> archiveProject(int projectID);
 
   Future<void> updateProject(List<ProjectModel> projects);
 }
@@ -40,8 +41,8 @@ class ProjectRepository implements IProjectRepository {
     var dtos = <ProjectDto>[];
     try {
       dtos = await _dbProjectDataSource.getProjects();
-    } catch (e) {
-      print(e);
+    } catch (e, st) {
+      GetIt.I<Talker>().error("Ошибка getProjects", e, st);
     }
     return dtos.map((e) => ProjectModel.fromDto(e)).toList();
   }
@@ -72,39 +73,22 @@ class ProjectRepository implements IProjectRepository {
       await _dbProjectDataSource.updateDetailProject(dto);
     } catch (e) {
       dto = await _dbProjectDataSource.getDetailProject(id);
-      print("no connection wi fi $e");
+      GetIt.I<Talker>().info("no connection wi fi", e);
     }
-    print(dto);
     return DetailProjectModel.fromDto(dto);
   }
 
   @override
-  Future<void> restoreProject(BuildContext context, int projectID) async {
-    try {
-      await _networkProjectDataSource.restoreProject(projectID);
+  Future<void> restoreProject(int projectID) async {
+    await _networkProjectDataSource.restoreProject(projectID);
 
-      await _dbProjectDataSource.restoreProject(projectID);
-
-      showCnackBar(context, "Проект разархивирован");
-      Navigator.of(context).pop();
-    } catch (e) {
-      showCnackBar(context, "Произошла ошибка");
-      print("Ошибка разархивирования проекта");
-    }
+    await _dbProjectDataSource.restoreProject(projectID);
   }
 
   @override
-  Future<void> deleteProject(BuildContext context, int projectID) async {
-    try {
-      await _networkProjectDataSource.deleteProject(projectID);
-      await _dbProjectDataSource.deleteProject(projectID);
-
-      showCnackBar(context, "Проект удален");
-      Navigator.of(context).pop();
-    } catch (e) {
-      print("Произошла ошибка при удалении $e");
-      showCnackBar(context, "Произошла ошибка");
-    }
+  Future<void> deleteProject(int projectID) async {
+    await _networkProjectDataSource.deleteProject(projectID);
+    await _dbProjectDataSource.deleteProject(projectID);
   }
 
   @override
@@ -113,21 +97,19 @@ class ProjectRepository implements IProjectRepository {
   }
 
   @override
-  Future<void> dropDB() async {
-    await _dbProjectDataSource.dropDB();
-  }
-
-  @override
-  Future<void> archiveProject(BuildContext context, int projectID) async {
+  Future<void> archiveProject(int projectID) async {
     try {
       await _networkProjectDataSource.archiveProject(projectID);
       await _dbProjectDataSource.archiveProject(projectID);
-
-      showCnackBar(context, "Проект архивирован");
-      Navigator.of(context).pop();
     } catch (e) {
-      print("Произошла ошибка при удалении $e");
-      showCnackBar(context, "Произошла ошибка");
+      GetIt.I<Talker>().error("archiveProject error", e);
     }
+  }
+
+  @override
+  Future<String> addWorkTime(int projectID, String startTime, String endTime,
+      String description) async {
+    return await _networkProjectDataSource.addWorkTime(
+        projectID, startTime, endTime, description);
   }
 }

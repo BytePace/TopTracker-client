@@ -1,11 +1,14 @@
-class CustomText {
-  static const hintSearchProjectText = "Введите название проекта";
-  static const restoreProjectOutlinedButtonText = "Restore Project";
-  static const archiveProjectOutlinedButtonText = "Archive Project";
-  static const deleteProjectOutlinedButtonText = "Delete Project";
-  static const loginButtonText = "log in";
-  static const welcomeMessageText = "TopTracker";
-  static const userOnProjectText = "Пользователи на проекте";
-  static const invitedUsersText = "Приглашенные пользователи";
-  static const logoutText = "logout";
+class SnackBarAlertText {
+  static const successLogin = "Successful login";
+  static const failedLogin = "Incorrect login or password";
+  static const error = "An error occurred";
+  static const deletedUser = "User deleted";
+  static const addedUser = "User added";
+  static const addedUserError = "An error occurred while adding user";
+  static const revokeInvite = "Invite revoked";
+  static const alertCancel = "Cancel";
+}
+
+class SharedPreferencesKey {
+  static const accessTokenKey = "access_token";
 }

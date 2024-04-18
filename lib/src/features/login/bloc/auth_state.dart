@@ -1,22 +1,38 @@
 part of 'auth_bloc.dart';
 
 @immutable
-sealed class AuthState {
+sealed class AuthState extends Equatable {
   final LoginModel? loginModel;
 
   const AuthState({this.loginModel});
+  @override
+  List<Object?> get props => [loginModel];
 }
 
 class LoginInitialState extends AuthState {
   const LoginInitialState({required super.loginModel});
+
+  @override
+  List<Object?> get props => [];
 }
 
-class LoginSuccessState extends AuthState {}
+class SignInState extends AuthState {
 
-class LoginErrorState extends AuthState {
-  final String error;
-
-  const LoginErrorState({super.loginModel, required this.error});
+  @override
+  List<Object?> get props => [];
 }
 
-class IsLoginState extends AuthState {}
+class LoginMessageState extends AuthState {
+  final String message;
+
+  const LoginMessageState({super.loginModel, required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class IsLoginState extends AuthState {
+  const IsLoginState({super.loginModel});
+  @override
+  List<Object?> get props => [];
+}

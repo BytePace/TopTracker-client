@@ -6,11 +6,14 @@ import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/add_user_form.dart';
+import 'package:tt_bytepace/src/features/projects/view/widget/add_work_time.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/all_users_list.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/invited_on_project.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/user_on_project.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
   final int id;
@@ -43,16 +46,16 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Restore project",
-        content: "Are you sure want to archive this project?",
+        title: AppLocalizations.of(context)!.archiveProject,
+        content: AppLocalizations.of(context)!.wantArchiveProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(ArchiveProjectEvent(id: widget.id, context: context));
+              Navigator.of(context).pop();
+              GetIt.I<ProjectBloc>().add(ArchiveProjectEvent(id: widget.id));
             },
             child: Text(
-              "Archive",
+              AppLocalizations.of(context)!.archive,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -64,16 +67,16 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       context: context,
       builder: (ctx) => MyAlertDialog(
         ctx: context,
-        title: "Delete project",
-        content: "Are you sure want to delete this project?",
+        title: AppLocalizations.of(context)!.deleteProject,
+        content: AppLocalizations.of(context)!.wantDeleteProject,
         isYes: TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              GetIt.I<ProjectBloc>()
-                  .add(DeleteProjectEvent(id: widget.id, context: context));
+              Navigator.of(context).pop();
+              GetIt.I<ProjectBloc>().add(DeleteProjectEvent(id: widget.id));
             },
             child: Text(
-              "Delete",
+              AppLocalizations.of(context)!.delete,
               style: Theme.of(context).textTheme.labelMedium,
             )),
       ),
@@ -82,6 +85,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("build");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
@@ -95,56 +99,70 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             });
           }
         },
-        child: BlocBuilder<DetailProjectBloc, DetailProjectState>(
-            bloc: BlocProvider.of<DetailProjectBloc>(context),
-            builder: (context, state) {
-              if (state is DetailProjectListLoaded) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ListView(
-                    children: [
-                      UserOnProject(
-                          key: UniqueKey(),
-                          detailProjectModel: state.detailProjectModel,
-                          allUsers: getListUsersOnProject(
-                              state.detailProjectModel.engagements,
-                              state.detailProjectModel.users)),
-                      const SizedBox(height: 16),
-                      widget.role == "admin" || widget.role == "supervisor"
-                          ? Column(
-                              children: [
-                                OutlinedButton(
-                                    onPressed: _archiveProject,
-                                    child: const Text(CustomText
-                                        .archiveProjectOutlinedButtonText)),
-                                const SizedBox(height: 16),
-                                OutlinedButton(
-                                    onPressed: _deleteProject,
-                                    child: const Text(CustomText
-                                        .deleteProjectOutlinedButtonText))
-                              ],
-                            )
-                          : Container(),
-                      const SizedBox(height: 16),
-                      InvitedOnProject(
+        child: BlocConsumer<DetailProjectBloc, DetailProjectState>(
+          bloc: BlocProvider.of<DetailProjectBloc>(context),
+          builder: (context, state) {
+            if (state is DetailProjectListLoaded) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ListView(
+                  children: [
+                    UserOnProject(
                         key: UniqueKey(),
                         detailProjectModel: state.detailProjectModel,
-                      ),
-                      const SizedBox(height: 16),
-                      AddUserForm(id: widget.id),
-                      const SizedBox(height: 16),
-                      AllUsersList(
-                          key: UniqueKey(),
-                          allUsers: getAllUsersWhithoutOnProject(
-                              state.detailProjectModel.engagements, _allUsers),
-                          id: widget.id),
-                    ],
-                  ),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
+                        allUsers: getListUsersOnProject(
+                            state.detailProjectModel.engagements,
+                            state.detailProjectModel.users)),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    widget.role == "admin" || widget.role == "supervisor"
+                        ? Column(
+                            children: [
+                              OutlinedButton(
+                                  onPressed: _archiveProject,
+                                  child: Text(AppLocalizations.of(context)!
+                                      .archiveProject)),
+                              const SizedBox(
+                                  height: ConstantSize.defaultSeparatorHeight),
+                              OutlinedButton(
+                                  onPressed: _deleteProject,
+                                  child: Text(AppLocalizations.of(context)!
+                                      .deleteProject))
+                            ],
+                          )
+                        : Container(),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    InvitedOnProject(
+                      key: UniqueKey(),
+                      detailProjectModel: state.detailProjectModel,
+                    ),
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    AddWorkTime(
+                        projectID: widget.id,
+                        key:
+                            UniqueKey()), //панель добавления времени на проекте
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    AddUserForm(
+                        id: widget
+                            .id), //панель добавления пользователя на проект
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    AllUsersList(
+                        key: UniqueKey(),
+                        allUsers: getAllUsersWhithoutOnProject(
+                            state.detailProjectModel.engagements, _allUsers),
+                        id: widget.id),
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+          listener: (BuildContext context, DetailProjectState state) {
+            if (state is DetailProjectListMessage) {
+              showSnackBar(context, state.message);
+            }
+          },
+        ),
       ),
     );
   }

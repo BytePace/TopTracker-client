@@ -1,5 +1,6 @@
 import 'package:sqflite/sqlite_api.dart';
-import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/database/database.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
 import 'package:tt_bytepace/src/features/users/models/dto/all_users_dto.dart';
 
 abstract interface class ISavableUserDataSource {
@@ -17,37 +18,40 @@ abstract interface class ISavableUserDataSource {
 }
 
 class DbUserDataSource implements ISavableUserDataSource {
-  final Future<Database> _database;
-  const DbUserDataSource({required Future<Database> database})
+  final Database _database;
+  const DbUserDataSource({required Database database})
       : _database = database;
 
   @override
   Future<void> addUser(int inviteID, int projectID, String name) async {
-    final database = await _database;
-    await database.insert(
+    await _database.insert(
       'Invites',
-      {'invite_id': inviteID, 'detail_project_id': projectID, "name": name},
+      {
+        DbInvitesKeys.inviteID: inviteID,
+        DbInvitesKeys.detailProjectID: projectID,
+        DbInvitesKeys.name: name
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    //await database.close();
   }
 
   @override
   Future<void> deleteUser(int projectId, int profileId) async {
-    final database = await _database;
-    await database.delete(
+    await _database.delete(
       'Users',
-      where: 'profile_id = ?',
+      where: '${DbUsersKeys.profileID} = ?',
       whereArgs: [profileId],
     );
-    await database.delete(
+    await _database.delete(
       'UserInfo',
-      where: 'detail_project_id = ? AND userID = ?',
+      where:
+          '${DbUserInfoKeys.detailProjectID} = ? AND ${DbUserInfoKeys.userID} = ?',
       whereArgs: [projectId, profileId],
     );
-    await database.delete(
+    await _database.delete(
       'UserEngagements',
-      where: 'detail_project_id = ? AND user_engagaments_id = ?',
+      where:
+          '${DbUserEngagementsKeys.detailProjectID} = ? AND ${DbUserEngagementsKeys.userEngagementsID} = ?',
       whereArgs: [projectId, profileId],
     );
     //await database.close();
@@ -55,55 +59,48 @@ class DbUserDataSource implements ISavableUserDataSource {
 
   @override
   Future<List<ProfileIdDto>> getAllProfileID() async {
-    final database = await _database;
     List<ProfileIdDto> profileIDList = [];
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await database.query("Users");
+        await _database.query("Users");
     for (var element in detailProjectsMapList) {
       profileIDList.add(ProfileIdDto.fromMap(element));
     }
 
-    //await database.close();
     return profileIDList;
   }
 
   @override
   Future<List<UserDto>> getAllUsers() async {
-    final database = await _database;
     List<UserDto> projectList = [];
     final List<Map<String, dynamic>> detailProjectsMapList =
-        await database.query("Users", distinct: true);
+        await _database.query("Users", distinct: true);
     for (var element in detailProjectsMapList) {
-      projectList.add(UserDto.fromMap(element));
+      projectList.add(UserDto.fromUsersMap(element));
     }
 
-    //await database.close();
     return projectList;
   }
 
   @override
   Future<void> revokeInvite(int invitationID) async {
-    final database = await _database;
-    await database.delete(
+    await _database.delete(
       'Invites',
-      where: 'invite_id = ?',
+      where: '${DbInvitesKeys.inviteID} = ?',
       whereArgs: [invitationID],
     );
-    //await database.close();
   }
 
   @override
   Future<void> updateAllUsers(List<UserDto> allUsers) async {
     try {
-      final database = await _database;
-      final batch = database.batch();
+      final batch = _database.batch();
       batch.delete("Users");
       await batch.commit();
       for (var user in allUsers) {
         batch.insert('Users', {
-          "profile_id": user.userID,
-          "name": user.name,
-          "email": user.email
+          DbUsersKeys.profileID: user.userID,
+          DbUsersKeys.name: user.name,
+          DbUsersKeys.email: user.email
         });
       }
       await batch.commit();

@@ -1,11 +1,26 @@
 part of 'project_bloc.dart';
 
 @immutable
-sealed class ProjectState {}
+sealed class ProjectState extends Equatable {}
 
-final class ProjectInitial extends ProjectState {}
+final class ProjectInitial extends ProjectState {
+  @override
+  List<Object?> get props => [];
+}
 
-class ProjectListLoading extends ProjectState {}
+class ProjectListLoading extends ProjectState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ProjectListMessage extends ProjectState {
+  final String message;
+
+  ProjectListMessage({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
 
 class ProjectListLoaded extends ProjectState {
   final List<ProjectModel> projects;
@@ -16,4 +31,7 @@ class ProjectListLoaded extends ProjectState {
       {required this.projects,
       required this.allProfileID,
       required this.allUser});
+
+  @override
+  List<Object?> get props => [projects, allProfileID, allUser];
 }

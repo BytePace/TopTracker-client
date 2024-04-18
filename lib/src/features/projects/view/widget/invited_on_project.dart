@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/resources/colors.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:tt_bytepace/src/resources/constant_size.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InvitedOnProject extends StatelessWidget {
   final DetailProjectModel detailProjectModel;
@@ -15,9 +16,9 @@ class InvitedOnProject extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(CustomText.invitedUsersText,
+              Text(AppLocalizations.of(context)!.invitedUsersText,
                   style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 16),
+              const SizedBox(height: ConstantSize.defaultSeparatorHeight),
               Column(
                 children: List.generate(
                   detailProjectModel.invitations.length,
@@ -29,8 +30,7 @@ class InvitedOnProject extends StatelessWidget {
                           RevokeInviteEvent(
                               invitationsID: detailProjectModel
                                   .invitations[index].inviteID,
-                              projectID: detailProjectModel.id,
-                              context: context));
+                              projectID: detailProjectModel.id));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

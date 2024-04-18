@@ -1,4 +1,7 @@
 import 'package:tt_bytepace/src/features/projects/model/dto/detail_project_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/invite_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_dto.dart';
+import 'package:tt_bytepace/src/features/projects/model/dto/user_engagements_dto.dart';
 
 class DetailProjectModel {
   final int id;
@@ -40,6 +43,50 @@ class DetailProjectModel {
       invitations: invites,
       engagements: engagements,
     );
+  }
+  @override
+  String toString() {
+    return 'DetailProjectModel{id: $id, name: $name, currentUserRole: $currentUserRole, users: $users, invitations: $invitations, engagements: $engagements}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is DetailProjectModel &&
+        other.id == id &&
+        other.name == name &&
+        other.currentUserRole == currentUserRole &&
+        _listEquals(other.users, users) &&
+        _listEquals(other.invitations, invitations) &&
+        _listEquals(other.engagements, engagements);
+  }
+
+  bool _listEquals<T>(List<T> a, List<T> b) {
+    if (identical(a, b)) return true;
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        currentUserRole.hashCode ^
+        _listHashCode(users) ^
+        _listHashCode(invitations) ^
+        _listHashCode(engagements);
+  }
+
+  int _listHashCode<T>(List<T> list) {
+    int result = 0;
+    for (var element in list) {
+      result = result * 31 + element.hashCode;
+    }
+    return result;
   }
 }
 
@@ -142,4 +189,14 @@ class InvitedModel {
       inviteID: dto.inviteID,
     );
   }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is InvitedModel &&
+        other.name == name &&
+        other.inviteID == inviteID;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ inviteID.hashCode;
 }

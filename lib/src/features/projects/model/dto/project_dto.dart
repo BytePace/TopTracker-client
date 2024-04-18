@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:tt_bytepace/src/database/database.dart';
 
 class ProjectDto {
   final int id;
@@ -23,34 +24,34 @@ class ProjectDto {
     json["profiles_ids"].forEach((json) => {profilesIDs.add(json)});
 
     return ProjectDto(
-        id: json['id'].toInt(),
-        archivedAt: json['archived_at'],
-        name: json['name'],
-        adminName: json['admin_profile']['name'],
-        createdAt: json['created_at'],
-        currentUser: json['current_user']['role'],
+        id: json[_JsonKey.projectID].toInt(),
+        archivedAt: json[_JsonKey.archivedAt],
+        name: json[_JsonKey.name],
+        adminName: json[_JsonKey.adminProfile][_JsonKey.adminName],
+        createdAt: json[_JsonKey.createdAt],
+        currentUser: json[_JsonKey.currentUser][_JsonKey.currentUserRole],
         profilesIDs: profilesIDs);
   }
 
   factory ProjectDto.fromMap(Map<String, dynamic> map, List<int> profilesIDs) {
     return ProjectDto(
-        id: map['id'],
-        archivedAt: map['archivedAt'],
-        name: map['name'],
-        adminName: map['adminName'],
-        createdAt: map['createdAt'],
-        currentUser: map['currentUser'],
+        id: map[DbProjectsKeys.id],
+        archivedAt: map[DbProjectsKeys.archivedAt],
+        name: map[DbProjectsKeys.name],
+        adminName: map[DbProjectsKeys.adminName],
+        createdAt: map[DbProjectsKeys.createdAt],
+        currentUser: map[DbProjectsKeys.currentUser],
         profilesIDs: profilesIDs);
   }
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'name': name,
-      'adminName': adminName,
-      'createdAt': createdAt,
-      'archivedAt': archivedAt,
+      DbProjectsKeys.id: id,
+      DbProjectsKeys.name: name,
+      DbProjectsKeys.adminName: adminName,
+      DbProjectsKeys.createdAt: createdAt,
+      DbProjectsKeys.archivedAt: archivedAt,
       'profilesIDs': profilesIDs,
-      'currentUser': currentUser,
+      DbProjectsKeys.currentUser: currentUser,
     };
   }
 
@@ -81,4 +82,15 @@ class ProjectDto {
   String toString() {
     return "$name + $archivedAt";
   }
+}
+
+class _JsonKey {
+  static const projectID = "id";
+  static const archivedAt = "archived_at";
+  static const name = "name";
+  static const adminProfile = "admin_profile";
+  static const adminName = "name";
+  static const createdAt = "created_at";
+  static const currentUser = "current_user";
+  static const currentUserRole = "role";
 }

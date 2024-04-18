@@ -1,0 +1,53 @@
+{
+    "@@locale": "ru",
+    "welcomeMessageText": "TopTracker",
+    "@welcomeMessageText": {
+        "description": "Сообщение приветствия"
+    },
+    "hintSearchProjectText": "Введите название проекта",
+    "userOnProjectText": "Пользователи на проекте",
+    "invitedUsersText": "Приглашенные пользователи",
+    "addUser": "Добавить пользователя",
+    "allUsers": "Все пользователи",
+    "logoutText": "Выйти",
+    "loginButtonText": "Войти",
+    "totalHours": "Всего часов: {hours}",
+    "@totalHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "restoreProject": "Восстановить проект",
+    "wantRestoreProject": "Вы уверены, что хотите восстановить этот проект?",
+    "restore": "Восстановить",
+    "deleteProject": "Удалить проект",
+    "wantDeleteProject": "Вы уверены, что хотите удалить этот проект?",
+    "delete": "Удалить",
+    "archiveProject": "Архивировать проект",
+    "wantArchiveProject": "Вы уверены, что хотите архивировать этот проект?",
+    "archive": "Архивировать",
+    "userStats": "Статистика пользователя",
+    "name": "имя:",
+    "currentWeekHours": "часы за текущую неделю: {hours}",
+    "@currentWeekHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "logOut": "Выйти",
+    "wantLogout": "Вы уверены, что хотите выйти?",
+    "alertCancel": "Отмена",
+    "bottomBarProjects": "Проекты",
+    "bottomBarArchivedProjects": "Архивированные проекты",
+    "bottomBarUsers": "Пользователи",
+    "deleteThisUser": "Удалить пользователя",
+    "wantDeleteUser": "Вы уверены, что хотите удалить этого пользователя?",
+    "deleteUser": "Удалить",
+    "addTime": "Добавить Время"
+}

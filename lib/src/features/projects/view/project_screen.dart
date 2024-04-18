@@ -1,23 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tt_bytepace/src/database/database.dart';
+
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
-import 'package:tt_bytepace/src/features/projects/data/data_sources/project_data_source.dart';
-import 'package:tt_bytepace/src/features/projects/data/data_sources/savable_project_data_source.dart';
-import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 
 import 'package:tt_bytepace/src/features/projects/view/project_info_screen.dart';
 import 'package:tt_bytepace/src/features/projects/view/widget/tile_project.dart';
-import 'package:tt_bytepace/src/features/users/data/data_sources/savable_user_data_source.dart';
-import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_source.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
-
-import '../../users/data/user_repository.dart';
-import '../bloc/project_bloc/project_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectScreen extends StatefulWidget {
   final List<ProjectModel> projects;
@@ -47,8 +38,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
             children: [
               Expanded(
                 child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: CustomText.hintSearchProjectText,
+                  key: const Key('searchTextField'),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.hintSearchProjectText,
                   ),
                   onChanged: (value) {
                     setState(() {
@@ -65,8 +57,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
                   onPressed: () {
                     setState(() {
                       isAsc
-                          ? projects.sort((a, b) => a.name.compareTo(b.name))
-                          : projects.sort((a, b) => b.name.compareTo(a.name));
+                          ? projects.sort((a, b) => b.name.compareTo(a.name))
+                          : projects.sort((a, b) => a.name.compareTo(b.name));
                       isAsc = !isAsc;
                     });
                   },
@@ -85,36 +77,17 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BlocProvider<DetailProjectBloc>(
-                                create: (context) => DetailProjectBloc(
-                                  projectRepository: ProjectRepository(
-                                    dbProjectDataSource:
-                                        DbProjectDataSource(
-                                            database:
-                                                DBProvider.db.database),
-                                    networkProjectDataSource:
-                                        NetworkProjectDataSource(
-                                            dio: Dio(BaseOptions(
-                                                baseUrl:
-                                                    "https://tracker-api.toptal.com"))),
-                                  ),
-                                  userRepository: UserRepository(
-                                    networkUserDataSource:
-                                        NetworkUserDataSource(
-                                            dio: Dio(BaseOptions(
-                                                baseUrl:
-                                                    "https://tracker-api.toptal.com"))),
-                                    dbUserDataSource: DbUserDataSource(
-                                        database: DBProvider.db.database),
-                                  ),
-                                ),
-                                child: ProjectInfoScreen(
-                                  role: projects[index].currentUser,
-                                  id: projects[index].id,
-                                  name: projects[index].name,
-                                  allUsers: widget.allUsers,
-                                ),
-                              )));
+                              builder: (context) =>
+                                  BlocProvider<DetailProjectBloc>(
+                                    create: (context) =>
+                                        GetIt.I<DetailProjectBloc>(),
+                                    child: ProjectInfoScreen(
+                                      role: projects[index].currentUser,
+                                      id: projects[index].id,
+                                      name: projects[index].name,
+                                      allUsers: widget.allUsers,
+                                    ),
+                                  )));
                     },
                     projectModel: projects[index]);
               },

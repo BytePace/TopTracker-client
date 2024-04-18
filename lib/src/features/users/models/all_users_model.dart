@@ -23,4 +23,9 @@ class ProfileIdModel {
 
   @override
   int get hashCode => profileID.hashCode ^ name.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileIdModel(profileID: $profileID, name: $name)';
+  }
 }

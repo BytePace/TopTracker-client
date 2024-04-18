@@ -1,6 +1,14 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
+import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/app.dart';
 import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
@@ -19,47 +27,71 @@ import 'package:tt_bytepace/src/features/users/data/data_sources/user_data_sourc
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/resources/theme.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() async {
-  runApp(const MainApp());
-  initGetIt();
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await initGetIt();
+    runApp(const MainApp());
+  }, (error, stack) {
+    GetIt.I<Talker>().handle(error, stack, "Uncaught app exeption");
+  });
 }
 
-void initGetIt() {
+initGetIt() async {
+  final talker = TalkerFlutter.init(
+    filter: BaseTalkerFilter(types: []),
+    settings: TalkerSettings(enabled: true),
+  );
+  GetIt.I.registerSingleton<Talker>(talker);
+  talker.verbose('Talker initialization completed');
+
+  final talkerDioLogger = TalkerDioLogger(
+      talker: talker,
+      settings: const TalkerDioLoggerSettings(printResponseData: false));
+
   final dio = Dio(BaseOptions(baseUrl: "https://tracker-api.toptal.com"));
-  final Future<Database> database = DBProvider.db.database;
+  dio.interceptors.add(talkerDioLogger);
+  final Database database = await DBProvider.db.database;
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  Bloc.observer = TalkerBlocObserver(
+      talker: talker,
+      settings: const TalkerBlocLoggerSettings(printStateFullData: false));
+
   GetIt.I.registerSingleton<ProjectBloc>(
     ProjectBloc(
       projectRepository: ProjectRepository(
-        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
+        networkProjectDataSource:
+            NetworkProjectDataSource(dio: dio, prefs: prefs),
         dbProjectDataSource: DbProjectDataSource(database: database),
       ),
       userRepository: UserRepository(
-        networkUserDataSource: NetworkUserDataSource(dio: dio),
+        networkUserDataSource: NetworkUserDataSource(dio: dio, prefs: prefs),
         dbUserDataSource: DbUserDataSource(database: database),
       ),
     ),
   );
 
-  GetIt.I.registerSingleton<DetailProjectBloc>(DetailProjectBloc(
-    projectRepository: ProjectRepository(
-      dbProjectDataSource: DbProjectDataSource(database: database),
-      networkProjectDataSource: NetworkProjectDataSource(dio: dio),
-    ),
-    userRepository: UserRepository(
-      dbUserDataSource: DbUserDataSource(database: database),
-      networkUserDataSource: NetworkUserDataSource(dio: dio),
-    ),
-  ));
+  GetIt.I.registerFactory<DetailProjectBloc>(() {
+    return DetailProjectBloc(
+      projectRepository: ProjectRepository(
+        dbProjectDataSource: DbProjectDataSource(database: database),
+        networkProjectDataSource:
+            NetworkProjectDataSource(dio: dio, prefs: prefs),
+      ),
+      userRepository: UserRepository(
+        dbUserDataSource: DbUserDataSource(database: database),
+        networkUserDataSource: NetworkUserDataSource(dio: dio, prefs: prefs),
+      ),
+    );
+  });
 
   GetIt.I.registerSingleton<AuthBloc>(
     AuthBloc(
-      projectRepository: ProjectRepository(
-        dbProjectDataSource: DbProjectDataSource(database: database),
-        networkProjectDataSource: NetworkProjectDataSource(dio: dio),
-      ),
       authRepository: AuthRepository(
-        networkAuthDataSources: NetworkAuthDataSources(dio: dio),
+        networkAuthDataSources: NetworkAuthDataSources(dio: dio, prefs: prefs),
       ),
     ),
   );
@@ -67,6 +99,8 @@ void initGetIt() {
   GetIt.I.registerSingleton<ProfileRepository>(ProfileRepository(
     networkProfileDataSources: NetworkProfileDataSources(dio: dio),
   ));
+
+  talker.info("Repositories initialization cpmpleted");
 }
 
 class MainApp extends StatefulWidget {
@@ -80,8 +114,11 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        navigatorObservers: [TalkerRouteObserver(GetIt.I<Talker>())],
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTheme,
-        home: const App());
+        home: const Scaffold(body: App()));
   }
 }

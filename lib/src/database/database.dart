@@ -1,7 +1,5 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DBProvider {
   DBProvider._();
@@ -18,68 +16,119 @@ class DBProvider {
   }
 
   Future<Database> _initDb() async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}TopTracker41.db";
+    var databasesPath = await getDatabasesPath();
+    String path = p.join(databasesPath, 'TrackerToptal2.db');
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  void _createDB(Database db, int version) async {
+  Future<void> _createDB(Database db, int version) async {
     await db.execute('''
         CREATE TABLE UsersProfileID(
-          profile_id INTEGER ,
-          detail_project_id INTEGER
+          ${DbUsersProfileIDKeys.profileID} INTEGER ,
+          ${DbUsersProfileIDKeys.detailProjectID} INTEGER
         )
       ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE Users(
-          profile_id INTEGER primary key,
-          name text,
-          email text
+          ${DbUsersKeys.profileID} INTEGER primary key,
+          ${DbUsersKeys.name} TEXT,
+          ${DbUsersKeys.email} TEXT
         )
       ''');
+
     await db.execute('''
         CREATE TABLE Projects(
-          id INTEGER PRIMARY KEY,
-          name TEXT,
-          adminName TEXT,
-          createdAt TEXT,
-          currentUser TEXT,
-          archivedAt TEXT NULL
+          ${DbProjectsKeys.id} INTEGER PRIMARY KEY,
+          ${DbProjectsKeys.name} TEXT,
+          ${DbProjectsKeys.adminName} TEXT,
+          ${DbProjectsKeys.createdAt} TEXT,
+          ${DbProjectsKeys.currentUser} TEXT,
+          ${DbProjectsKeys.archivedAt} TEXT NULL
         )
       ''');
+
     await db.execute('''
         CREATE TABLE DetailProject(
-         detail_project_id INTEGER PRIMARY KEY,
-          name TEXT,
-          currentUserRole TEXT
+          ${DbDetailProjectKeys.detailProjectID} INTEGER PRIMARY KEY,
+          ${DbDetailProjectKeys.name} TEXT,
+          ${DbDetailProjectKeys.currentUserRole} TEXT
         )
       ''');
+
     await db.execute('''
         CREATE TABLE UserInfo(
-           userID INTEGER,
-          detail_project_id INTEGER,
-          name text,
-          email text,
-          FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
+          ${DbUserInfoKeys.userID} INTEGER,
+          ${DbUserInfoKeys.detailProjectID} INTEGER,
+          ${DbUserInfoKeys.name} TEXT,
+          ${DbUserInfoKeys.email} TEXT,
+          FOREIGN KEY(${DbUserInfoKeys.detailProjectID}) REFERENCES DetailProject(${DbDetailProjectKeys.detailProjectID})
         )
       ''');
+
     await db.execute('''
         CREATE TABLE Invites(
-          invite_id INTEGER PRIMARY KEY,
-           detail_project_id INTEGER,
-          name TEXT,
-           FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
+          ${DbInvitesKeys.inviteID} INTEGER PRIMARY KEY,
+          ${DbInvitesKeys.detailProjectID} INTEGER,
+          ${DbInvitesKeys.name} TEXT,
+          FOREIGN KEY(${DbInvitesKeys.detailProjectID}) REFERENCES DetailProject(${DbDetailProjectKeys.detailProjectID})
         )
       ''');
+
     await db.execute('''
         CREATE TABLE UserEngagements(
-           user_engagaments_id INTEGER,
-           userID INTEGER,
-          detail_project_id INTEGER,
-          workedTotal INTEGER,
-          FOREIGN KEY(detail_project_id) REFERENCES DetailProject(detail_project_id)
+          ${DbUserEngagementsKeys.userEngagementsID} INTEGER,
+          ${DbUserEngagementsKeys.userID} INTEGER,
+          ${DbUserEngagementsKeys.detailProjectID} INTEGER,
+          ${DbUserEngagementsKeys.workedTotal} INTEGER,
+          FOREIGN KEY(${DbUserEngagementsKeys.detailProjectID}) REFERENCES DetailProject(${DbDetailProjectKeys.detailProjectID})
         )
       ''');
   }
+}
+
+class DbUsersProfileIDKeys {
+  static const profileID = "profile_id";
+  static const detailProjectID = "detail_project_id";
+}
+
+class DbUsersKeys {
+  static const profileID = "profile_id";
+  static const name = "name";
+  static const email = "email";
+}
+
+class DbProjectsKeys {
+  static const id = "id";
+  static const name = "name";
+  static const adminName = "adminName";
+  static const createdAt = "createdAt";
+  static const currentUser = "currentUser";
+  static const archivedAt = "archivedAt";
+}
+
+class DbDetailProjectKeys {
+  static const detailProjectID = "detail_project_id";
+  static const name = "name";
+  static const currentUserRole = "currentUserRole";
+}
+
+class DbUserInfoKeys {
+  static const userID = "userID";
+  static const detailProjectID = "detail_project_id";
+  static const name = "name";
+  static const email = "email";
+}
+
+class DbInvitesKeys {
+  static const inviteID = "invite_id";
+  static const detailProjectID = "detail_project_id";
+  static const name = "name";
+}
+
+class DbUserEngagementsKeys {
+  static const userEngagementsID = "user_engagements_id";
+  static const userID = "userID";
+  static const detailProjectID = "detail_project_id";
+  static const workedTotal = "workedTotal";
 }

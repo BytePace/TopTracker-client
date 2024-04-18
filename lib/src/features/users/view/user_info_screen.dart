@@ -6,6 +6,7 @@ import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
 import 'package:tt_bytepace/src/features/users/utils/methods.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserInfoScreen extends StatelessWidget {
   final List<ProjectModel> projects;
@@ -45,24 +46,27 @@ class UserInfoScreen extends StatelessWidget {
                               context: context,
                               builder: (ctx) => MyAlertDialog(
                                     ctx: context,
-                                    title: "Delete user",
-                                    content:
-                                        "Are you sure want to delete this user from project?",
+                                    title: AppLocalizations.of(context)!
+                                        .deleteThisUser,
+                                    content: AppLocalizations.of(context)!
+                                        .wantDeleteUser,
                                     isYes: TextButton(
                                         onPressed: () async {
                                           Navigator.of(ctx).pop();
                                           GetIt.I<DetailProjectBloc>().add(
                                               DeleteUserEvent(
-                                                  projectID: userProjectList[
-                                                          index2]
-                                                      .id,
+                                                  projectID:
+                                                      userProjectList[index2]
+                                                          .id,
                                                   profileID: allProfileID[index]
-                                                      .profileID,
-                                                  context: context));
+                                                      .profileID));
                                         },
                                         child: Text(
-                                          "Delete",
-                                          style: Theme.of(context).textTheme.labelMedium,
+                                          AppLocalizations.of(context)!
+                                              .deleteUser,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium,
                                         )),
                                   ))
                           : () {};

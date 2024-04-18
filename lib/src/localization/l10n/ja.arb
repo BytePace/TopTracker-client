@@ -1,0 +1,53 @@
+{
+    "@@locale": "ja",
+    "welcomeMessageText": "TopTracker",
+    "@welcomeMessageText": {
+        "description": "ようこそメッセージ"
+    },
+    "hintSearchProjectText": "プロジェクト名を入力してください",
+    "userOnProjectText": "プロジェクトのユーザー",
+    "invitedUsersText": "招待されたユーザー",
+    "addUser": "ユーザーを追加",
+    "allUsers": "すべてのユーザー",
+    "logoutText": "ログアウト",
+    "loginButtonText": "ログイン",
+    "totalHours": "合計時間： {hours}",
+    "@totalHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "restoreProject": "プロジェクトを復元",
+    "wantRestoreProject": "このプロジェクトを復元してもよろしいですか？",
+    "restore": "復元",
+    "deleteProject": "プロジェクトを削除",
+    "wantDeleteProject": "このプロジェクトを削除してもよろしいですか？",
+    "delete": "削除",
+    "archiveProject": "プロジェクトをアーカイブ",
+    "wantArchiveProject": "このプロジェクトをアーカイブしてもよろしいですか？",
+    "archive": "アーカイブ",
+    "userStats": "ユーザー統計",
+    "name": "名前 :",
+    "currentWeekHours": "今週の時間： {hours}",
+    "@currentWeekHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "logOut": "ログアウト",
+    "wantLogout": "ログアウトしてもよろしいですか？",
+    "alertCancel": "キャンセル",
+    "bottomBarProjects": "プロジェクト",
+    "bottomBarArchivedProjects": "アーカイブされたプロジェクト",
+    "bottomBarUsers": "ユーザー",
+    "deleteThisUser": "このユーザーを削除",
+    "wantDeleteUser": "このユーザーを削除してもよろしいですか？",
+    "deleteUser": "削除",
+    "addTime": "時間を追加"
+}

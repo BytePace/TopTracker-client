@@ -1,21 +1,26 @@
 part of 'auth_bloc.dart';
 
 @immutable
-sealed class AuthEvent {}
+sealed class AuthEvent extends Equatable {}
 
 class LogInEvent extends AuthEvent {
   final String email;
   final String password;
-  final BuildContext context;
 
-  LogInEvent(
-      {required this.email, required this.password, required this.context});
+  LogInEvent({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
 }
 
 class LogOutEvent extends AuthEvent {
-  final BuildContext context;
+  LogOutEvent();
 
-  LogOutEvent({required this.context});
+  @override
+  List<Object?> get props => [];
 }
 
-class InitialEvent extends AuthEvent {}
+class InitialEvent extends AuthEvent {
+  @override
+  List<Object?> get props => [];
+}

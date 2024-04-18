@@ -1,0 +1,54 @@
+
+{
+    "@@locale": "en",
+    "welcomeMessageText": "TopTracker",
+    "@welcomeMessageText": {
+        "description": "Welcome Message"
+    },
+    "hintSearchProjectText": "Enter project name",
+    "userOnProjectText": "Users on the project",
+    "invitedUsersText": "Invited users",
+    "addUser": "Add user",
+    "allUsers": "All users",
+    "logoutText": "Logout",
+    "loginButtonText": "Log in",
+    "totalHours": "Total hours: {hours}",
+    "@totalHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "restoreProject": "Restore project",
+    "wantRestoreProject": "Are you sure want to restore this project?",
+    "restore": "Restore",
+    "deleteProject": "Delete project",
+    "wantDeleteProject": "Are you sure want to delete this project?",
+    "delete": "Delete",
+    "archiveProject": "Archive project",
+    "wantArchiveProject": "Are you sure want to archive this project?",
+    "archive": "Archive",
+    "userStats": "User Stats",
+    "name": "name:",
+    "currentWeekHours": "current week hours: {hours}",
+    "@currentWeekHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String",
+                "example": "10.00"
+            }
+        }
+    },
+    "logOut": "Log Out",
+    "wantLogout": "Are you sure want to log out?",
+    "alertCancel": "Cancel",
+    "bottomBarProjects": "Projects",
+    "bottomBarArchivedProjects": "Archived Projects",
+    "bottomBarUsers": "Users",
+    "deleteThisUser": "Delete user",
+    "wantDeleteUser": "Are you sure want to delete this user?",
+    "deleteUser": "Delete",
+    "addTime": "Add Time"
+}

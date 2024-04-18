@@ -4,20 +4,20 @@ class LoginModel {
   final int id;
   final String username;
   final String email;
-  final String access_token;
+  final String accessToken;
 
   const LoginModel(
       {required this.id,
       required this.username,
       required this.email,
-      required this.access_token});
+      required this.accessToken});
 
   factory LoginModel.fromDto(LoginDto dto) {
     return LoginModel(
       id: dto.id,
       username: dto.username,
       email: dto.email,
-      access_token: dto.access_token,
+      accessToken: dto.accessToken,
     );
   }
   @override
@@ -28,9 +28,9 @@ class LoginModel {
           id == other.id &&
           username == other.username &&
           email == other.email &&
-          access_token == other.access_token;
+          accessToken == other.accessToken;
 
   @override
   int get hashCode =>
-      id.hashCode ^ username.hashCode ^ email.hashCode ^ access_token.hashCode;
+      id.hashCode ^ username.hashCode ^ email.hashCode ^ accessToken.hashCode;
 }
