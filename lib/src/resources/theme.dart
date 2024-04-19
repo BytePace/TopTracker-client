@@ -8,7 +8,8 @@ class CustomTheme with ChangeNotifier {
         textTheme: const TextTheme(labelMedium: TextStyle(fontSize: 16)),
         primaryColor: CustomColors.whiteColor,
         scaffoldBackgroundColor: Colors.white,
-        colorScheme: const ColorScheme.light(),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: CustomColors.blackColor, brightness: Brightness.light),
         buttonTheme: ButtonThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
@@ -19,17 +20,24 @@ class CustomTheme with ChangeNotifier {
   static ThemeData get darkTheme {
     return ThemeData(
         useMaterial3: true,
-        primaryColor: CustomColors.bottomActiveIconColor,
+        dialogTheme: const DialogTheme(backgroundColor: Colors.grey),
+        tooltipTheme: const TooltipThemeData(
+          decoration: BoxDecoration(color: Colors.black),
+        ),
         scaffoldBackgroundColor: Colors.black,
+        popupMenuTheme: const PopupMenuThemeData(
+          color: Colors.black,
+        ),
+        primaryColor: CustomColors.blackColor,
         textTheme: const TextTheme(
-            labelMedium: TextStyle(fontSize: 16),
-            bodySmall: TextStyle(color: Colors.black)),
+            labelMedium: TextStyle(fontSize: 16, color: Colors.white),
+            bodySmall: TextStyle(color: Colors.white)),
         colorScheme: ColorScheme.fromSeed(
-            seedColor: CustomColors.blackColor, brightness: Brightness.dark),
+            brightness: Brightness.dark, seedColor: Colors.black),
         buttonTheme: ButtonThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-          buttonColor: CustomColors.greyColor,
+          buttonColor: CustomColors.blackColor,
         ));
   }
 }

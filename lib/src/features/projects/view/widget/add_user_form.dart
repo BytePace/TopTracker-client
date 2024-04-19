@@ -19,8 +19,11 @@ class _AddUserFormState extends State<AddUserForm> {
 
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "admin", child: Text("Role: admin")),
-      const DropdownMenuItem(value: "worker", child: Text("Role: worker")),
+      DropdownMenuItem(
+          value: "admin", child: Text(AppLocalizations.of(context)!.roleAdmin)),
+      DropdownMenuItem(
+          value: "worker",
+          child: Text(AppLocalizations.of(context)!.roleWorker)),
     ];
     return menuItems;
   }
@@ -39,10 +42,11 @@ class _AddUserFormState extends State<AddUserForm> {
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: const InputDecoration(hintText: "email"),
+                    decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.emailHint),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return AppLocalizations.of(context)!.pleaseEnterText;
                       }
                       return null;
                     },
@@ -60,7 +64,7 @@ class _AddUserFormState extends State<AddUserForm> {
                     items: dropdownItems,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return AppLocalizations.of(context)!.pleaseEnterText;
                       }
                       return null;
                     },
@@ -81,11 +85,11 @@ class _AddUserFormState extends State<AddUserForm> {
                               projectID: widget.id));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Что то пошло не так")));
+                          SnackBar(content: Text(AppLocalizations.of(context)!.somethingWentWrong)));
                     }
                   }
                 },
-                child: const Text("Submit"))
+                child: Text(AppLocalizations.of(context)!.submitButton))
           ],
         ),
       ],

@@ -85,7 +85,6 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("build");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),

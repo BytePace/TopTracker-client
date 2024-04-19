@@ -29,9 +29,11 @@ class _AppState extends State<App> {
           bloc: GetIt.I<AuthBloc>(),
           builder: (BuildContext context, state) {
             if (state is SignInState) {
-              return BlocProvider<ProjectBloc>(
-                create: (context) => GetIt.I<ProjectBloc>(),
-                child: const MenuScreen(),
+              return Scaffold(
+                body: BlocProvider<ProjectBloc>(
+                  create: (context) => GetIt.I<ProjectBloc>(),
+                  child: const MenuScreen(),
+                ),
               );
             } else {
               return const LoginScreen();

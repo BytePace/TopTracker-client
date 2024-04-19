@@ -76,8 +76,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 isYes: TextButton(
                                   onPressed: () {
                                     authBloc.add(LogOutEvent());
-                                    Navigator.of(ctx).pop();
-                                    Navigator.of(context).pop();
+                                    Navigator.pushReplacementNamed(
+                                        context, '/');
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)!.logOut,

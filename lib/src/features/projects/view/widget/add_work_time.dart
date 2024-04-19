@@ -7,6 +7,7 @@ import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class AddWorkTime extends StatefulWidget {
   final int projectID;
   const AddWorkTime({super.key, required this.projectID});
@@ -53,8 +54,8 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                   //description textfield
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(
-                          hintText: "Activity Description"),
+                      decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.activityDescriptionHint),
                       onSaved: (value) {
                         _description = value!;
                       },
@@ -98,12 +99,12 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                 onChanged: updateDurationAndTime,
                 validator: (value) {
                   if (value == null) {
-                    return "Pleas enter duration";
+                    return AppLocalizations.of(context)!.pleaseEnterDurationError;
                   }
                   List<String> parts = value.split(":");
                   int hours = int.parse(parts[0]);
                   if (hours >= 24) {
-                    return 'Duration must be up to 24';
+                    return AppLocalizations.of(context)!.durationUpTo24Error;
                   }
 
                   return null;
@@ -111,11 +112,11 @@ class _AddWorkTimeState extends State<AddWorkTime> {
               ),
               Row(
                 children: [
-                  Text("Worked From",
+                  Text(AppLocalizations.of(context)!.workedFrom,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Colors.grey[800])),
+                          .copyWith(color: Colors.grey[700])),
                   const SizedBox(width: 16),
 
                   //textfield worked from
@@ -135,7 +136,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                   ),
                   const SizedBox(width: 16),
 
-                  Text("To",
+                  Text(AppLocalizations.of(context)!.workedTo,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -156,7 +157,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                       onChanged: _updateToTime,
                       validator: (value) {
                         if (value != null && isFutureTime(value)) {
-                          return "Cannot input future work.";
+                          return AppLocalizations.of(context)!.futureWorkError;
                         }
                         return null;
                       },
@@ -202,7 +203,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                               endTime: endTime.toIso8601String()));
                     }
                   },
-                  child: const Text("Submit"))
+                  child: Text(AppLocalizations.of(context)!.submitButtonText))
             ],
           ),
         ),

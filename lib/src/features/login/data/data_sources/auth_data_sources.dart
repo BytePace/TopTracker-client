@@ -27,8 +27,8 @@ class NetworkAuthDataSources implements IAuthDataSources {
     final loginData = {
       "access_token": _prefs.getString(SharedPreferencesKey.accessTokenKey)
     };
-    await _dio.delete('/sessions/me', data: loginData);
     await _prefs.remove(SharedPreferencesKey.accessTokenKey);
+    await _dio.delete('/sessions/me', data: loginData);
     await _prefs.remove('current_user_id');
   }
 

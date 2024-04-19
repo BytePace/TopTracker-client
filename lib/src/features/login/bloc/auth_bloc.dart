@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
 import 'package:tt_bytepace/src/resources/text.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -34,9 +34,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _logout(LogOutEvent event, Emitter<AuthState> emit) async {
     try {
-      await _authRepository.dropDB();
       await _authRepository.doLogout();
       emit(const IsLoginState());
+      await _authRepository.dropDB();
     } catch (e) {
       emit(LoginMessageState(message: e.toString()));
       emit(const IsLoginState());
@@ -47,7 +47,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (await _authRepository.getToken() == null) {
       emit(const IsLoginState());
     } else {
-    
       emit(SignInState());
     }
   }

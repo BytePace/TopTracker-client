@@ -94,7 +94,6 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      print("Произошла ошибка при разахривации $e");
       emit(ProjectListMessage(message: "Произошла ошибка"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
@@ -127,7 +126,6 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      print("Произошла ошибка при архивации $e");
       emit(ProjectListMessage(message: "Произошла ошибка"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));

@@ -1,4 +1,3 @@
-
 {
     "@@locale": "en",
     "welcomeMessageText": "TopTracker",
@@ -50,5 +49,33 @@
     "deleteThisUser": "Delete user",
     "wantDeleteUser": "Are you sure want to delete this user?",
     "deleteUser": "Delete",
-    "addTime": "Add Time"
+    "hintPasswordText": "Enter password",
+    "hintEmailText": "Enter email",
+    "roleAdmin": "Role: admin",
+    "roleWorker": "Role: worker",
+    "emailHint": "Email",
+    "submitButton": "Submit",
+    "pleaseEnterText": "Please enter some text",
+    "somethingWentWrong": "Something went wrong",
+    "addTime": "Add time",
+    "activityDescriptionHint": "Activity description",
+    "selectDateButton": "Select date",
+    "submitButtonText": "Submit",
+    "pleaseEnterDurationError": "Please enter duration",
+    "durationUpTo24Error": "Duration must be up to 24 hours",
+    "futureWorkError": "Cannot input future work",
+    "workedFrom": "worked from",
+    "workedTo": "to",
+    
+    "successLogin": "Successful login",
+    "failedLogin": "Incorrect login or password",
+    "error": "An error occurred",
+    "deletedUser": "User deleted",
+    "addedUser": "User added",
+    "addedUserError": "An error occurred while adding user",
+    "revokeInvite": "Invite revoked",
+    "noInternet": "No Wi-Fi connection",
+    "dearchiveSuccess": "Dearchive success",
+    "deleteProjectSuccess": "Delete success",
+    "archiveSuccess": "Archive success"
 }

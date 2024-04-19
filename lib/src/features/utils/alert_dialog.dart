@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyAlertDialog extends StatelessWidget {
   final BuildContext ctx;
@@ -30,7 +30,7 @@ class MyAlertDialog extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              SnackBarAlertText.alertCancel,
+              AppLocalizations.of(context)!.alertCancel,
               style: Theme.of(context).textTheme.labelMedium,
             )),
         isYes

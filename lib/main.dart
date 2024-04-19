@@ -14,6 +14,7 @@ import 'package:tt_bytepace/src/database/database.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/data/data_sources/auth_data_sources.dart';
+import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
 import 'package:tt_bytepace/src/features/profile/data/data_sources/profile_data_sources.dart';
 import 'package:tt_bytepace/src/features/profile/data/profile_repository.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
@@ -114,11 +115,16 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        navigatorObservers: [TalkerRouteObserver(GetIt.I<Talker>())],
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        theme: CustomTheme.lightTheme,
-        darkTheme: CustomTheme.darkTheme,
-        home: const Scaffold(body: App()));
+      navigatorObservers: [TalkerRouteObserver(GetIt.I<Talker>())],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: CustomTheme.lightTheme,
+      darkTheme: CustomTheme.darkTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const App(),
+        '/login': (context) => const LoginScreen()
+      },
+    );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
-import 'package:tt_bytepace/src/resources/colors.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,12 +17,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
+    final authBloc = GetIt.I<AuthBloc>();
     emailController.text = "";
     passwordController.text = "";
 
     return Scaffold(
-      backgroundColor: CustomColors.greyColor[300],
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -31,11 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const SizedBox(height: ConstantSize.bigSeparatorHeight),
+
                 //logo
-                Icon(
-                  Icons.message,
-                  size: 80,
-                  color: Colors.grey[800],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Image.asset(
+                    'lib/src/resources/assets/playstore-icon.png',
+                    width: 150,
+                    height: 150,
+                  ),
                 ),
 
                 const SizedBox(height: ConstantSize.bigSeparatorHeight),
@@ -43,24 +45,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 //welcome message
                 Text(
                   AppLocalizations.of(context)!.welcomeMessageText,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
 
                 const SizedBox(height: ConstantSize.bigSeparatorHeight),
 
                 //emailTextField
                 TextField(
+                  style: Theme.of(context).textTheme.labelMedium,
+                  autocorrect: false,
                   controller: emailController,
                   key: const Key('emailTextField'),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.hintEmailText,
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: Colors.grey),
+                  ),
                 ),
 
                 const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
                 //PasswordTextField
                 TextField(
+                  style: Theme.of(context).textTheme.labelMedium,
                   controller: passwordController,
                   obscureText: true,
                   key: const Key('passwordTextField'),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.hintPasswordText,
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: Colors.grey),
+                  ),
                 ),
 
                 const SizedBox(height: ConstantSize.defaultSeparatorHeight),
