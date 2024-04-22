@@ -76,5 +76,7 @@
     "noInternet": "Нет подключения Wi-Fi",
     "dearchiveSuccess": "Дезархивация выполнена успешно",
     "deleteProjectSuccess": "Удаление выполнено успешно",
-    "archiveSuccess": "Архивация выполнена успешно"
+    "archiveSuccess": "Архивация выполнена успешно",
+    "addActivitySuccess": "Активность добавлена",
+    "activityExists":"Активность уже существует"
 }

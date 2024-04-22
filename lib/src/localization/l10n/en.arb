@@ -77,5 +77,7 @@
     "noInternet": "No Wi-Fi connection",
     "dearchiveSuccess": "Dearchive success",
     "deleteProjectSuccess": "Delete success",
-    "archiveSuccess": "Archive success"
+    "archiveSuccess": "Archive success",
+    "addActivitySuccess": "Activity added",
+    "activityExists":"Activity already exists"
 }

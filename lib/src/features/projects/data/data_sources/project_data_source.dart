@@ -150,15 +150,15 @@ class NetworkProjectDataSource implements IProjectDataSource {
       final response =
           await _dio.post('/projects/$projectID/activities', data: workData);
       if (response.statusCode == 201) {
-        return "Активность добавлена";
+        return "add";
       }
-      return "Произошла ошибка";
+      return "error";
     } catch (e) {
       if (e is DioException) {
         if (e.response?.statusCode == 422) {
-          return "Активность уже существует";
+          return "exists";
         }
-        return "Произошла ошибка";
+        return "error";
       } else {
         throw Exception();
       }

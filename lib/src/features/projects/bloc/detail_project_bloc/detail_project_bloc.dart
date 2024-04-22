@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
-import 'package:tt_bytepace/src/resources/text.dart';
+import 'package:tt_bytepace/src/localization/applocalization_provider.dart';
 
 part 'detail_project_event.dart';
 part 'detail_project_state.dart';
@@ -50,10 +50,14 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
-      emit(DetailProjectListMessage(message: response));
+      emit(DetailProjectListMessage(
+          message: response == "add"
+              ? LocalizationManager.instance.appLocalization.addActivitySuccess
+              : LocalizationManager.instance.appLocalization.activityExists));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     } catch (e) {
-      emit(DetailProjectListMessage(message: SnackBarAlertText.error));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.error));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
@@ -64,11 +68,13 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
-      emit(DetailProjectListMessage(message: SnackBarAlertText.deletedUser));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.deletedUser));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     } catch (e) {
       print("ошибка добавления пользователя $e");
-      emit(DetailProjectListMessage(message: SnackBarAlertText.error));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.error));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
@@ -80,12 +86,14 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
-      emit(DetailProjectListMessage(message: SnackBarAlertText.addedUser));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.addedUser));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     } catch (e) {
       print("ошибка удаления пользователя $e");
       emit(DetailProjectListMessage(
-          message: SnackBarAlertText.addedUserError));
+          message:
+              LocalizationManager.instance.appLocalization.addedUserError));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }
@@ -97,11 +105,13 @@ class DetailProjectBloc extends Bloc<DetailProjectEvent, DetailProjectState> {
 
       detailProjectModel =
           await _projectRepository.getDetailProject(event.projectID);
-      emit(DetailProjectListMessage(message:SnackBarAlertText.revokeInvite));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.revokeInvite));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     } catch (e) {
       print("произошла отмены приглашения ошибка $e");
-      emit(DetailProjectListMessage(message: SnackBarAlertText.error));
+      emit(DetailProjectListMessage(
+          message: LocalizationManager.instance.appLocalization.error));
       emit(DetailProjectListLoaded(detailProjectModel: detailProjectModel));
     }
   }

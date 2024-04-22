@@ -7,6 +7,7 @@ import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dar
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
+import 'package:tt_bytepace/src/localization/applocalization_provider.dart';
 
 part 'project_event.dart';
 part 'project_state.dart';
@@ -77,7 +78,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: "Нет интернета"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.noInternet));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -87,14 +88,14 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       RestoreProjectEvent event, Emitter<ProjectState> emit) async {
     try {
       await _projectRepository.restoreProject(event.id);
-      emit(ProjectListMessage(message: "Проект разархивирован"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.dearchiveSuccess));
       projects = await _projectRepository.getProjects();
       allProfileID = await _userRepository.getAllProfileID();
       allUser = await _userRepository.getAllUsers();
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: "Произошла ошибка"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -104,12 +105,11 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     try {
       _projectRepository.deleteProject(event.id);
       projects.removeWhere((element) => element.id == event.id);
-      emit(ProjectListMessage(message: "Проект удален"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.deleteProjectSuccess));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      print("Произошла ошибка при удалении $e");
-      emit(ProjectListMessage(message: "Произошла ошибка"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -122,11 +122,11 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       allProfileID = await _userRepository.getAllProfileID();
       allUser = await _userRepository.getAllUsers();
 
-      emit(ProjectListMessage(message: "Проект архивирован"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.archiveSuccess));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: "Произошла ошибка"));
+      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
