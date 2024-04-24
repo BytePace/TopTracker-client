@@ -78,5 +78,7 @@
     "deleteProjectSuccess": "Удаление выполнено успешно",
     "archiveSuccess": "Архивация выполнена успешно",
     "addActivitySuccess": "Активность добавлена",
-    "activityExists":"Активность уже существует"
+    "activityExists":"Активность уже существует",
+
+    "selectPeriod":"Выберите период"
 }

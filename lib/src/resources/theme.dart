@@ -20,7 +20,7 @@ class CustomTheme with ChangeNotifier {
   static ThemeData get darkTheme {
     return ThemeData(
         useMaterial3: true,
-        dialogTheme: const DialogTheme(backgroundColor: Colors.grey),
+        dialogTheme: const DialogTheme(backgroundColor: Colors.black),
         tooltipTheme: const TooltipThemeData(
           decoration: BoxDecoration(color: Colors.black),
         ),

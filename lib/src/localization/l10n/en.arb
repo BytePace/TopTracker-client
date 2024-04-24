@@ -21,13 +21,13 @@
         }
     },
     "restoreProject": "Restore project",
-    "wantRestoreProject": "Are you sure want to restore this project?",
+    "wantRestoreProject": "Are you sure you want to restore this project?",
     "restore": "Restore",
     "deleteProject": "Delete project",
-    "wantDeleteProject": "Are you sure want to delete this project?",
+    "wantDeleteProject": "Are you sure you want to delete this project?",
     "delete": "Delete",
     "archiveProject": "Archive project",
-    "wantArchiveProject": "Are you sure want to archive this project?",
+    "wantArchiveProject": "Are you sure you want to archive this project?",
     "archive": "Archive",
     "userStats": "User Stats",
     "name": "name:",
@@ -41,13 +41,13 @@
         }
     },
     "logOut": "Log Out",
-    "wantLogout": "Are you sure want to log out?",
+    "wantLogout": "Are you sure you want to log out?",
     "alertCancel": "Cancel",
     "bottomBarProjects": "Projects",
     "bottomBarArchivedProjects": "Archived Projects",
     "bottomBarUsers": "Users",
     "deleteThisUser": "Delete user",
-    "wantDeleteUser": "Are you sure want to delete this user?",
+    "wantDeleteUser": "Are you sure you want to delete this user?",
     "deleteUser": "Delete",
     "hintPasswordText": "Enter password",
     "hintEmailText": "Enter email",
@@ -79,5 +79,7 @@
     "deleteProjectSuccess": "Delete success",
     "archiveSuccess": "Archive success",
     "addActivitySuccess": "Activity added",
-    "activityExists":"Activity already exists"
+    "activityExists":"Activity already exists",
+
+    "selectPeriod":"Select period"
 }

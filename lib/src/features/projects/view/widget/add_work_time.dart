@@ -7,7 +7,6 @@ import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 import 'package:tt_bytepace/src/resources/constant_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class AddWorkTime extends StatefulWidget {
   final int projectID;
   const AddWorkTime({super.key, required this.projectID});
@@ -55,7 +54,8 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                   Expanded(
                     child: TextFormField(
                       decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.activityDescriptionHint),
+                          hintText: AppLocalizations.of(context)!
+                              .activityDescriptionHint),
                       onSaved: (value) {
                         _description = value!;
                       },
@@ -99,7 +99,8 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                 onChanged: updateDurationAndTime,
                 validator: (value) {
                   if (value == null) {
-                    return AppLocalizations.of(context)!.pleaseEnterDurationError;
+                    return AppLocalizations.of(context)!
+                        .pleaseEnterDurationError;
                   }
                   List<String> parts = value.split(":");
                   int hours = int.parse(parts[0]);
@@ -216,7 +217,8 @@ class _AddWorkTimeState extends State<AddWorkTime> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Select an item'),
+          insetPadding: const EdgeInsets.symmetric(vertical: 180),
+          title: Text(AppLocalizations.of(context)!.selectPeriod),
           children: listTime.map((item) {
             return SimpleDialogOption(
               onPressed: () {

@@ -102,54 +102,56 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
           bloc: BlocProvider.of<DetailProjectBloc>(context),
           builder: (context, state) {
             if (state is DetailProjectListLoaded) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ListView(
-                  children: [
-                    UserOnProject(
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: ListView(
+                    children: [
+                      UserOnProject(
+                          key: UniqueKey(),
+                          detailProjectModel: state.detailProjectModel,
+                          allUsers: getListUsersOnProject(
+                              state.detailProjectModel.engagements,
+                              state.detailProjectModel.users)),
+                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                      widget.role == "admin" || widget.role == "supervisor"
+                          ? Column(
+                              children: [
+                                OutlinedButton(
+                                    onPressed: _archiveProject,
+                                    child: Text(AppLocalizations.of(context)!
+                                        .archiveProject)),
+                                const SizedBox(
+                                    height: ConstantSize.defaultSeparatorHeight),
+                                OutlinedButton(
+                                    onPressed: _deleteProject,
+                                    child: Text(AppLocalizations.of(context)!
+                                        .deleteProject))
+                              ],
+                            )
+                          : Container(),
+                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                      InvitedOnProject(
                         key: UniqueKey(),
                         detailProjectModel: state.detailProjectModel,
-                        allUsers: getListUsersOnProject(
-                            state.detailProjectModel.engagements,
-                            state.detailProjectModel.users)),
-                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                    widget.role == "admin" || widget.role == "supervisor"
-                        ? Column(
-                            children: [
-                              OutlinedButton(
-                                  onPressed: _archiveProject,
-                                  child: Text(AppLocalizations.of(context)!
-                                      .archiveProject)),
-                              const SizedBox(
-                                  height: ConstantSize.defaultSeparatorHeight),
-                              OutlinedButton(
-                                  onPressed: _deleteProject,
-                                  child: Text(AppLocalizations.of(context)!
-                                      .deleteProject))
-                            ],
-                          )
-                        : Container(),
-                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                    InvitedOnProject(
-                      key: UniqueKey(),
-                      detailProjectModel: state.detailProjectModel,
-                    ),
-                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                    AddWorkTime(
-                        projectID: widget.id,
-                        key:
-                            UniqueKey()), //панель добавления времени на проекте
-                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                    AddUserForm(
-                        id: widget
-                            .id), //панель добавления пользователя на проект
-                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                    AllUsersList(
-                        key: UniqueKey(),
-                        allUsers: getAllUsersWhithoutOnProject(
-                            state.detailProjectModel.engagements, _allUsers),
-                        id: widget.id),
-                  ],
+                      ),
+                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                      AddWorkTime(
+                          projectID: widget.id,
+                          key:
+                              UniqueKey()), //панель добавления времени на проекте
+                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                      AddUserForm(
+                          id: widget
+                              .id), //панель добавления пользователя на проект
+                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                      AllUsersList(
+                          key: UniqueKey(),
+                          allUsers: getAllUsersWhithoutOnProject(
+                              state.detailProjectModel.engagements, _allUsers),
+                          id: widget.id),
+                    ],
+                  ),
                 ),
               );
             } else {
