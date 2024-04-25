@@ -30,8 +30,8 @@
     "wantArchiveProject": "Are you sure you want to archive this project?",
     "archive": "Archive",
     "userStats": "User Stats",
-    "name": "name:",
-    "currentWeekHours": "current week hours: {hours}",
+    "name": "Name:",
+    "currentWeekHours": "Current week hours: {hours}",
     "@currentWeekHours": {
         "placeholders": {
             "hours": {
@@ -51,8 +51,8 @@
     "deleteUser": "Delete",
     "hintPasswordText": "Enter password",
     "hintEmailText": "Enter email",
-    "roleAdmin": "Role: admin",
-    "roleWorker": "Role: worker",
+    "roleAdmin": "Role: Admin",
+    "roleWorker": "Role: Worker",
     "emailHint": "Email",
     "submitButton": "Submit",
     "pleaseEnterText": "Please enter some text",

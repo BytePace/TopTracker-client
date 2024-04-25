@@ -70,9 +70,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                             widget.index]
                                                         .profileID));
                                             showSnackBar(
-                                                context,
-                                                AppLocalizations.of(context)!
-                                                    .deletedUser);
+                                                context, AppLocalizations.of(context)!.deletedUser);
                                           },
                                           child: Text(
                                             AppLocalizations.of(context)!

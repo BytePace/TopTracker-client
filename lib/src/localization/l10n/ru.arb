@@ -30,8 +30,8 @@
     "wantArchiveProject": "Вы уверены, что хотите архивировать этот проект?",
     "archive": "Архивировать",
     "userStats": "Статистика пользователя",
-    "name": "имя:",
-    "currentWeekHours": "часы за текущую неделю: {hours}",
+    "name": "Имя:",
+    "currentWeekHours": "Часы за текущую неделю: {hours}",
     "@currentWeekHours": {
         "placeholders": {
             "hours": {
@@ -52,8 +52,8 @@
     "addTime": "Добавить Время",
     "hintPasswordText": "Введите пароль",
     "hintEmailText": "Введите почту",
-    "roleAdmin": "Роль: администратор",
-    "roleWorker": "Роль: работник",
+    "roleAdmin": "Роль: Администратор",
+    "roleWorker": "Роль: Работник",
     "emailHint": "Почта",
     "submitButton": "Отправить",
     "pleaseEnterText": "Пожалуйста, введите текст",
