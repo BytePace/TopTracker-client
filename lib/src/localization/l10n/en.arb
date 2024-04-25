@@ -63,7 +63,7 @@
     "submitButtonText": "Submit",
     "pleaseEnterDurationError": "Please enter duration",
     "durationUpTo24Error": "Duration must be up to 24 hours",
-    "futureWorkError": "Cannot input future work",
+    "futureWorkError": "Future time",
     "workedFrom": "worked from",
     "workedTo": "to",
     
@@ -73,7 +73,7 @@
     "deletedUser": "User deleted",
     "addedUser": "User added",
     "addedUserError": "An error occurred while adding user",
-    "revokeInvite": "Invite revoked",
+    "revokeInvite": "Invitation revoked",
     "noInternet": "No Wi-Fi connection",
     "dearchiveSuccess": "Dearchive success",
     "deleteProjectSuccess": "Delete success",

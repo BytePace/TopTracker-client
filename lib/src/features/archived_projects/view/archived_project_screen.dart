@@ -67,6 +67,7 @@ class _ArchivedProjectScreenState extends State<ArchivedProjectScreen> {
                       : const Icon(Icons.arrow_upward))
             ],
           ),
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
               itemCount: projects.length,

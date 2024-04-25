@@ -7,8 +7,9 @@ import 'package:tt_bytepace/src/features/users/utils/methods.dart';
 import 'package:tt_bytepace/src/features/utils/alert_dialog.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tt_bytepace/src/features/utils/methods.dart';
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
   final List<ProjectModel> projects;
   final List<ProfileIdModel> allProfileID;
   final int index;
@@ -19,17 +20,22 @@ class UserInfoScreen extends StatelessWidget {
       required this.index});
 
   @override
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-          allProfileID[index].name,
+          widget.allProfileID[widget.index].name,
         )),
         body: BlocBuilder<DetailProjectBloc, DetailProjectState>(
-          bloc: GetIt.I<DetailProjectBloc>(),
+          bloc: BlocProvider.of<DetailProjectBloc>(context),
           builder: (context, state) {
-            final userProjectList =
-                getUserProject(projects, allProfileID, index);
+            final userProjectList = getUserProject(
+                widget.projects, widget.allProfileID, widget.index);
             return SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -59,8 +65,14 @@ class UserInfoScreen extends StatelessWidget {
                                                     projectID:
                                                         userProjectList[index2]
                                                             .id,
-                                                    profileID: allProfileID[index]
+                                                    profileID: widget
+                                                        .allProfileID[
+                                                            widget.index]
                                                         .profileID));
+                                            showSnackBar(
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .deletedUser);
                                           },
                                           child: Text(
                                             AppLocalizations.of(context)!
@@ -79,7 +91,8 @@ class UserInfoScreen extends StatelessWidget {
                           children: [
                             Text(userProjectList[index2].name),
                             userProjectList[index2].archivedAt == null &&
-                                    userProjectList[index2].currentUser == "admin"
+                                    userProjectList[index2].currentUser ==
+                                        "admin"
                                 ? const Icon(Icons.delete)
                                 : Container()
                           ],

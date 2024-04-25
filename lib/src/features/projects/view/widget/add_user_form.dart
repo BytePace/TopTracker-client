@@ -55,6 +55,9 @@ class _AddUserFormState extends State<AddUserForm> {
                     },
                   ),
                   DropdownButtonFormField(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                    },
                     value: _role,
                     onChanged: (String? newValue) {
                       setState(() {
@@ -84,8 +87,9 @@ class _AddUserFormState extends State<AddUserForm> {
                               rate: "",
                               projectID: widget.id));
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(AppLocalizations.of(context)!.somethingWentWrong)));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .somethingWentWrong)));
                     }
                   }
                 },

@@ -34,13 +34,13 @@ List<UserInfoModel> getListUsersOnProject(
   return usersOnProject;
 }
 
-bool isFutureTime(String currentTime) {
+bool isFutureTime(String currentTime, DateTime currentDate) {
   List<String> parts = currentTime.split(":");
   int hours = int.parse(parts[0]);
   int minutes = int.parse(parts[1]);
   final DateTime now = DateTime.now();
   DateTime specifiedTime =
-      DateTime(now.year, now.month, now.day, hours, minutes);
+      DateTime(currentDate.year, currentDate.month, currentDate.day, hours, minutes);
 
   return specifiedTime.isAfter(now);
 }

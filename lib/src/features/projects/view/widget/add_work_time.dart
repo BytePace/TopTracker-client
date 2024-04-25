@@ -39,14 +39,13 @@ class _AddWorkTimeState extends State<AddWorkTime> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
       children: [
         Text(AppLocalizations.of(context)!.addTime,
             style: Theme.of(context).textTheme.headlineMedium),
         Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
@@ -157,7 +156,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                       ],
                       onChanged: _updateToTime,
                       validator: (value) {
-                        if (value != null && isFutureTime(value)) {
+                        if (value != null && isFutureTime(value, selectedDate)) {
                           return AppLocalizations.of(context)!.futureWorkError;
                         }
                         return null;
@@ -212,42 +211,48 @@ class _AddWorkTimeState extends State<AddWorkTime> {
     );
   }
 
-  Future<void> _showDropdownMenu(BuildContext context) async {
-    final selectedValue = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          insetPadding: const EdgeInsets.symmetric(vertical: 180),
-          title: Text(AppLocalizations.of(context)!.selectPeriod),
-          children: listTime.map((item) {
-            return SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, item);
-              },
-              child: Text(item),
-            );
-          }).toList(),
-        );
-      },
-    );
+Future<void> _showDropdownMenu(BuildContext context) async {
+  final selectedValue = await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(AppLocalizations.of(context)!.selectPeriod),
+        content: SizedBox(
+          height: 250,
+          child: SingleChildScrollView(
+            child: Column(
+              children: listTime.map((item) {
+                return SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, item);
+                  },
+                  child: Text(item),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 
-    if (selectedValue != null) {
-      setState(() {
-        _durationEditingController.text = selectedValue;
-        List<String> parts = selectedValue.split(":");
-        int hours = int.parse(parts[0]);
-        int minutes = int.parse(parts[1]);
-        _durationTime = Duration(
-            hours: hours, minutes: minutes); // Обновляем значение времени
-        _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
+  if (selectedValue != null) {
+    setState(() {
+      _durationEditingController.text = selectedValue;
+      List<String> parts = selectedValue.split(":");
+      int hours = int.parse(parts[0]);
+      int minutes = int.parse(parts[1]);
+      _durationTime = Duration(
+          hours: hours, minutes: minutes); // Обновляем значение времени
+      _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
 
-        final resultDateTime = DateTime.now().subtract(_durationTime);
-        String formattedResultTime =
-            '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
-        _fromTextEditingController.text = formattedResultTime;
-      });
-    }
+      final resultDateTime = DateTime.now().subtract(_durationTime);
+      String formattedResultTime =
+          '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
+      _fromTextEditingController.text = formattedResultTime;
+    });
   }
+}
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
