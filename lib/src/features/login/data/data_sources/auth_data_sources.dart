@@ -46,7 +46,7 @@ class NetworkAuthDataSources implements IAuthDataSources {
         await _prefs.setString(
             SharedPreferencesKey.accessTokenKey, response.data['access_token']);
         await _prefs.setInt(
-            "current_user_id", response.data['profiles'][0]['id'].toInt());
+           SharedPreferencesKey.currentUserIDKey, response.data['profiles'][0]['id'].toInt());
         return LoginDto.fromJson(response.data);
       } else {
         throw Exception('Failed to load data');

@@ -16,27 +16,29 @@ class UsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: List.generate(
-            allProfileID.length,
-            (index) => OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                            create: (context) => GetIt.I<DetailProjectBloc>(),
-                            child: UserInfoScreen(
-                                allProfileID: allProfileID,
-                                projects: projects,
-                                index: index),
-                          )),
-                );
-              },
-              child: Text(allProfileID[index].name,
-                  style: Theme.of(context).textTheme.bodyMedium),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: List.generate(
+              allProfileID.length,
+              (index) => OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                              create: (context) => GetIt.I<DetailProjectBloc>(),
+                              child: UserInfoScreen(
+                                  allProfileID: allProfileID,
+                                  projects: projects,
+                                  index: index),
+                            )),
+                  );
+                },
+                child: Text(allProfileID[index].name,
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ),
             ),
           ),
         ),

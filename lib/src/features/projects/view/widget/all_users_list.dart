@@ -37,7 +37,6 @@ class AllUsersList extends StatelessWidget {
                   child: ListTile(
                     dense: true,
                     title: Text(allUsers[index].name),
-                    subtitle: Text(allUsers[index].userID.toString()),
                     trailing: const Icon(Icons.add),
                   ),
                 ),

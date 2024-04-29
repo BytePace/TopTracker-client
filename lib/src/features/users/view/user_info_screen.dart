@@ -45,10 +45,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     return GestureDetector(
                       onTap: () {
                         userProjectList[index2].archivedAt == null &&
-                                    userProjectList[index2].currentUser ==
-                                        "admin" ||
-                                userProjectList[index2].currentUser ==
-                                    "supervisor"
+                                userProjectList[index2].currentUser == "admin" || userProjectList[index2].currentUser == "supervisor"
                             ? showDialog<void>(
                                 context: context,
                                 builder: (ctx) => MyAlertDialog(
@@ -70,7 +67,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                             widget.index]
                                                         .profileID));
                                             showSnackBar(
-                                                context, AppLocalizations.of(context)!.deletedUser);
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .deletedUser);
                                           },
                                           child: Text(
                                             AppLocalizations.of(context)!

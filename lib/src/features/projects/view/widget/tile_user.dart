@@ -19,6 +19,9 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration duration = Duration(seconds: allUsers[index].workedTotal);
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
@@ -33,7 +36,7 @@ class UserTile extends StatelessWidget {
           Row(
             children: [
               Text(AppLocalizations.of(context)!.totalHours(
-                  "${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}")),
+                  "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}")),
               detailProjectModel.currentUserRole == "admin"
                   ? PopupMenuButton(itemBuilder: (context) {
                       return [
@@ -78,12 +81,7 @@ class UserTile extends StatelessWidget {
                     })
                   : PopupMenuButton(
                       itemBuilder: (BuildContext context) {
-                        return [
-                          const PopupMenuItem<int>(
-                            value: 0,
-                            child: Text(""),
-                          ),
-                        ];
+                        return [];
                       },
                     ),
             ],

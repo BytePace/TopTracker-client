@@ -113,3 +113,9 @@ Map<String, RegExp>? filter = {
   "*": RegExp(r'[0-5]'),
   "^": RegExp(r'[0-9]')
 };
+
+// Функция для проверки валидности email
+bool isValidEmail(String email) {
+  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  return emailRegex.hasMatch(email);
+}

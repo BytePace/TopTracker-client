@@ -39,7 +39,6 @@ class _AddWorkTimeState extends State<AddWorkTime> {
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: [
         Text(AppLocalizations.of(context)!.addTime,
             style: Theme.of(context).textTheme.headlineMedium),
@@ -66,10 +65,11 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                     child: SizedBox(
                       width: 90,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           const Icon(Icons.calendar_month),
                           Text(
-                              "${DateFormat('MMMM').format(selectedDate)} ${selectedDate.day}")
+                              "${MaterialLocalizations.of(context).formatMonthYear(selectedDate).substring(0, 3)} ${selectedDate.day}")
                         ],
                       ),
                     ),
@@ -156,7 +156,8 @@ class _AddWorkTimeState extends State<AddWorkTime> {
                       ],
                       onChanged: _updateToTime,
                       validator: (value) {
-                        if (value != null && isFutureTime(value, selectedDate)) {
+                        if (value != null &&
+                            isFutureTime(value, selectedDate)) {
                           return AppLocalizations.of(context)!.futureWorkError;
                         }
                         return null;
@@ -211,48 +212,48 @@ class _AddWorkTimeState extends State<AddWorkTime> {
     );
   }
 
-Future<void> _showDropdownMenu(BuildContext context) async {
-  final selectedValue = await showDialog<String>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(AppLocalizations.of(context)!.selectPeriod),
-        content: SizedBox(
-          height: 250,
-          child: SingleChildScrollView(
-            child: Column(
-              children: listTime.map((item) {
-                return SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, item);
-                  },
-                  child: Text(item),
-                );
-              }).toList(),
+  Future<void> _showDropdownMenu(BuildContext context) async {
+    final selectedValue = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.selectPeriod),
+          content: SizedBox(
+            height: 250,
+            child: SingleChildScrollView(
+              child: Column(
+                children: listTime.map((item) {
+                  return SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.pop(context, item);
+                    },
+                    child: Text(item),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
 
-  if (selectedValue != null) {
-    setState(() {
-      _durationEditingController.text = selectedValue;
-      List<String> parts = selectedValue.split(":");
-      int hours = int.parse(parts[0]);
-      int minutes = int.parse(parts[1]);
-      _durationTime = Duration(
-          hours: hours, minutes: minutes); // Обновляем значение времени
-      _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
+    if (selectedValue != null) {
+      setState(() {
+        _durationEditingController.text = selectedValue;
+        List<String> parts = selectedValue.split(":");
+        int hours = int.parse(parts[0]);
+        int minutes = int.parse(parts[1]);
+        _durationTime = Duration(
+            hours: hours, minutes: minutes); // Обновляем значение времени
+        _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
 
-      final resultDateTime = DateTime.now().subtract(_durationTime);
-      String formattedResultTime =
-          '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
-      _fromTextEditingController.text = formattedResultTime;
-    });
+        final resultDateTime = DateTime.now().subtract(_durationTime);
+        String formattedResultTime =
+            '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
+        _fromTextEditingController.text = formattedResultTime;
+      });
+    }
   }
-}
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -269,36 +270,42 @@ Future<void> _showDropdownMenu(BuildContext context) async {
   }
 
   void _updateFromTime(String value) {
-    List<String> parts = value.split(":");
-    int hours = int.parse(parts[0]);
-    int minutes = int.parse(parts[1]);
-    final newTime = Duration(hours: hours, minutes: minutes) + _durationTime;
-    String formattedTime =
-        '${newTime.inHours.toString().padLeft(2, '0')}:${newTime.inMinutes.remainder(60).toString().padLeft(2, '0')}';
-    _toTextEditingController.text = formattedTime;
+    try {
+      List<String> parts = value.split(":");
+      int hours = int.parse(parts[0]);
+      int minutes = int.parse(parts[1]);
+      final newTime = Duration(hours: hours, minutes: minutes) + _durationTime;
+      String formattedTime =
+          '${newTime.inHours.toString().padLeft(2, '0')}:${newTime.inMinutes.remainder(60).toString().padLeft(2, '0')}';
+      _toTextEditingController.text = formattedTime;
+    } catch (e) {}
   }
 
   void _updateToTime(String value) {
-    List<String> parts = value.split(":");
-    int hours = int.parse(parts[0]);
-    int minutes = int.parse(parts[1]);
-    final newTime = Duration(hours: hours, minutes: minutes) - _durationTime;
-    String formattedTime =
-        '${newTime.inHours.toString().padLeft(2, '0')}:${newTime.inMinutes.remainder(60).toString().padLeft(2, '0')}';
-    _fromTextEditingController.text = formattedTime;
+    try {
+      List<String> parts = value.split(":");
+      int hours = int.parse(parts[0]);
+      int minutes = int.parse(parts[1]);
+      final newTime = Duration(hours: hours, minutes: minutes) - _durationTime;
+      String formattedTime =
+          '${newTime.inHours.toString().padLeft(2, '0')}:${newTime.inMinutes.remainder(60).toString().padLeft(2, '0')}';
+      _fromTextEditingController.text = formattedTime;
+    } catch (e) {}
   }
 
   void updateDurationAndTime(String value) {
-    List<String> parts = value.split(":");
-    int hours = int.parse(parts[0]);
-    int minutes = int.parse(parts[1]);
-    _durationTime = Duration(hours: hours, minutes: minutes);
+    try {
+      List<String> parts = value.split(":");
+      int hours = int.parse(parts[0]);
+      int minutes = int.parse(parts[1]);
+      _durationTime = Duration(hours: hours, minutes: minutes);
 
-    _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
+      _toTextEditingController.text = DateFormat.Hm().format(DateTime.now());
 
-    final resultDateTime = DateTime.now().subtract(_durationTime);
-    String formattedResultTime =
-        '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
-    _fromTextEditingController.text = formattedResultTime;
+      final resultDateTime = DateTime.now().subtract(_durationTime);
+      String formattedResultTime =
+          '${resultDateTime.hour.toString().padLeft(2, '0')}:${resultDateTime.minute.toString().padLeft(2, '0')}';
+      _fromTextEditingController.text = formattedResultTime;
+    } catch (e) {}
   }
 }

@@ -32,68 +32,70 @@ class _ProjectScreenState extends State<ProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  key: const Key('searchTextField'),
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.hintSearchProjectText,
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      projects = widget.projects
-                          .where((element) => element.name
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
-                    });
-                  },
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isAsc
-                          ? projects.sort((a, b) => b.name.compareTo(a.name))
-                          : projects.sort((a, b) => a.name.compareTo(b.name));
-                      isAsc = !isAsc;
-                    });
-                  },
-                  icon: isAsc
-                      ? const Icon(Icons.arrow_downward)
-                      : const Icon(Icons.arrow_upward))
-            ],
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              itemCount: projects.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ProjectTile(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BlocProvider<DetailProjectBloc>(
-                                    create: (context) =>
-                                        GetIt.I<DetailProjectBloc>(),
-                                    child: ProjectInfoScreen(
-                                      role: projects[index].currentUser,
-                                      id: projects[index].id,
-                                      name: projects[index].name,
-                                      allUsers: widget.allUsers,
-                                    ),
-                                  )));
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    key: const Key('searchTextField'),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.hintSearchProjectText,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        projects = widget.projects
+                            .where((element) => element.name
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                      });
                     },
-                    projectModel: projects[index]);
-              },
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isAsc
+                            ? projects.sort((a, b) => b.name.compareTo(a.name))
+                            : projects.sort((a, b) => a.name.compareTo(b.name));
+                        isAsc = !isAsc;
+                      });
+                    },
+                    icon: isAsc
+                        ? const Icon(Icons.arrow_downward)
+                        : const Icon(Icons.arrow_upward))
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                itemCount: projects.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ProjectTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BlocProvider<DetailProjectBloc>(
+                                      create: (context) =>
+                                          GetIt.I<DetailProjectBloc>(),
+                                      child: ProjectInfoScreen(
+                                        role: projects[index].currentUser,
+                                        id: projects[index].id,
+                                        name: projects[index].name,
+                                        allUsers: widget.allUsers,
+                                      ),
+                                    )));
+                      },
+                      projectModel: projects[index]);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _login(LogInEvent event, Emitter<AuthState> emit) async {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
-      emit( LoginMessageState(message: LocalizationManager.instance.appLocalization.successLogin));
+      emit(LoginMessageState(message: LocalizationManager.instance.appLocalization.successLogin));
       emit(SignInState());
     } catch (e) {
       emit(LoginMessageState(

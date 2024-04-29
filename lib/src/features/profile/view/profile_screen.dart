@@ -38,6 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             future: _profileRepository.getStats(widget.projects),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
+                Duration duration =
+                    Duration(seconds: snapshot.data.workedTotal);
+                int hours = duration.inHours;
+                int minutes = duration.inMinutes.remainder(60);
                 return Center(
                   child: Column(
                     children: [
@@ -55,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .copyWith(fontSize: 18)),
                               const SizedBox(height: 8),
                               Text(
-                                  "${AppLocalizations.of(context)!.currentWeekHours("${double.parse((snapshot.data.workedTotal / 60 / 60).toStringAsFixed(2))}")} ",
+                                  "${AppLocalizations.of(context)!.currentWeekHours("${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}")} ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!

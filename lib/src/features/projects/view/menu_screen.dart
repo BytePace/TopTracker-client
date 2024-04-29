@@ -73,7 +73,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.hintSearchProjectText,
+                        hintText:
+                            AppLocalizations.of(context)!.hintSearchProjectText,
                       ),
                     ),
                     const SizedBox(height: 220),

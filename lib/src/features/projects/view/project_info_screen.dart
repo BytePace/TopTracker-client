@@ -89,21 +89,21 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       appBar: AppBar(
         title: Text(widget.name),
       ),
-      body: BlocListener<ProjectBloc, ProjectState>(
-        bloc: GetIt.I<ProjectBloc>(),
-        listener: (context, state) {
-          if (state is ProjectListLoaded) {
-            setState(() {
-              _allUsers = state.allUser;
-            });
-          }
-        },
-        child: BlocConsumer<DetailProjectBloc, DetailProjectState>(
-          bloc: BlocProvider.of<DetailProjectBloc>(context),
-          builder: (context, state) {
-            if (state is DetailProjectListLoaded) {
-              return SafeArea(
-                child: Padding(
+      body: SafeArea(
+        child: BlocListener<ProjectBloc, ProjectState>(
+          bloc: GetIt.I<ProjectBloc>(),
+          listener: (context, state) {
+            if (state is ProjectListLoaded) {
+              setState(() {
+                _allUsers = state.allUser;
+              });
+            }
+          },
+          child: BlocConsumer<DetailProjectBloc, DetailProjectState>(
+            bloc: BlocProvider.of<DetailProjectBloc>(context),
+            builder: (context, state) {
+              if (state is DetailProjectListLoaded) {
+                return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: ListView(
                     children: [
@@ -114,7 +114,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                               state.detailProjectModel.engagements,
                               state.detailProjectModel.users)),
                       const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                      widget.role == "admin" || widget.role == "supervisor"
+                      widget.role == "admin" ||  widget.role == "supervisor"
                           ? Column(
                               children: [
                                 OutlinedButton(
@@ -152,17 +152,17 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                           id: widget.id),
                     ],
                   ),
-                ),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-          listener: (BuildContext context, DetailProjectState state) {
-            if (state is DetailProjectListMessage) {
-              showSnackBar(context, state.message);
-            }
-          },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+            listener: (BuildContext context, DetailProjectState state) {
+              if (state is DetailProjectListMessage) {
+                showSnackBar(context, state.message);
+              }
+            },
+          ),
         ),
       ),
     );

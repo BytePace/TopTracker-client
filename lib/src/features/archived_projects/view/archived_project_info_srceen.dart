@@ -84,52 +84,53 @@ class _ArchivedProjectInfoScreenState extends State<ArchivedProjectInfoScreen> {
       appBar: AppBar(
         title: Text(widget.name),
       ),
-      body: BlocBuilder<DetailProjectBloc, DetailProjectState>(
-        bloc: BlocProvider.of<DetailProjectBloc>(context),
-        builder: (context, state) {
-          if (state is DetailProjectListLoaded) {
-            final allUsers = getListUsersOnProject(
-                state.detailProjectModel.engagements,
-                state.detailProjectModel.users);
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: ListView(
-                children: [
-                  Card(
-                    child: Column(
-                      children: List.generate(
-                          allUsers.length,
-                          (index) => UserTileArchived(
-                                index: index,
-                                allUsers: allUsers,
-                              )),
+      body: SafeArea(
+        child: BlocBuilder<DetailProjectBloc, DetailProjectState>(
+          bloc: BlocProvider.of<DetailProjectBloc>(context),
+          builder: (context, state) {
+            if (state is DetailProjectListLoaded) {
+              final allUsers = getListUsersOnProject(
+                  state.detailProjectModel.engagements,
+                  state.detailProjectModel.users);
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ListView(
+                  children: [
+                    Card(
+                      child: Column(
+                        children: List.generate(
+                            allUsers.length,
+                            (index) => UserTileArchived(
+                                  index: index,
+                                  allUsers: allUsers,
+                                )),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                  widget.project.currentUser == "admin" ||
-                          widget.project.currentUser == "supervisor"
-                      ? Column(
-                          children: [
-                            OutlinedButton(
-                                onPressed: _restoreProject,
-                                child:  Text(AppLocalizations.of(context)!
-                                    .restoreProject)),
-                            const SizedBox(
-                                height: ConstantSize.defaultSeparatorHeight),
-                            OutlinedButton(
-                                onPressed: _deleteProject,
-                                child:  Text(AppLocalizations.of(context)!
-                                    .deleteProject))
-                          ],
-                        )
-                      : Container()
-                ],
-              ),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                    const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+                    widget.project.currentUser == "admin" ||   widget.project.currentUser == "supervisor"
+                        ? Column(
+                            children: [
+                              OutlinedButton(
+                                  onPressed: _restoreProject,
+                                  child:  Text(AppLocalizations.of(context)!
+                                      .restoreProject)),
+                              const SizedBox(
+                                  height: ConstantSize.defaultSeparatorHeight),
+                              OutlinedButton(
+                                  onPressed: _deleteProject,
+                                  child:  Text(AppLocalizations.of(context)!
+                                      .deleteProject))
+                            ],
+                          )
+                        : Container()
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }

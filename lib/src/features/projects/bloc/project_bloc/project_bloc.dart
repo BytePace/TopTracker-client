@@ -43,6 +43,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     } catch (e) {
       print(e);
     }
+
     emit(ProjectListLoaded(
         projects: projects,
         allProfileID: allProfileID,

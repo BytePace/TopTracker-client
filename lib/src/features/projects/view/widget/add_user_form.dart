@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/detail_project_bloc/detail_project_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tt_bytepace/src/features/projects/utils/methods.dart';
 
 class AddUserForm extends StatefulWidget {
   final int id;
@@ -20,7 +21,8 @@ class _AddUserFormState extends State<AddUserForm> {
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-          value: "admin", child: Text(AppLocalizations.of(context)!.roleAdmin)),
+          value: "supervisor",
+          child: Text(AppLocalizations.of(context)!.roleSupervisor)),
       DropdownMenuItem(
           value: "worker",
           child: Text(AppLocalizations.of(context)!.roleWorker)),
@@ -36,6 +38,7 @@ class _AddUserFormState extends State<AddUserForm> {
         Text(AppLocalizations.of(context)!.addUser,
             style: Theme.of(context).textTheme.headlineMedium),
         Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Form(
               key: _formKey,
@@ -46,7 +49,9 @@ class _AddUserFormState extends State<AddUserForm> {
                         hintText: AppLocalizations.of(context)!.emailHint),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.pleaseEnterText;
+                        return AppLocalizations.of(context)!.pleaseEnterEmail;
+                      } else if (!isValidEmail(value)) {
+                        return AppLocalizations.of(context)!.invalidEmail;
                       }
                       return null;
                     },
@@ -55,6 +60,9 @@ class _AddUserFormState extends State<AddUserForm> {
                     },
                   ),
                   DropdownButtonFormField(
+                    isDense: false,
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0)),
                     onTap: () {
                       FocusScope.of(context).unfocus();
                     },
@@ -67,7 +75,7 @@ class _AddUserFormState extends State<AddUserForm> {
                     items: dropdownItems,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.pleaseEnterText;
+                        return AppLocalizations.of(context)!.pleaseEnterEmail;
                       }
                       return null;
                     },
@@ -75,6 +83,7 @@ class _AddUserFormState extends State<AddUserForm> {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

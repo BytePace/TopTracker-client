@@ -11,24 +11,31 @@ class UserTileArchived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration duration = Duration(seconds: allUsers[index].workedTotal);
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(allUsers[index].name,
-                style: Theme.of(context).textTheme.bodyMedium),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                AppLocalizations.of(context)!.totalHours(
-                    "${allUsers[index].workedTotal ~/ 3600}:${(allUsers[index].workedTotal ~/ 60) % 60}"),
-                style: Theme.of(context).textTheme.bodyMedium),
-          ),
-        ],
+      child: Flexible(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(allUsers[index].name,
+                  maxLines: 2,
+                  overflow: TextOverflow.clip,
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  AppLocalizations.of(context)!.totalHours(
+                      "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}"),
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+          ],
+        ),
       ),
     );
   }
