@@ -17,7 +17,7 @@ class DBProvider {
 
   Future<Database> _initDb() async {
     var databasesPath = await getDatabasesPath();
-    String path = p.join(databasesPath, 'TrackerToptal2.db');
+    String path = p.join(databasesPath, 'TrackerToptal3.db');
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
