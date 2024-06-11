@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:tt_bytepace/src/features/projects/data/project_repository.dart';
 import 'package:tt_bytepace/src/features/projects/model/detail_project_model.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
 import 'package:tt_bytepace/src/features/users/data/user_repository.dart';
 import 'package:tt_bytepace/src/features/users/models/all_users_model.dart';
-import 'package:tt_bytepace/src/localization/applocalization_provider.dart';
 
 part 'project_event.dart';
 part 'project_state.dart';
@@ -41,7 +42,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     try {
       projects = await _projectRepository.getProjects();
     } catch (e) {
-      print(e);
+      GetIt.I<Talker>().error(e);
     }
 
     emit(ProjectListLoaded(
@@ -79,7 +80,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.noInternet));
+      emit(ProjectListMessage(
+          message: "noInternet"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -89,14 +91,17 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       RestoreProjectEvent event, Emitter<ProjectState> emit) async {
     try {
       await _projectRepository.restoreProject(event.id);
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.dearchiveSuccess));
+      emit(ProjectListMessage(
+          message:
+              "dearchiveSuccess"));
       projects = await _projectRepository.getProjects();
       allProfileID = await _userRepository.getAllProfileID();
       allUser = await _userRepository.getAllUsers();
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
+      emit(ProjectListMessage(
+          message: "error"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -106,11 +111,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     try {
       _projectRepository.deleteProject(event.id);
       projects.removeWhere((element) => element.id == event.id);
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.deleteProjectSuccess));
+      emit(ProjectListMessage(
+          message: "deleteProjectSuccess"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
+      emit(ProjectListMessage(
+          message: "error"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }
@@ -123,11 +130,14 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       allProfileID = await _userRepository.getAllProfileID();
       allUser = await _userRepository.getAllUsers();
 
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.archiveSuccess));
+      emit(ProjectListMessage(
+          message:
+              "archiveSuccess"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     } catch (e) {
-      emit(ProjectListMessage(message: LocalizationManager.instance.appLocalization.error));
+      emit(ProjectListMessage(
+          message: "error"));
       emit(ProjectListLoaded(
           allUser: allUser, projects: projects, allProfileID: allProfileID));
     }

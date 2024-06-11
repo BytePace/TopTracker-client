@@ -62,7 +62,7 @@ void main() {
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(DeleteUserEvent(projectID: 0, profileID: 0)),
           expect: () => [
-                DetailProjectListMessage(message: "Пользователь удален"),
+                DetailProjectListMessage(message: "deletedUser"),
                 DetailProjectListLoaded(detailProjectModel: project)
               ]);
 
@@ -73,7 +73,7 @@ void main() {
           act: (bloc) => bloc
               .add(AddUserEvent(email: '', role: '', rate: '', projectID: 0)),
           expect: () => [
-                DetailProjectListMessage(message: "Пользователь добавлен"),
+                DetailProjectListMessage(message: "addedUser"),
                 DetailProjectListLoaded(detailProjectModel: project)
               ]);
       blocTest<DetailProjectBloc, DetailProjectState>(
@@ -83,7 +83,7 @@ void main() {
           act: (bloc) => bloc.add(AddWorkTimeEvent(
               projectID: 0, description: '', endTime: '', startTime: '')),
           expect: () => [
-                DetailProjectListMessage(message: "time added"),
+                DetailProjectListMessage(message: "activityExists"),
                 DetailProjectListLoaded(detailProjectModel: project)
               ]);
       blocTest<DetailProjectBloc, DetailProjectState>(
@@ -93,7 +93,7 @@ void main() {
           act: (bloc) =>
               bloc.add(RevokeInviteEvent(projectID: 0, invitationsID: 0)),
           expect: () => [
-                DetailProjectListMessage(message: "Приглашение отменено"),
+                DetailProjectListMessage(message: "revokeInvite"),
                 DetailProjectListLoaded(detailProjectModel: project)
               ]);
     });

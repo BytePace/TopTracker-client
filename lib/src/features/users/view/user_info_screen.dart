@@ -44,42 +44,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   itemBuilder: (BuildContext context, int index2) {
                     return GestureDetector(
                       onTap: () {
-                        userProjectList[index2].archivedAt == null &&
-                                userProjectList[index2].currentUser == "admin" || userProjectList[index2].currentUser == "supervisor"
-                            ? showDialog<void>(
-                                context: context,
-                                builder: (ctx) => MyAlertDialog(
-                                      ctx: context,
-                                      title: AppLocalizations.of(context)!
-                                          .deleteThisUser,
-                                      content: AppLocalizations.of(context)!
-                                          .wantDeleteUser,
-                                      isYes: TextButton(
-                                          onPressed: () async {
-                                            Navigator.of(ctx).pop();
-                                            GetIt.I<DetailProjectBloc>().add(
-                                                DeleteUserEvent(
-                                                    projectID:
-                                                        userProjectList[index2]
-                                                            .id,
-                                                    profileID: widget
-                                                        .allProfileID[
-                                                            widget.index]
-                                                        .profileID));
-                                            showSnackBar(
-                                                context,
-                                                AppLocalizations.of(context)!
-                                                    .deletedUser);
-                                          },
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .deleteUser,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium,
-                                          )),
-                                    ))
-                            : () {};
+                        if (userProjectList[index2].archivedAt == null &&
+                                userProjectList[index2].currentUser ==
+                                    "admin" ||
+                            userProjectList[index2].currentUser ==
+                                "supervisor") {
+                          showAlertDialog(context, userProjectList, index2);
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -87,11 +58,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(userProjectList[index2].name),
-                            userProjectList[index2].archivedAt == null &&
-                                    userProjectList[index2].currentUser ==
-                                        "admin"
-                                ? const Icon(Icons.delete)
-                                : Container()
+                            if (userProjectList[index2].archivedAt == null &&
+                                userProjectList[index2].currentUser == "admin")
+                              const Icon(Icons.delete)
                           ],
                         ),
                       ),
@@ -102,5 +71,30 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             );
           },
         ));
+  }
+
+  Future<void> showAlertDialog(BuildContext context,
+      List<ProjectModel> userProjectList, int index2) async {
+    return showDialog(
+      context: context,
+      builder: (ctx) => MyAlertDialog(
+        ctx: context,
+        title: AppLocalizations.of(context)!.deleteThisUser,
+        content: AppLocalizations.of(context)!.wantDeleteUser,
+        isYes: TextButton(
+          onPressed: () async {
+            Navigator.of(ctx).pop();
+            GetIt.I<DetailProjectBloc>().add(DeleteUserEvent(
+                projectID: userProjectList[index2].id,
+                profileID: widget.allProfileID[widget.index].profileID));
+            showSnackBar(context, AppLocalizations.of(context)!.deletedUser);
+          },
+          child: Text(
+            AppLocalizations.of(context)!.deleteUser,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+      ),
+    );
   }
 }

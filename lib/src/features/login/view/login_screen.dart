@@ -96,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: ConstantSize.defaultSeparatorHeight),
 
               TextButton(
+                key: const Key('logInButton'),
                 child: Text(AppLocalizations.of(context)!.loginButtonText),
                 onPressed: () {
                   authBloc.add(LogInEvent(

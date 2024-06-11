@@ -33,14 +33,14 @@ void main() {
         'emits [IsLoginState] when InitialEvent is added.',
         build: () => buildBloc(),
         act: (bloc) => bloc.add(InitialEvent()),
-        expect: () => <IsLoginState>[IsLoginState()],
+        expect: () => <IsLoginState>[const IsLoginState()],
       );
       blocTest<AuthBloc, AuthState>(
         'emits [SignInState] when LoginEvent is added.',
         build: () => buildBloc(),
         act: (bloc) => bloc.add(LogInEvent(email: '', password: '')),
         expect: () =>
-            [const LoginMessageState(message: "Успешный вход"), SignInState()],
+            [const LoginMessageState(message: "success"), SignInState()],
       );
 
       blocTest<AuthBloc, AuthState>(

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_bytepace/src/features/login/data/auth_repository.dart';
 import 'package:tt_bytepace/src/features/login/models/login_model.dart';
-import 'package:tt_bytepace/src/localization/applocalization_provider.dart';
+
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -23,11 +23,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _login(LogInEvent event, Emitter<AuthState> emit) async {
     try {
       loginModel = await _authRepository.doLogin(event.email, event.password);
-      emit(LoginMessageState(message: LocalizationManager.instance.appLocalization.successLogin));
+      emit(const LoginMessageState(message: "success"));
       emit(SignInState());
     } catch (e) {
-      emit(LoginMessageState(
-          message: LocalizationManager.instance.appLocalization.failedLogin));
+      emit(const LoginMessageState(message: "error"));
       emit(const IsLoginState());
     }
   }

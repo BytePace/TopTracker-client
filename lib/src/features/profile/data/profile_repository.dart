@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tt_bytepace/src/features/profile/data/data_sources/profile_data_sources.dart';
 import 'package:tt_bytepace/src/features/projects/model/dto/user_info_dto.dart';
 import 'package:tt_bytepace/src/features/projects/model/project_model.dart';
@@ -21,7 +23,7 @@ class ProfileRepository implements IProfileRepository {
     try {
       dto = await _networkAuthDataSources.getStats(projects);
     } catch (e) {
-      print(e);
+      GetIt.I<Talker>().error(e);
     }
     return UserInfoModel.fromDto(dto);
   }

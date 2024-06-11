@@ -113,38 +113,52 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                           allUsers: getListUsersOnProject(
                               state.detailProjectModel.engagements,
                               state.detailProjectModel.users)),
-                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
-                      widget.role == "admin" ||  widget.role == "supervisor"
-                          ? Column(
-                              children: [
-                                OutlinedButton(
-                                    onPressed: _archiveProject,
-                                    child: Text(AppLocalizations.of(context)!
-                                        .archiveProject)),
-                                const SizedBox(
-                                    height: ConstantSize.defaultSeparatorHeight),
-                                OutlinedButton(
-                                    onPressed: _deleteProject,
-                                    child: Text(AppLocalizations.of(context)!
-                                        .deleteProject))
-                              ],
-                            )
-                          : Container(),
-                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+
+                      const SizedBox(
+                          height: ConstantSize.defaultSeparatorHeight),
+
+                      if (widget.role == "admin" || widget.role == "supervisor")
+                        Column(
+                          children: [
+                            OutlinedButton(
+                                onPressed: _archiveProject,
+                                child: Text(AppLocalizations.of(context)!
+                                    .archiveProject)),
+                            const SizedBox(
+                                height: ConstantSize.defaultSeparatorHeight),
+                            OutlinedButton(
+                                onPressed: _deleteProject,
+                                child: Text(AppLocalizations.of(context)!
+                                    .deleteProject))
+                          ],
+                        ),
+
+                      const SizedBox(
+                          height: ConstantSize.defaultSeparatorHeight),
+
                       InvitedOnProject(
                         key: UniqueKey(),
                         detailProjectModel: state.detailProjectModel,
                       ),
-                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+
+                      const SizedBox(
+                          height: ConstantSize.defaultSeparatorHeight),
+
                       AddWorkTime(
                           projectID: widget.id,
                           key:
                               UniqueKey()), //панель добавления времени на проекте
-                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+
+                      const SizedBox(
+                          height: ConstantSize.defaultSeparatorHeight),
+
                       AddUserForm(
                           id: widget
                               .id), //панель добавления пользователя на проект
-                      const SizedBox(height: ConstantSize.defaultSeparatorHeight),
+
+                      const SizedBox(
+                          height: ConstantSize.defaultSeparatorHeight),
+
                       AllUsersList(
                           key: UniqueKey(),
                           allUsers: getAllUsersWhithoutOnProject(
@@ -159,7 +173,17 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             },
             listener: (BuildContext context, DetailProjectState state) {
               if (state is DetailProjectListMessage) {
-                showSnackBar(context, state.message);
+                switch (state.message) {
+                  case "addActivitySuccess":showSnackBar(context, AppLocalizations.of(context)!.addActivitySuccess);
+                  case "activityExists":showSnackBar(context, AppLocalizations.of(context)!.activityExists);
+                  case "error":showSnackBar(context, AppLocalizations.of(context)!.error);
+                  case "deletedUser":showSnackBar(context, AppLocalizations.of(context)!.deletedUser);
+                  case "addedUser":showSnackBar(context, AppLocalizations.of(context)!.addedUser);
+                  case "addedUserError":showSnackBar(context, AppLocalizations.of(context)!.addedUserError);
+                  case "revokeInvite":showSnackBar(context, AppLocalizations.of(context)!.revokeInvite);
+                  default:
+                    showSnackBar(context, state.message);
+                }
               }
             },
           ),

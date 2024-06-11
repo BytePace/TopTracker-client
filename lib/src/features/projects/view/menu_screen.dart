@@ -90,7 +90,26 @@ class _MenuScreenState extends State<MenuScreen> {
                 });
               }
               if (state is ProjectListMessage) {
-                showSnackBar(context, state.message);
+                switch (state.message) {
+                  case "noInternet":
+                    showSnackBar(
+                        context, AppLocalizations.of(context)!.noInternet);
+                  case "dearchiveSuccess":
+                    showSnackBar(context,
+                        AppLocalizations.of(context)!.dearchiveSuccess);
+                  case "error":
+                    showSnackBar(
+                        context, AppLocalizations.of(context)!.noInternet);
+                  case "deleteProjectSuccess":
+                    showSnackBar(context,
+                        AppLocalizations.of(context)!.deleteProjectSuccess);
+                  case "archiveSuccess":
+                    showSnackBar(
+                        context, AppLocalizations.of(context)!.archiveSuccess);
+                  default:
+                    showSnackBar(
+                        context, AppLocalizations.of(context)!.noInternet);
+                }
               }
             },
           ),

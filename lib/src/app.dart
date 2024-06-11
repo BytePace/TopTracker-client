@@ -6,7 +6,7 @@ import 'package:tt_bytepace/src/features/login/view/login_screen.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/view/menu_screen.dart';
 import 'package:tt_bytepace/src/features/utils/methods.dart';
-import 'package:tt_bytepace/src/localization/applocalization_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -30,7 +30,6 @@ class _AppState extends State<App> {
         child: BlocConsumer<AuthBloc, AuthState>(
           bloc: GetIt.I<AuthBloc>(),
           builder: (BuildContext context, state) {
-            LocalizationManager.instance.setLocalization(context);
             if (state is SignInState) {
               return Scaffold(
                 body: BlocProvider<ProjectBloc>(
@@ -44,7 +43,16 @@ class _AppState extends State<App> {
           },
           listener: (BuildContext context, AuthState state) {
             if (state is LoginMessageState) {
-              showSnackBar(context, state.message);
+              switch (state.message) {
+                case "error":
+                  showSnackBar(
+                      context, AppLocalizations.of(context)!.failedLogin);
+                case "success":
+                  showSnackBar(
+                      context, AppLocalizations.of(context)!.successLogin);
+                default:
+                  showSnackBar(context, state.message);
+              }
             }
           },
         ));

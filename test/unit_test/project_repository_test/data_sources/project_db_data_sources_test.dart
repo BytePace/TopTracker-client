@@ -90,7 +90,6 @@ class DbProjectDataSourceTest implements ISavableProjectDataSource {
       where: 'id = ?',
       whereArgs: [projectID],
     );
-    //await database.close();
   }
 
   @override

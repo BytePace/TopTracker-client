@@ -54,7 +54,6 @@ class DbUserDataSource implements ISavableUserDataSource {
           '${DbUserEngagementsKeys.detailProjectID} = ? AND ${DbUserEngagementsKeys.userEngagementsID} = ?',
       whereArgs: [projectId, profileId],
     );
-    //await database.close();
   }
 
   @override

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tt_bytepace/src/app.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import 'package:tt_bytepace/main.dart';
 import 'package:tt_bytepace/src/features/login/bloc/auth_bloc.dart';
 import 'package:tt_bytepace/src/features/projects/bloc/project_bloc/project_bloc.dart';
 import '../unit_test/project_repository_test/data_sources/project_network_data_sources_test.dart';
@@ -28,6 +29,12 @@ void main() {
         ),
       ),
     );
+    final talker = TalkerFlutter.init(
+      filter: BaseTalkerFilter(types: []),
+      settings: TalkerSettings(enabled: true),
+    );
+    GetIt.I.registerSingleton<Talker>(talker);
+    talker.verbose('Talker initialization completed');
 
     GetIt.I.registerSingleton<AuthBloc>(
       AuthBloc(
@@ -39,7 +46,7 @@ void main() {
 
     await tester.pumpWidget(
       const MaterialApp(
-        home: App(),
+        home: MainApp(),
       ),
     );
     await tester.pump();
@@ -54,7 +61,7 @@ void main() {
     await tester.enterText(passwordTextField, "aleksandr.sherb");
     expect(find.text("aleksandr.sherb"), findsOneWidget);
 
-    var button = find.text("log in");
+    var button = find.byKey(const Key("logInButton"));
     expect(button, findsOneWidget);
     await tester.tap(button);
     await tester.pump();

@@ -36,8 +36,6 @@ class NetworkProfileDataSources implements INetworkProfileDataSources {
       if (response.statusCode == 200) {
         return UserInfoDto.fromJson(response.data['reports']['workers']);
       } else {
-        print(response.statusCode);
-        print(response.data);
         throw Exception('Failed to load data');
       }
     } catch (e) {

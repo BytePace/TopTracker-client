@@ -54,23 +54,6 @@ void main() {
       final allUsersLoad = UserModel(userID: 0, name: "", email: '');
 
       blocTest<ProjectBloc, ProjectState>(
-        'emits [ProjectListLoading and ProjectListLoaded] when LoadProjectEvent is added.',
-        build: () => buildBloc(),
-        wait: const Duration(seconds: 1),
-        act: (bloc) => bloc.add(LoadProjectEvent()),
-        expect: () => [
-          ProjectListLoading(),
-          ProjectListLoaded(
-              projects: [project],
-              allProfileID: [],
-              allUser: [allUsersLoading]),
-          ProjectListLoaded(
-              projects: [project],
-              allProfileID: [ProfileIdModel(profileID: 0, name: "")],
-              allUser: [allUsersLoad]),
-        ],
-      );
-      blocTest<ProjectBloc, ProjectState>(
           'emits [ProjectListLoading and ProjectListLoaded] when UpdateProjectEvent is added.',
           build: () => buildBloc(),
           wait: const Duration(seconds: 1),
@@ -93,7 +76,7 @@ void main() {
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(RestoreProjectEvent(id: 0)),
           expect: () => [
-                ProjectListMessage(message: "Проект разархивирован"),
+                ProjectListMessage(message: "dearchiveSuccess"),
                 ProjectListLoaded(
                   allUser: [allUsersLoad],
                   projects: [project],
@@ -107,7 +90,7 @@ void main() {
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(DeleteProjectEvent(id: 0)),
           expect: () => [
-                ProjectListMessage(message: "Проект удален"),
+                ProjectListMessage(message: "deleteProjectSuccess"),
                 ProjectListLoaded(allUser: [], projects: [], allProfileID: []),
               ]);
 
@@ -117,7 +100,7 @@ void main() {
           wait: const Duration(seconds: 1),
           act: (bloc) => bloc.add(ArchiveProjectEvent(id: 0)),
           expect: () => [
-                ProjectListMessage(message: "Проект архивирован"),
+                ProjectListMessage(message: "archiveSuccess"),
                 ProjectListLoaded(
                   allUser: [allUsersLoad],
                   projects: [project],

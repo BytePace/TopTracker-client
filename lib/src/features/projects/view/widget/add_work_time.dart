@@ -32,7 +32,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
   @override
   void initState() {
     updateDurationAndTime("00:30");
-    _durationEditingController.text = listTime.first;
+    _durationEditingController.text = generateTimeList().first;
     super.initState();
   }
 
@@ -222,7 +222,7 @@ class _AddWorkTimeState extends State<AddWorkTime> {
             height: 250,
             child: SingleChildScrollView(
               child: Column(
-                children: listTime.map((item) {
+                children: generateTimeList().map((item) {
                   return SimpleDialogOption(
                     onPressed: () {
                       Navigator.pop(context, item);

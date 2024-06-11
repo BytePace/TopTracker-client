@@ -18,13 +18,17 @@ void main() {
   });
   group("Profile repository test", () {
     test('get day of monday', () async {
-      final now = DateTime.now();
+      final now = DateTime(2024, 06, 29, 16);
       DateTime monday = profileRepositoryTest.getMondayDate(now);
-      expect(monday.day, 8);
+      expect(monday.day, 24);
     });
 
     test('get user stat', () async {
-      final userInfoDtoExpect = UserInfoModel(profileID: 377593, name: 'Aleksandr Sherbakov', email: '', workedTotal: 36000);
+      final userInfoDtoExpect = UserInfoModel(
+          profileID: 377593,
+          name: 'Aleksandr Sherbakov',
+          email: '',
+          workedTotal: 36000);
       final userInfoDto = await profileRepositoryTest.getStats([]);
 
       expect(userInfoDto, userInfoDtoExpect);

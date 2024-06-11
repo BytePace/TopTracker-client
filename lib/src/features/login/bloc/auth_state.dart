@@ -17,7 +17,6 @@ class LoginInitialState extends AuthState {
 }
 
 class SignInState extends AuthState {
-
   @override
   List<Object?> get props => [];
 }
